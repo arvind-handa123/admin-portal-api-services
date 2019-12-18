@@ -1,8 +1,8 @@
 From openjdk:8
 MAINTAINER yabx.co
-WORKDIR /var/lib/jenkins/workspace/kyc-pipeline/kyc/target/
+WORKDIR /var/lib/jenkins/workspace/admin-portal-pipeline/admin-portal/target/
 EXPOSE 8080
 EXPOSE 3306
-COPY target/kyc-1.0.jar app.jar
-ENTRYPOINT ["java","-jar", "app.jar"]
+COPY target/portal-1.0.jar portal.jar
+ENTRYPOINT ["java","-jar", "portal.jar"]
 CMD ["-start"]
