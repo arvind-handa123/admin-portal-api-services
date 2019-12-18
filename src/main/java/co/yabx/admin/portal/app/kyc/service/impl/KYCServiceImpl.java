@@ -62,6 +62,9 @@ public class KYCServiceImpl implements KYCService {
 
 	@Autowired
 	private BankAccountDetailsRepository accountDetailsRepository;
+	
+	@Autowired
+	private PagesRepository pagesRepository;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(KYCServiceImpl.class);
 
@@ -116,7 +119,7 @@ public class KYCServiceImpl implements KYCService {
 						});
 					}
 
-					List<Pages> appPages = SpringUtil.bean(PagesRepository.class).findByPageType(PageType.RETAILERS);
+					List<Pages> appPages = pagesRepository.findByPageType(PageType.RETAILERS);
 					if (appPages == null)
 						return null;
 					for (Pages pages : appPages) {
