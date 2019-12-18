@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import co.yabx.admin.portal.app.admin.repositories.PagesRepository;
 import co.yabx.admin.portal.app.enums.AddressType;
 import co.yabx.admin.portal.app.enums.BankAccountIdentifier;
 import co.yabx.admin.portal.app.enums.EducationalQualification;
@@ -29,7 +30,6 @@ import co.yabx.admin.portal.app.kyc.dto.WorkEducationDetailsDTO;
 import co.yabx.admin.portal.app.kyc.entities.AccountStatuses;
 import co.yabx.admin.portal.app.kyc.entities.User;
 import co.yabx.admin.portal.app.kyc.repositories.AccountStatusesRepository;
-import co.yabx.admin.portal.app.kyc.repositories.PagesRepository;
 import co.yabx.admin.portal.app.util.SpringUtil;
 
 public class RetailersDtoHelper implements Serializable {

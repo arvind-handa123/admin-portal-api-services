@@ -36,7 +36,7 @@ public class LoanPurposeDetails implements Serializable {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
 	User user;
 
 	public Long getId() {

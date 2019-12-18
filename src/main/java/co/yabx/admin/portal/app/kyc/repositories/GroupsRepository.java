@@ -5,7 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import co.yabx.admin.portal.app.kyc.entities.Groups;
 
-@Repository("groupsRepository")
+
+@Repository
 public interface GroupsRepository extends CrudRepository<Groups, Long> {
 
 }

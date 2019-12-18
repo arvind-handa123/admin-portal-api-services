@@ -3,6 +3,7 @@ package co.yabx.admin.portal.app.kyc.service;
 import java.util.List;
 
 import co.yabx.admin.portal.app.enums.PageType;
+import co.yabx.admin.portal.app.enums.UserType;
 import co.yabx.admin.portal.app.kyc.dto.PagesDTO;
 import co.yabx.admin.portal.app.kyc.entities.DSRUser;
 import co.yabx.admin.portal.app.kyc.entities.Retailers;
@@ -19,5 +20,7 @@ public interface UserService {
 	Retailers getRetailerById(Long retailerId);
 
 	User persistOrUpdateUserInfo(PagesDTO appPagesDTO, User dsrUser, User retailer) throws Exception;
+
+	List<User> findUserByUserType(UserType retailers);
 
 }

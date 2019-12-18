@@ -56,7 +56,7 @@ public class WorkEducationDetails implements Serializable {
 	@Column(name = "experience")
 	private Integer experience;
 
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
 	User user;
 
 	public Long getId() {

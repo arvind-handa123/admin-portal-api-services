@@ -18,10 +18,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import co.yabx.admin.portal.app.enums.BusinessType;
 import co.yabx.admin.portal.app.enums.FunctionalityType;
 import co.yabx.admin.portal.app.kyc.entities.Fields;
 import co.yabx.admin.portal.app.kyc.entities.SectionGroupRelationship;
+
+
 
 /**
  * 
@@ -41,11 +42,11 @@ public abstract class SubGroups implements Serializable {
 	@Column(name = "group_type", insertable = false, updatable = false)
 	private String groupType;
 
-	@ManyToOne(targetEntity = SectionGroupRelationship.class, fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity = SectionGroupRelationship.class, fetch = FetchType.EAGER)
 	protected SectionGroupRelationship sectionGroupRelationship;
 
 	@JoinColumn(name = "fields")
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Fields.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Fields.class)
 	Fields fields;
 
 	@Column(name = "functionality_type", length = 100)

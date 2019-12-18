@@ -2,15 +2,22 @@ package co.yabx.admin.portal.app.admin.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+
+import co.yabx.admin.portal.app.enums.ProductName;
 
 @Entity
 @Table(name = "product_configs")
@@ -22,11 +29,14 @@ public class ProductConfigurations implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "property")
-	private String property;
+	@Column(name = "name", length = 100, nullable = false, columnDefinition = "varchar(32)")
+	@Enumerated(value = EnumType.STRING)
+	private ProductName productName;
 
-	@Column(name = "value")
-	private String value;
+	private String region;
+
+	@OneToMany(mappedBy = "productConfig", fetch = FetchType.EAGER)
+	private Set<Pages> pages;
 
 	@Column(name = "created_at")
 	private Date createdAt;
@@ -73,25 +83,32 @@ public class ProductConfigurations implements Serializable {
 		this.id = id;
 	}
 
-	public String getValue() {
-		return value;
+	public ProductName getProductName() {
+		return productName;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setProductName(ProductName productName) {
+		this.productName = productName;
 	}
 
-	public String getProperty() {
-		return property;
+	public String getRegion() {
+		return region;
 	}
 
-	public void setProperty(String property) {
-		this.property = property;
+	public void setRegion(String region) {
+		this.region = region;
 	}
 
-	@Override
-	public String toString() {
-		return "AppConfigurations [id=" + id + ", property=" + property + ", value=" + value + "]";
+	public Set<Pages> getPages() {
+		return pages;
+	}
+
+	public void setPages(Set<Pages> pages) {
+		this.pages = pages;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

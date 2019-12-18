@@ -142,28 +142,28 @@ public abstract class User implements Serializable {
 	@Column(name = "passport_expiry_date")
 	private String passportExpiryDate;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<MonthlyTransactionProfiles> monthlyTransactionProfiles = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<IntroducerDetails> introducerDetails = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<WorkEducationDetails> workEducationDetails = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<LiabilitiesDetails> liabilitiesDetails = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<BusinessDetails> businessDetails = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<AddressDetails> addressDetails = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<BankAccountDetails> bankAccountDetails = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<AttachmentDetails> attachmentDetails = new HashSet<>();
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -562,6 +562,27 @@ public abstract class User implements Serializable {
 
 	public void setDeviceInformation(DeviceInformations deviceInformation) {
 		this.deviceInformation = deviceInformation;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", userType=" + userType + ", userStatus=" + userStatus + ", msisdn=" + msisdn
+				+ ", alternateMobileNumber=" + alternateMobileNumber + ", firstName=" + firstName + ", middleName="
+				+ middleName + ", lastName=" + lastName + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
+				+ ", dob=" + dob + ", pob=" + pob + ", gender=" + gender + ", createdBy=" + createdBy + ", updatedBy="
+				+ updatedBy + ", email=" + email + ", fathersName=" + fathersName + ", mothersName=" + mothersName
+				+ ", spouseName=" + spouseName + ", maritalStatus=" + maritalStatus + ", numberOfDependents="
+				+ numberOfDependents + ", sisterConcernedOrAllied=" + sisterConcernedOrAllied + ", nationality="
+				+ nationality + ", residentialStatus=" + residentialStatus + ", taxIdentificationNumber="
+				+ taxIdentificationNumber + ", nationalIdNumber=" + nationalIdNumber + ", birthRegistrationNumber="
+				+ birthRegistrationNumber + ", passportNumber=" + passportNumber + ", drivingLicenseNumber="
+				+ drivingLicenseNumber + ", passportExpiryDate=" + passportExpiryDate + ", monthlyTransactionProfiles="
+				+ monthlyTransactionProfiles + ", introducerDetails=" + introducerDetails + ", workEducationDetails="
+				+ workEducationDetails + ", liabilitiesDetails=" + liabilitiesDetails + ", businessDetails="
+				+ businessDetails + ", addressDetails=" + addressDetails + ", bankAccountDetails=" + bankAccountDetails
+				+ ", attachmentDetails=" + attachmentDetails + ", loanPurposeDetails=" + loanPurposeDetails + ", minor="
+				+ minor + ", locale=" + locale + ", authInfo=" + authInfo + ", deviceInformation=" + deviceInformation
+				+ "]";
 	}
 
 }

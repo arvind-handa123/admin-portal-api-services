@@ -67,6 +67,23 @@ public class PagesDTOHeper implements Serializable {
 		return appPagesDTO;
 	}
 
+	public static PagesDTO prepareAppPagesDto(co.yabx.admin.portal.app.admin.entities.Pages pages) {
+		PagesDTO appPagesDTO = new PagesDTO();
+		Set<co.yabx.admin.portal.app.admin.entities.Sections> appPagesSectionsSet = pages.getSections();
+		if (appPagesSectionsSet != null && !appPagesSectionsSet.isEmpty()) {
+			List<SectionsDTO> appPagesSectionSet = SectionDtoHelper.getSections(appPagesSectionsSet);
+			appPagesDTO.setSections(appPagesSectionSet.stream().sorted(Comparator.comparing(SectionsDTO::getSectionId))
+					.collect(Collectors.toList()));
+			appPagesDTO.setEnable(pages.isEnable());
+			appPagesDTO.setPageId(pages.getPageId());
+			// appPagesDTO.setPageName(pages.getPageName());
+			appPagesDTO.setPageTitle(pages.getPageTitle());
+			appPagesDTO.setDisplayOrder(pages.getDisplayOrder());
+
+		}
+		return appPagesDTO;
+	}
+
 	private static ActionDTO prepareActions() {
 		ActionDTO actionDTO = new ActionDTO();
 		actionDTO.setData(SpringUtil.bean(AppConfigService.class).getProperty("KYC_PAGE_ACTION_BUTTON_NAME", "Save"));

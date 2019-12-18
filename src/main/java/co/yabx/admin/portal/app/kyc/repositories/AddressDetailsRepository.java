@@ -1,5 +1,7 @@
 package co.yabx.admin.portal.app.kyc.repositories;
 
+import java.util.Set;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,5 +18,7 @@ public interface AddressDetailsRepository extends CrudRepository<AddressDetails,
 	AddressDetails findByUserAndAddressType(User retailerOrDsrUser, AddressType addressType);
 
 	AddressDetails findByBusinessDetailsAndAddressType(BusinessDetails businessDetails, AddressType addressType);
+
+	Set<AddressDetails> findByUser(User user);
 
 }

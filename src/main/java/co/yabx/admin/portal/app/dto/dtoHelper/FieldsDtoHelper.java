@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 import co.yabx.admin.portal.app.enums.AddressProof;
 import co.yabx.admin.portal.app.enums.AddressType;
 import co.yabx.admin.portal.app.enums.AttachmentType;
@@ -209,8 +210,10 @@ public class FieldsDtoHelper implements Serializable {
 			}
 			FieldsDTO fieldsDTO = getAppDynamicFieldDTO(dynamicFields);
 			List<SubFieldsDTO> subFieldsDTOs = getSubFileds(dynamicFields, null, filledVsUnfilled);
-			if (subFieldsDTOs != null)
-				subFieldsDTOs.stream().sorted().collect(Collectors.toList());
+			/*
+			 * if (subFieldsDTOs != null)
+			 * subFieldsDTOs.stream().sorted().collect(Collectors.toList());
+			 */
 			fieldsDTO.setSubFields(subFieldsDTOs);
 			appDynamicFieldsDTOSet.add(fieldsDTO);
 			return true;
@@ -1012,28 +1015,25 @@ public class FieldsDtoHelper implements Serializable {
 				} else if (dynamicFields.getFieldId().equals("dob")) {
 					dynamicFields.setSavedData(retailers.getDob());
 				} else if (dynamicFields.getFieldId().equals("pob")) {
-					dynamicFields.setSavedData(retailers.getPob() != null ? retailers.getPob().toString() : null);
-					List<String> options = new ArrayList<String>();
-					Cities[] cities = Cities.values();
-					for (Cities statuses : cities) {
-						options.add(statuses.toString());
-					}
-					dynamicFields.setOptions(options);
-				} else if (dynamicFields.getFieldId().equals("fathersName")) {
+					/*
+					 * dynamicFields.setSavedData(retailers.getPob() != null ?
+					 * retailers.getPob().toString() : null); List<String> options = new
+					 * ArrayList<String>(); Cities[] cities = Cities.values(); for (Cities statuses
+					 * : cities) { options.add(statuses.toString()); }
+					 * dynamicFields.setOptions(options);
+					 */} else if (dynamicFields.getFieldId().equals("fathersName")) {
 					dynamicFields.setSavedData(retailers.getFathersName());
 				} else if (dynamicFields.getFieldId().equals("mothersName")) {
 					dynamicFields.setSavedData(retailers.getMothersName());
 				} else if (dynamicFields.getFieldId().equals("maritalStatus")) {
-					dynamicFields.setSavedData(
-							retailers.getMaritalStatus() != null ? retailers.getMaritalStatus().toString() : null);
-					List<String> options = new ArrayList<String>();
-					MaritalStatuses[] maritalStatuses = MaritalStatuses.values();
-					for (MaritalStatuses statuses : maritalStatuses) {
-						options.add(statuses.toString());
-					}
-					dynamicFields.setOptions(options);
-
-				} else if (dynamicFields.getFieldId().equals("spouseName")) {
+					/*
+					 * dynamicFields.setSavedData( retailers.getMaritalStatus() != null ?
+					 * retailers.getMaritalStatus().toString() : null); List<String> options = new
+					 * ArrayList<String>(); MaritalStatuses[] maritalStatuses =
+					 * MaritalStatuses.values(); for (MaritalStatuses statuses : maritalStatuses) {
+					 * options.add(statuses.toString()); } dynamicFields.setOptions(options);
+					 * 
+					 */} else if (dynamicFields.getFieldId().equals("spouseName")) {
 					dynamicFields.setSavedData(retailers.getSpouseName());
 				} else if (dynamicFields.getFieldId().equals("numberOfDependents")) {
 					dynamicFields.setSavedData(String.valueOf(retailers.getNumberOfDependents()));

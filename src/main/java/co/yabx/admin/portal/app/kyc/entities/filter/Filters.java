@@ -17,6 +17,7 @@ import javax.persistence.Table;
 
 import co.yabx.admin.portal.app.kyc.entities.SectionGroupRelationship;
 
+
 /**
  * Created by Asad Ali on 21/10/2019. Filter table contains configuration for
  * any defined entities. Whether to show the or not is decided by this entity

@@ -18,6 +18,7 @@ import javax.persistence.Table;
 
 import co.yabx.admin.portal.app.kyc.entities.Fields;
 
+
 /**
  * 
  * @author Asad.ali
@@ -36,11 +37,11 @@ public abstract class SubFields implements Serializable {
 	@Column(name = "field_type", insertable = false, updatable = false)
 	private String fieldType;
 
-	@ManyToOne(targetEntity = Fields.class, fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity = Fields.class, fetch = FetchType.EAGER)
 	protected Fields parent;
 
 	@JoinColumn(name = "child")
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Fields.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Fields.class)
 	Fields child;
 
 	@Column(name = "display_order")

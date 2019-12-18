@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import co.yabx.admin.portal.app.kyc.entities.User;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SectionsDTO implements Serializable {
 	private static final long serialVersionUID = 1547547L;
@@ -31,8 +33,12 @@ public class SectionsDTO implements Serializable {
 	private Integer totalFields;
 
 	private Long nomineeId;
-	
+
 	private Integer displayOrder;
+
+	private List<PagesDTO> pagesDTOs;
+
+	private List<User> user;
 
 	public String getSectionType() {
 		return sectionType;
@@ -145,6 +151,22 @@ public class SectionsDTO implements Serializable {
 
 	public void setDisplayOrder(Integer displayOrder) {
 		this.displayOrder = displayOrder;
+	}
+
+	public List<PagesDTO> getPagesDTOs() {
+		return pagesDTOs;
+	}
+
+	public void setPagesDTOs(List<PagesDTO> pagesDTOs) {
+		this.pagesDTOs = pagesDTOs;
+	}
+
+	public List<User> getUser() {
+		return user;
+	}
+
+	public void setUser(List<User> user) {
+		this.user = user;
 	}
 
 }

@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import co.yabx.admin.portal.app.kyc.entities.filter.Filters;
 import co.yabx.admin.portal.app.kyc.entities.filter.SubGroups;
 
+
 @Entity
 @Table(name = "section_group_relationships", indexes = { @Index(name = "section_id", columnList = "section_id") })
 public class SectionGroupRelationship implements Serializable {
@@ -36,7 +37,7 @@ public class SectionGroupRelationship implements Serializable {
 	private Long sectionId;
 
 	@JoinColumn(name = "group_id")
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Groups.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Groups.class)
 	private Groups groups;
 
 	@Column(name = "created_at")

@@ -35,12 +35,13 @@ import co.yabx.admin.portal.app.kyc.entities.Retailers;
 import co.yabx.admin.portal.app.kyc.entities.User;
 import co.yabx.admin.portal.app.kyc.entities.UserRelationships;
 import co.yabx.admin.portal.app.kyc.entities.WorkEducationDetails;
+import co.yabx.admin.portal.app.kyc.repositories.AddressDetailsRepository;
+import co.yabx.admin.portal.app.kyc.repositories.BankAccountDetailsRepository;
 import co.yabx.admin.portal.app.kyc.repositories.DSRUserRepository;
 import co.yabx.admin.portal.app.kyc.repositories.PagesRepository;
 import co.yabx.admin.portal.app.kyc.repositories.RetailersRepository;
 import co.yabx.admin.portal.app.kyc.repositories.UserRelationshipsRepository;
 import co.yabx.admin.portal.app.kyc.repositories.UserRepository;
-import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.SectionService;
 import co.yabx.admin.portal.app.kyc.service.UserService;
 import co.yabx.admin.portal.app.util.SpringUtil;
@@ -57,7 +58,10 @@ public class UserServiceImpl implements UserService {
 	private UserRepository userRepository;
 
 	@Autowired
-	private AppConfigService appConfigService;
+	private AddressDetailsRepository addressDetailsRepository;
+
+	@Autowired
+	private BankAccountDetailsRepository bankAccountDetailsRepository;
 
 	@Autowired
 	private RetailersRepository retailersRepository;
@@ -109,9 +113,9 @@ public class UserServiceImpl implements UserService {
 			nominee = userRelationships != null && !userRelationships.isEmpty() ? userRelationships.get(0).getRelative()
 					: null;
 			userAddressDetailsSet = user.getAddressDetails();
-			nomineeAddressDetailsSet = nominee != null ? nominee.getAddressDetails() : null;
+			nomineeAddressDetailsSet = nominee != null ? addressDetailsRepository.findByUser(user) : null;
 			userBankAccountDetailsSet = user.getBankAccountDetails();
-			nomineeBankAccountDetailsSet = nominee != null ? nominee.getBankAccountDetails() : null;
+			nomineeBankAccountDetailsSet = nominee != null ? bankAccountDetailsRepository.findByUser(user) : null;
 			/*
 			 * liabilitiesDetailsSet = user.getLiabilitiesDetails();
 			 * monthlyTransactionProfilesSet = user.getMonthlyTransactionProfiles();
@@ -317,6 +321,12 @@ public class UserServiceImpl implements UserService {
 		userRelationships.setRelative(nominees);
 		userRelationships.setRelationship(Relationship.NOMINEE);
 		userRelationshipsRepository.save(userRelationships);
+	}
+
+	@Override
+	public List<User> findUserByUserType(UserType retailers) {
+		return userRepository.findByUserType(retailers.name());
+
 	}
 
 }

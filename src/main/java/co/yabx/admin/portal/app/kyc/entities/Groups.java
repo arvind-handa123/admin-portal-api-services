@@ -15,7 +15,6 @@ import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import co.yabx.admin.portal.app.kyc.entities.filter.SubGroups;
 
 /**
  * The persistent class for the Question database table.

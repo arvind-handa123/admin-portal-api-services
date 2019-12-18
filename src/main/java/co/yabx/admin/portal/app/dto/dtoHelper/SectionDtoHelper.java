@@ -3,19 +3,20 @@ package co.yabx.admin.portal.app.dto.dtoHelper;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+import co.yabx.admin.portal.app.enums.KycStatus;
 import co.yabx.admin.portal.app.kyc.dto.GroupsDTO;
 import co.yabx.admin.portal.app.kyc.dto.SectionsDTO;
 import co.yabx.admin.portal.app.kyc.entities.AddressDetails;
 import co.yabx.admin.portal.app.kyc.entities.BankAccountDetails;
 import co.yabx.admin.portal.app.kyc.entities.Sections;
 import co.yabx.admin.portal.app.kyc.entities.User;
+import co.yabx.admin.portal.app.kyc.service.KYCService;
+import co.yabx.admin.portal.app.util.SpringUtil;
 
 public class SectionDtoHelper implements Serializable {
 	public static List<SectionsDTO> getSections(Set<Sections> appPagesSectionsSet, User retailers,
@@ -53,6 +54,44 @@ public class SectionDtoHelper implements Serializable {
 
 		return appPagesSectionDTOSet;
 
+	}
+
+	public static List<SectionsDTO> getSections(
+			Set<co.yabx.admin.portal.app.admin.entities.Sections> appPagesSectionsSet) {
+
+		List<SectionsDTO> appPagesSectionDTOSet = new ArrayList<SectionsDTO>();
+		for (co.yabx.admin.portal.app.admin.entities.Sections appPagesSections : appPagesSectionsSet) {
+			SectionsDTO appPagesSectionsDTO = new SectionsDTO();
+			KycStatus kycStatus = getKycStatus(appPagesSections.getSectionTitle());
+			if (kycStatus != null) {
+				appPagesSectionsDTO.setUser(SpringUtil.bean(KYCService.class).fetchRetailersByKycStatus(kycStatus));
+				appPagesSectionsDTO.setEnable(appPagesSections.isEnable());
+				appPagesSectionsDTO.setSectionId(appPagesSections.getSectionId());
+				appPagesSectionsDTO.setSectionName(appPagesSections.getSectionName());
+				appPagesSectionsDTO.setSectionTitle(appPagesSections.getSectionTitle());
+				appPagesSectionsDTO.setDisplayOrder(appPagesSections.getDisplayOrder());
+				appPagesSectionDTOSet.add(appPagesSectionsDTO);
+			}
+		}
+
+		return appPagesSectionDTOSet;
+
+	}
+
+	private static KycStatus getKycStatus(String sectionTitle) {
+		if (sectionTitle != null && !sectionTitle.isEmpty()) {
+			if (sectionTitle.equalsIgnoreCase(KycStatus.IN_PROGRESS.name()))
+				return KycStatus.IN_PROGRESS;
+			else if (sectionTitle.equalsIgnoreCase(KycStatus.REJECTED.name()))
+				return KycStatus.REJECTED;
+			else if (sectionTitle.equalsIgnoreCase(KycStatus.APPROVED.name()))
+				return KycStatus.APPROVED;
+			else if (sectionTitle.equalsIgnoreCase(KycStatus.SUBMITTED.name()))
+				return KycStatus.SUBMITTED;
+			else
+				return null;
+		}
+		return null;
 	}
 
 }

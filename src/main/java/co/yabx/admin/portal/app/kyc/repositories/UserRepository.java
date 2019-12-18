@@ -1,5 +1,7 @@
 package co.yabx.admin.portal.app.kyc.repositories;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +16,7 @@ public interface UserRepository extends BaseUserRepository<User>, CrudRepository
 	User findByAuthInfo(AuthInfo authInfo);
 
 	User findBymsisdnAndUserType(String dsrMSISDN, String userType);
+
+	List<User> findByUserType(String userType);
 
 }

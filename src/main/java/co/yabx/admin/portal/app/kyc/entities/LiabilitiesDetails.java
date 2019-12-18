@@ -53,7 +53,7 @@ public class LiabilitiesDetails implements Serializable {
 	@Column(name = "update_by")
 	private String updatedBy;
 
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
 	User user;
 
 	public double getLoanAmount() {

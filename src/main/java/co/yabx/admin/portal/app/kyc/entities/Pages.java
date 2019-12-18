@@ -19,6 +19,7 @@ import javax.persistence.Table;
 
 import co.yabx.admin.portal.app.enums.PageType;
 
+
 /**
  * The persistent class for the Question database table.
  * 

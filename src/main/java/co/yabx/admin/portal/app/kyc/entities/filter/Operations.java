@@ -18,6 +18,7 @@ import javax.persistence.Table;
 
 import co.yabx.admin.portal.app.kyc.entities.Fields;
 
+
 /**
  * 
  * @author Asad.ali
@@ -37,7 +38,7 @@ public abstract class Operations implements Serializable {
 	private String operationType;
 
 	@JoinColumn(name = "fields")
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = Fields.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Fields.class)
 	Fields fields;
 
 	@Column(name = "display_order")

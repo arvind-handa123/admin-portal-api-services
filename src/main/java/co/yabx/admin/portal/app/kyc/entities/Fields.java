@@ -27,6 +27,8 @@ import co.yabx.admin.portal.app.kyc.entities.filter.Operations;
 import co.yabx.admin.portal.app.kyc.entities.filter.SubFields;
 import co.yabx.admin.portal.app.kyc.entities.filter.SubGroups;
 
+
+
 /**
  * The persistent class for the Question database table.
  * 

@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import co.yabx.admin.portal.app.kyc.entities.Fields;
 
 /**
  * 

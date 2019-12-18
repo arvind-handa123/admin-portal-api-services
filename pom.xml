@@ -5,12 +5,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>co.yabx</groupId>
-	<artifactId>kyc</artifactId>
+	<artifactId>portal</artifactId>
 	<version>1.0</version>
 	<packaging>jar</packaging>
 
-	<name>kyc</name>
-	<description>KYC</description>
+	<name>admin-portal</name>
+	<description>Admin-Portal</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

@@ -80,13 +80,13 @@ public class AddressDetails implements Serializable {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
 	User user;
 
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = BusinessDetails.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = BusinessDetails.class)
 	BusinessDetails businessDetails;
 
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = CustomerInformations.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = CustomerInformations.class)
 	CustomerInformations customerInformations;
 
 	public User getUser() {

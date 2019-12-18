@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
 import co.yabx.admin.portal.app.enums.PageType;
 import co.yabx.admin.portal.app.kyc.entities.Pages;
 
-@Repository("pagesRepository")
+
+@Repository
 public interface PagesRepository extends CrudRepository<Pages, Long> {
 
 	List<Pages> findByPageName(String user_type);

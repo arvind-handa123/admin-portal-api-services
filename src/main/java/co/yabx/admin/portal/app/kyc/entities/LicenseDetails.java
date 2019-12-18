@@ -54,7 +54,7 @@ public class LicenseDetails implements Serializable {
 	@Column(name = "update_by")
 	private String updatedBy;
 
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = BusinessDetails.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = BusinessDetails.class)
 	BusinessDetails businessDetails;
 
 	public Long getId() {

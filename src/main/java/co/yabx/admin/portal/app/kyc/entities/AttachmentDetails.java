@@ -75,7 +75,7 @@ public class AttachmentDetails implements Serializable {
 			CascadeType.ALL }, orphanRemoval = true, fetch = FetchType.EAGER)
 	private Set<Attachments> attachments = new HashSet<>();
 
-	@ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
 	User user;
 
 	public Date getSnapTime() {
