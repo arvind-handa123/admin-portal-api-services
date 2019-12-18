@@ -15,7 +15,6 @@ import co.yabx.admin.portal.app.enums.KycStatus;
 import co.yabx.admin.portal.app.enums.PageType;
 import co.yabx.admin.portal.app.enums.Relationship;
 import co.yabx.admin.portal.app.enums.UserType;
-import co.yabx.admin.portal.app.kyc.dto.GroupsDTO;
 import co.yabx.admin.portal.app.kyc.dto.PagesDTO;
 import co.yabx.admin.portal.app.kyc.entities.AccountStatuses;
 import co.yabx.admin.portal.app.kyc.entities.AddressDetails;
@@ -24,10 +23,8 @@ import co.yabx.admin.portal.app.kyc.entities.BankAccountDetails;
 import co.yabx.admin.portal.app.kyc.entities.BusinessDetails;
 import co.yabx.admin.portal.app.kyc.entities.IntroducerDetails;
 import co.yabx.admin.portal.app.kyc.entities.LiabilitiesDetails;
-import co.yabx.admin.portal.app.kyc.entities.LicenseDetails;
 import co.yabx.admin.portal.app.kyc.entities.LoanPurposeDetails;
 import co.yabx.admin.portal.app.kyc.entities.MonthlyTransactionProfiles;
-import co.yabx.admin.portal.app.kyc.entities.Nominees;
 import co.yabx.admin.portal.app.kyc.entities.Pages;
 import co.yabx.admin.portal.app.kyc.entities.User;
 import co.yabx.admin.portal.app.kyc.entities.UserRelationships;
@@ -40,7 +37,6 @@ import co.yabx.admin.portal.app.kyc.repositories.UserRelationshipsRepository;
 import co.yabx.admin.portal.app.kyc.repositories.UserRepository;
 import co.yabx.admin.portal.app.kyc.service.KYCService;
 import co.yabx.admin.portal.app.kyc.service.UserService;
-import co.yabx.admin.portal.app.util.SpringUtil;
 
 @Service
 public class KYCServiceImpl implements KYCService {
@@ -62,9 +58,9 @@ public class KYCServiceImpl implements KYCService {
 
 	@Autowired
 	private BankAccountDetailsRepository accountDetailsRepository;
-	
+
 	@Autowired
-	private PagesRepository pagesRepository;
+	private co.yabx.admin.portal.app.kyc.repositories.PagesRepository kycPagesRepository;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(KYCServiceImpl.class);
 
@@ -119,7 +115,7 @@ public class KYCServiceImpl implements KYCService {
 						});
 					}
 
-					List<Pages> appPages = pagesRepository.findByPageType(PageType.RETAILERS);
+					List<Pages> appPages = kycPagesRepository.findByPageType(PageType.RETAILERS);
 					if (appPages == null)
 						return null;
 					for (Pages pages : appPages) {
