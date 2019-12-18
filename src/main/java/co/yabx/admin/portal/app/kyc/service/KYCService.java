@@ -15,5 +15,5 @@ public interface KYCService {
 
 	List<PagesDTO> findAllRetailers();
 
-	List<User> fetchRetailersByKycStatus(KycStatus kycStatus);
+	List<PagesDTO> fetchRetailersByKycStatus(KycStatus kycStatus);
 }

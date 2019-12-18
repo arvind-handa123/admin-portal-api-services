@@ -88,10 +88,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<PagesDTO> getUserDetails(User user, PageType type) {
 
-		List<Pages> appPages = SpringUtil.bean(PagesRepository.class).findByPageType(type);
-		if (appPages == null)
-			return null;
-
 		// Nominee Personal Info
 		User nominee = null;
 		Set<AddressDetails> userAddressDetailsSet = null;
@@ -106,7 +102,6 @@ public class UserServiceImpl implements UserService {
 		 * Set<WorkEducationDetails> workEducationDetailsSet = null;
 		 * Set<IntroducerDetails> introducerDetailsSet = null;
 		 */
-		List<PagesDTO> appPagesDTOList = new ArrayList<PagesDTO>();
 		if (user != null) {
 			List<UserRelationships> userRelationships = userRelationshipsRepository
 					.findByMsisdnAndRelationship(user.getMsisdn(), Relationship.NOMINEE);
@@ -131,6 +126,10 @@ public class UserServiceImpl implements UserService {
 				});
 			}
 		}
+		List<Pages> appPages = SpringUtil.bean(PagesRepository.class).findByPageType(type);
+		if (appPages == null)
+			return null;
+		List<PagesDTO> appPagesDTOList = new ArrayList<PagesDTO>();
 		for (Pages pages : appPages) {
 			appPagesDTOList.add(PagesDTOHeper.prepareAppPagesDto(pages, user, nominee, userAddressDetailsSet,
 					nomineeAddressDetailsSet, businessAddressDetailsSet, userBankAccountDetailsSet,

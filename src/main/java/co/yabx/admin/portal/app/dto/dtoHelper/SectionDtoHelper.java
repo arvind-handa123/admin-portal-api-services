@@ -64,7 +64,8 @@ public class SectionDtoHelper implements Serializable {
 			SectionsDTO appPagesSectionsDTO = new SectionsDTO();
 			KycStatus kycStatus = getKycStatus(appPagesSections.getSectionTitle());
 			if (kycStatus != null) {
-				appPagesSectionsDTO.setUser(SpringUtil.bean(KYCService.class).fetchRetailersByKycStatus(kycStatus));
+				appPagesSectionsDTO
+						.setPagesDTOs(SpringUtil.bean(KYCService.class).fetchRetailersByKycStatus(kycStatus));
 				appPagesSectionsDTO.setEnable(appPagesSections.isEnable());
 				appPagesSectionsDTO.setSectionId(appPagesSections.getSectionId());
 				appPagesSectionsDTO.setSectionName(appPagesSections.getSectionName());

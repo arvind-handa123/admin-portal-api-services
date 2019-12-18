@@ -25,6 +25,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.transaction.Transactional;
 
 import co.yabx.admin.portal.app.enums.Cities;
 import co.yabx.admin.portal.app.enums.Gender;
