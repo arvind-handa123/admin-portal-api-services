@@ -918,7 +918,7 @@ public class FieldsDtoHelper implements Serializable {
 			}
 		} else {
 			AddressDetails addressDetails = getAddressDetails(subGroups, addressDetailsSet);
-			if (addressDetailsSet != null) {
+			if (addressDetails != null) {
 				if (dynamicFields.getFieldId().equals("address")) {
 					dynamicFields.setSavedData(addressDetails.getAddress());
 				} else if (dynamicFields.getFieldId().equals("upazilaThana")) {
