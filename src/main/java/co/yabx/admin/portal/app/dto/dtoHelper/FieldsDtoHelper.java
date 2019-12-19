@@ -1216,7 +1216,9 @@ public class FieldsDtoHelper implements Serializable {
 				Fields subChildField = subFields.getChild();
 				String side = subChildField.getFieldName();
 				FieldsDTO fieldsDTO = getAppDynamicFieldDTO(subChildField, fieldRemarksList,
-						attachmentDetailsOptional.isPresent() ? attachmentDetailsOptional.get().getUser() : null);
+						attachmentDetailsOptional != null && attachmentDetailsOptional.isPresent()
+								? attachmentDetailsOptional.get().getUser()
+								: null);
 				fieldsDTO.setRemark(getSideRemarks(dynamicFields, fieldRemarksList, side));
 				if (attachmentDetailsOptional != null && attachmentDetailsOptional.isPresent()) {
 					AttachmentDetails attachmentDetails = attachmentDetailsOptional.get();
