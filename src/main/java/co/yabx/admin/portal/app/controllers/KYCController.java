@@ -1,7 +1,6 @@
 package co.yabx.admin.portal.app.controllers;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,15 +12,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import co.yabx.admin.portal.app.admin.entities.Pages;
 import co.yabx.admin.portal.app.enums.KycStatus;
 import co.yabx.admin.portal.app.kyc.dto.PagesDTO;
+import co.yabx.admin.portal.app.kyc.dto.RemarksDTO;
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
+import co.yabx.admin.portal.app.kyc.service.FieldRemarkService;
 import co.yabx.admin.portal.app.kyc.service.KYCService;
 import co.yabx.admin.portal.app.service.AdminPortalService;
 
@@ -38,6 +39,9 @@ public class KYCController {
 
 	@Autowired
 	private AdminPortalService adminPortalService;
+
+	@Autowired
+	private FieldRemarkService fieldRemarkService;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(KYCController.class);
 
@@ -63,6 +67,16 @@ public class KYCController {
 		}
 		return new ResponseEntity<>("Invalid secret key", HttpStatus.UNAUTHORIZED);
 
+	}
+
+	@RequestMapping(value = "/kyc/remark", method = RequestMethod.POST)
+	public ResponseEntity<?> postRemark(@RequestParam("userId") Long user_id,
+			@RequestParam(value = "remarkBy", required = true) String remarkBy,
+			@RequestBody List<RemarksDTO> RemarksDTOList) {
+		LOGGER.info("/v1/kyc/remark request received for userId={},remarkBy={} and ramark={}", user_id, remarkBy,
+				RemarksDTOList);
+		fieldRemarkService.updateRemark(user_id, remarkBy, RemarksDTOList);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

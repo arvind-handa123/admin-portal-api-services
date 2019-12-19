@@ -27,8 +27,6 @@ import co.yabx.admin.portal.app.kyc.entities.filter.Operations;
 import co.yabx.admin.portal.app.kyc.entities.filter.SubFields;
 import co.yabx.admin.portal.app.kyc.entities.filter.SubGroups;
 
-
-
 /**
  * The persistent class for the Question database table.
  * 
@@ -64,6 +62,9 @@ public class Fields implements Serializable {
 
 	@Transient
 	private Object savedData;
+
+	@Transient
+	private String remark;
 
 	@Column(name = "validation")
 	private String validation;
@@ -331,6 +332,14 @@ public class Fields implements Serializable {
 
 	public void setInternationalRepresentation(Boolean internationalRepresentation) {
 		this.internationalRepresentation = internationalRepresentation;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 
 }

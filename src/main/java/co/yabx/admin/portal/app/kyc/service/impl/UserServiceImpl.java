@@ -133,7 +133,7 @@ public class UserServiceImpl implements UserService {
 		for (Pages pages : appPages) {
 			appPagesDTOList.add(PagesDTOHeper.prepareAppPagesDto(pages, user, nominee, userAddressDetailsSet,
 					nomineeAddressDetailsSet, businessAddressDetailsSet, userBankAccountDetailsSet,
-					nomineeBankAccountDetailsSet, businessBankAccountDetailsSet, type.name()));
+					nomineeBankAccountDetailsSet, businessBankAccountDetailsSet, type.name(), null));
 
 		}
 

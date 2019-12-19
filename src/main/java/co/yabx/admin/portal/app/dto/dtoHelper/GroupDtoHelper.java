@@ -10,13 +10,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
 import co.yabx.admin.portal.app.kyc.dto.FieldsDTO;
 import co.yabx.admin.portal.app.kyc.dto.Functionality;
 import co.yabx.admin.portal.app.kyc.dto.GroupsDTO;
 import co.yabx.admin.portal.app.kyc.dto.SubFieldsDTO;
 import co.yabx.admin.portal.app.kyc.entities.AddressDetails;
 import co.yabx.admin.portal.app.kyc.entities.BankAccountDetails;
+import co.yabx.admin.portal.app.kyc.entities.FieldRemarks;
 import co.yabx.admin.portal.app.kyc.entities.Fields;
 import co.yabx.admin.portal.app.kyc.entities.Groups;
 import co.yabx.admin.portal.app.kyc.entities.SectionGroupRelationship;
@@ -32,7 +32,7 @@ public class GroupDtoHelper implements Serializable {
 			Sections appPagesSections, User nominee, Set<AddressDetails> userAddressDetailsSet,
 			Set<AddressDetails> nomineeAddressDetailsSet, Set<AddressDetails> businessAddressDetailsSet,
 			Set<BankAccountDetails> userBankAccountDetailsSet, Set<BankAccountDetails> nomineeBankAccountDetailsSet,
-			Set<BankAccountDetails> businessBankAccountDetailsSet) {
+			Set<BankAccountDetails> businessBankAccountDetailsSet, List<FieldRemarks> fieldRemarksList) {
 		List<SectionGroupRelationship> sectionGroupRelationships = SpringUtil
 				.bean(SectionGroupRelationshipRepository.class).findBySectionId(appPagesSections.getSectionId());
 		List<GroupsDTO> groupsDTOList = new ArrayList<GroupsDTO>();
@@ -46,13 +46,13 @@ public class GroupDtoHelper implements Serializable {
 						prepareGroups(subGropus, retailers, appPagesSections, nominee, userAddressDetailsSet,
 								nomineeAddressDetailsSet, businessAddressDetailsSet, userBankAccountDetailsSet,
 								nomineeBankAccountDetailsSet, businessBankAccountDetailsSet, appPagesSectionGroups,
-								groupsDTOList, filledVsUnfilled, filters, sectionGroupRelationship);
+								groupsDTOList, filledVsUnfilled, filters, sectionGroupRelationship, fieldRemarksList);
 					}
 				} else {
 					prepareGroups(null, retailers, appPagesSections, nominee, userAddressDetailsSet,
 							nomineeAddressDetailsSet, businessAddressDetailsSet, userBankAccountDetailsSet,
 							nomineeBankAccountDetailsSet, businessBankAccountDetailsSet, appPagesSectionGroups,
-							groupsDTOList, filledVsUnfilled, filters, sectionGroupRelationship);
+							groupsDTOList, filledVsUnfilled, filters, sectionGroupRelationship, fieldRemarksList);
 				}
 			}
 		}
@@ -64,7 +64,8 @@ public class GroupDtoHelper implements Serializable {
 			Set<AddressDetails> businessAddressDetailsSet, Set<BankAccountDetails> userBankAccountDetailsSet,
 			Set<BankAccountDetails> nomineeBankAccountDetailsSet, Set<BankAccountDetails> businessBankAccountDetailsSet,
 			Groups appPagesSectionGroups, List<GroupsDTO> groupsDTOList, Map<String, Integer> filledVsUnfilled,
-			Set<Filters> filters, SectionGroupRelationship sectionGroupRelationship) {
+			Set<Filters> filters, SectionGroupRelationship sectionGroupRelationship,
+			List<FieldRemarks> fieldRemarksList) {
 
 		if (appPagesSectionGroups != null) {
 			Map<String, Integer> groups = new HashMap<String, Integer>();
@@ -77,7 +78,8 @@ public class GroupDtoHelper implements Serializable {
 				List<FieldsDTO> fields = FieldsDtoHelper.getFields(appDynamicFieldsSet, retailers, groups,
 						appPagesSections, nominee, userAddressDetailsSet, nomineeAddressDetailsSet,
 						businessAddressDetailsSet, userBankAccountDetailsSet, nomineeBankAccountDetailsSet,
-						businessBankAccountDetailsSet, subGroups, filter, sectionGroupRelationship, groupsDTOList);
+						businessBankAccountDetailsSet, subGroups, filter, sectionGroupRelationship, groupsDTOList,
+						fieldRemarksList);
 				if (subGroups != null) {
 					addFunctionality(subGroups, groupsDTOList, fields, appPagesSectionGroupsDTO);
 				} else {

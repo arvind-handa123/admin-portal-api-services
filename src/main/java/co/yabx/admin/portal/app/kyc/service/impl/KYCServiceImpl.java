@@ -21,6 +21,7 @@ import co.yabx.admin.portal.app.kyc.entities.AddressDetails;
 import co.yabx.admin.portal.app.kyc.entities.AttachmentDetails;
 import co.yabx.admin.portal.app.kyc.entities.BankAccountDetails;
 import co.yabx.admin.portal.app.kyc.entities.BusinessDetails;
+import co.yabx.admin.portal.app.kyc.entities.FieldRemarks;
 import co.yabx.admin.portal.app.kyc.entities.IntroducerDetails;
 import co.yabx.admin.portal.app.kyc.entities.LiabilitiesDetails;
 import co.yabx.admin.portal.app.kyc.entities.LoanPurposeDetails;
@@ -32,7 +33,7 @@ import co.yabx.admin.portal.app.kyc.entities.WorkEducationDetails;
 import co.yabx.admin.portal.app.kyc.repositories.AccountStatusesRepository;
 import co.yabx.admin.portal.app.kyc.repositories.AddressDetailsRepository;
 import co.yabx.admin.portal.app.kyc.repositories.BankAccountDetailsRepository;
-import co.yabx.admin.portal.app.kyc.repositories.PagesRepository;
+import co.yabx.admin.portal.app.kyc.repositories.FieldRemarksRepository;
 import co.yabx.admin.portal.app.kyc.repositories.UserRelationshipsRepository;
 import co.yabx.admin.portal.app.kyc.repositories.UserRepository;
 import co.yabx.admin.portal.app.kyc.service.KYCService;
@@ -62,6 +63,9 @@ public class KYCServiceImpl implements KYCService {
 	@Autowired
 	private co.yabx.admin.portal.app.kyc.repositories.PagesRepository kycPagesRepository;
 
+	@Autowired
+	private FieldRemarksRepository fieldRemarksRepository;
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(KYCServiceImpl.class);
 
 	public List<PagesDTO> findAllRetailers() {
@@ -82,6 +86,7 @@ public class KYCServiceImpl implements KYCService {
 			List<PagesDTO> appPagesDTO = new ArrayList<PagesDTO>();
 			if (user.getMsisdn() != null && !user.getMsisdn().isEmpty()) {
 				AccountStatuses accountStatuses = accountStatusesRepository.findByMsisdn(user.getMsisdn());
+				List<FieldRemarks> fieldRemarksList = fieldRemarksRepository.findByUserId(user.getId());
 				if (accountStatuses != null && accountStatuses.getKycVerified() != null
 						&& accountStatuses.getKycVerified() == kycStatus) {
 					Set<AddressDetails> addressDetailsSet = user.getAddressDetails();
@@ -121,8 +126,8 @@ public class KYCServiceImpl implements KYCService {
 					for (Pages pages : appPages) {
 						appPagesDTO.add(PagesDTOHeper.prepareAppPagesDto(pages, user, nominee, addressDetailsSet,
 								nomineeAddressDetailsSet, businessAddressDetailsSet, bankAccountDetailsSet,
-								nomineeBankAccountDetailsSet, businessBankAccountDetailsSet,
-								PageType.RETAILERS.name()));
+								nomineeBankAccountDetailsSet, businessBankAccountDetailsSet, PageType.RETAILERS.name(),
+								fieldRemarksList));
 
 					}
 
