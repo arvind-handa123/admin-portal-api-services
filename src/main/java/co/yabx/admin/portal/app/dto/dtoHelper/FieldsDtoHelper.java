@@ -927,53 +927,56 @@ public class FieldsDtoHelper implements Serializable {
 		} else {
 			AddressDetails addressDetails = getAddressDetails(subGroups, addressDetailsSet);
 			user = addressDetails != null ? addressDetails.getUser() : null;
-			if (dynamicFields.getFieldId().equals("address")) {
-				dynamicFields.setSavedData(addressDetails.getAddress());
-			} else if (dynamicFields.getFieldId().equals("upazilaThana")) {
-				dynamicFields.setSavedData(addressDetails.getUpazilaThana());
-			} else if (dynamicFields.getFieldId().equals("cityDsitrict")) {
-				dynamicFields.setSavedData(
-						addressDetails.getCityDsitrict() != null ? addressDetails.getCityDsitrict().toString() : null);
-				List<String> options = new ArrayList<String>();
-				Cities[] accountTypes = Cities.values();
-				for (Cities statuses : accountTypes) {
-					options.add(statuses.toString());
-				}
-				dynamicFields.setOptions(options);
-			} else if (dynamicFields.getFieldId().equals("division")) {
-				dynamicFields.setSavedData(
-						addressDetails.getDivision() != null ? addressDetails.getDivision().toString() : null);
-				List<String> options = new ArrayList<String>();
-				Divisions[] accountTypes = Divisions.values();
-				for (Divisions statuses : accountTypes) {
-					options.add(statuses.toString());
-				}
-				dynamicFields.setOptions(options);
+			if (addressDetails != null) {
+				if (dynamicFields.getFieldId().equals("address")) {
+					dynamicFields.setSavedData(addressDetails.getAddress());
+				} else if (dynamicFields.getFieldId().equals("upazilaThana")) {
+					dynamicFields.setSavedData(addressDetails.getUpazilaThana());
+				} else if (dynamicFields.getFieldId().equals("cityDsitrict")) {
+					dynamicFields.setSavedData(
+							addressDetails.getCityDsitrict() != null ? addressDetails.getCityDsitrict().toString()
+									: null);
+					List<String> options = new ArrayList<String>();
+					Cities[] accountTypes = Cities.values();
+					for (Cities statuses : accountTypes) {
+						options.add(statuses.toString());
+					}
+					dynamicFields.setOptions(options);
+				} else if (dynamicFields.getFieldId().equals("division")) {
+					dynamicFields.setSavedData(
+							addressDetails.getDivision() != null ? addressDetails.getDivision().toString() : null);
+					List<String> options = new ArrayList<String>();
+					Divisions[] accountTypes = Divisions.values();
+					for (Divisions statuses : accountTypes) {
+						options.add(statuses.toString());
+					}
+					dynamicFields.setOptions(options);
 
-			} else if (dynamicFields.getFieldId().equals("zipCode")) {
-				dynamicFields.setSavedData(addressDetails.getZipCode() != null ? addressDetails.getZipCode() : null);
-			} else if (dynamicFields.getFieldId().equals("landmark")) {
-				dynamicFields.setSavedData(addressDetails.getLandmark());
-			} else if (dynamicFields.getFieldId().equals("territory")) {
-				dynamicFields.setSavedData(addressDetails.getTerritory());
-			} else if (dynamicFields.getFieldId().equals("country")) {
-				dynamicFields.setSavedData(
-						addressDetails.getCountry() != null ? addressDetails.getCountry().toString() : null);
-				List<String> options = new ArrayList<String>();
-				Countries[] accountTypes = Countries.values();
-				for (Countries statuses : accountTypes) {
-					options.add(statuses.toString());
+				} else if (dynamicFields.getFieldId().equals("zipCode")) {
+					dynamicFields
+							.setSavedData(addressDetails.getZipCode() != null ? addressDetails.getZipCode() : null);
+				} else if (dynamicFields.getFieldId().equals("landmark")) {
+					dynamicFields.setSavedData(addressDetails.getLandmark());
+				} else if (dynamicFields.getFieldId().equals("territory")) {
+					dynamicFields.setSavedData(addressDetails.getTerritory());
+				} else if (dynamicFields.getFieldId().equals("country")) {
+					dynamicFields.setSavedData(
+							addressDetails.getCountry() != null ? addressDetails.getCountry().toString() : null);
+					List<String> options = new ArrayList<String>();
+					Countries[] accountTypes = Countries.values();
+					for (Countries statuses : accountTypes) {
+						options.add(statuses.toString());
+					}
+					dynamicFields.setOptions(options);
+				} else if (dynamicFields.getFieldId().equals("mobileNumber")) {
+					dynamicFields.setSavedData(addressDetails.getMobileNumber());
+				} else if (dynamicFields.getFieldId().equals("phoneNumber")) {
+					dynamicFields.setSavedData(addressDetails.getPhoneNumber());
+				} else if (dynamicFields.getFieldId().equals("email")) {
+					dynamicFields.setSavedData(addressDetails.getEmail());
 				}
-				dynamicFields.setOptions(options);
-			} else if (dynamicFields.getFieldId().equals("mobileNumber")) {
-				dynamicFields.setSavedData(addressDetails.getMobileNumber());
-			} else if (dynamicFields.getFieldId().equals("phoneNumber")) {
-				dynamicFields.setSavedData(addressDetails.getPhoneNumber());
-			} else if (dynamicFields.getFieldId().equals("email")) {
-				dynamicFields.setSavedData(addressDetails.getEmail());
 			}
 		}
-
 		increamentFilledFields(dynamicFields, filledVsUnfilled);
 		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, user));
 		return true;
