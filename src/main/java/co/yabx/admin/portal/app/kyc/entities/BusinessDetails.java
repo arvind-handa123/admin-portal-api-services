@@ -421,6 +421,11 @@ public class BusinessDetails implements Serializable {
 		}
 	}
 
+	@PreUpdate
+	private void preUpdate() {
+		updatedAt = new Date();
+
+	}
 	public String getBusinessPhone() {
 		return businessPhone;
 	}
@@ -429,11 +434,7 @@ public class BusinessDetails implements Serializable {
 		this.businessPhone = businessPhone;
 	}
 
-	@PreUpdate
-	private void preUpdate() {
-		updatedAt = new Date();
-
-	}
+	
 
 	public void setNumberOfEmployees(int numberOfEmployees) {
 		this.numberOfEmployees = numberOfEmployees;

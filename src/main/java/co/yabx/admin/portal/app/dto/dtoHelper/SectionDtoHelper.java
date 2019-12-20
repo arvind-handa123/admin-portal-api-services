@@ -13,6 +13,7 @@ import co.yabx.admin.portal.app.kyc.dto.GroupsDTO;
 import co.yabx.admin.portal.app.kyc.dto.SectionsDTO;
 import co.yabx.admin.portal.app.kyc.entities.AddressDetails;
 import co.yabx.admin.portal.app.kyc.entities.BankAccountDetails;
+import co.yabx.admin.portal.app.kyc.entities.FieldRemarks;
 import co.yabx.admin.portal.app.kyc.entities.Sections;
 import co.yabx.admin.portal.app.kyc.entities.User;
 import co.yabx.admin.portal.app.kyc.service.KYCService;
@@ -23,7 +24,7 @@ public class SectionDtoHelper implements Serializable {
 			Map<String, Integer> filledVsUnfilled, User nominee, Set<AddressDetails> userAddressDetailsSet,
 			Set<AddressDetails> nomineeAddressDetailsSet, Set<AddressDetails> businessAddressDetailsSet,
 			Set<BankAccountDetails> userBankAccountDetailsSet, Set<BankAccountDetails> nomineeBankAccountDetailsSet,
-			Set<BankAccountDetails> businessBankAccountDetailsSet) {
+			Set<BankAccountDetails> businessBankAccountDetailsSet, List<FieldRemarks> fieldRemarksList) {
 		List<SectionsDTO> appPagesSectionDTOSet = new ArrayList<SectionsDTO>();
 		for (Sections appPagesSections : appPagesSectionsSet) {
 			Map<String, Integer> section = new HashMap<String, Integer>();
@@ -33,7 +34,8 @@ public class SectionDtoHelper implements Serializable {
 
 			List<GroupsDTO> appPagesSectionGroupSet = GroupDtoHelper.getGroups(retailers, section, appPagesSections,
 					nominee, userAddressDetailsSet, nomineeAddressDetailsSet, businessAddressDetailsSet,
-					userBankAccountDetailsSet, nomineeBankAccountDetailsSet, businessBankAccountDetailsSet);
+					userBankAccountDetailsSet, nomineeBankAccountDetailsSet, businessBankAccountDetailsSet,
+					fieldRemarksList);
 			Collections.sort(appPagesSectionGroupSet);
 			appPagesSectionsDTO.setGroups(appPagesSectionGroupSet);
 			appPagesSectionsDTO.setGroups(appPagesSectionGroupSet);

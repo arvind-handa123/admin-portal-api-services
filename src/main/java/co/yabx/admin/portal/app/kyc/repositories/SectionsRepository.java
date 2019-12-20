@@ -5,8 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import co.yabx.admin.portal.app.kyc.entities.Sections;
 
-
-@Repository
+@Repository("kycSectionRepository")
 public interface SectionsRepository extends CrudRepository<Sections, Long> {
 
 }
