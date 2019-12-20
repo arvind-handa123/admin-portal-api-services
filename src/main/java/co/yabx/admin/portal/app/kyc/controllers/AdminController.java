@@ -1,4 +1,4 @@
-package co.yabx.admin.portal.app.controllers;
+package co.yabx.admin.portal.app.kyc.controllers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -44,8 +45,7 @@ public class AdminController {
 	@ResponseBody
 	public ResponseEntity<?> reloadAppConfiguration(
 			@RequestParam(value = "secret_key", required = true) String secret_key) {
-		if (secret_key
-				.equals(appConfigService.getProperty("APP_CONFIG_RECONCILE_API_PASSWORD", "magic@yabx-admin-portal"))) {
+		if (secret_key.equals(appConfigService.getProperty("APP_CONFIG_RECONCILE_API_PASSWORD", "magic@yabx"))) {
 			appConfigService.refresh();
 			LOGGER.info("AppConfiguration has been refreshed");
 			return new ResponseEntity<>(HttpStatus.OK);
@@ -58,7 +58,7 @@ public class AdminController {
 	@RequestMapping(value = "/admin/generateAuthToken", method = RequestMethod.GET)
 	public ResponseEntity<?> generateAuthTokens(@RequestParam("msisdn") String msisdn,
 			@RequestParam(value = "secret_key", required = true) String secret_key) {
-		if (secret_key.equals(appConfigService.getProperty("GET_AUTH_TOKEN_API_PASSWORD", "magic@yabx-admin-portal"))) {
+		if (secret_key.equals(appConfigService.getProperty("GET_AUTH_TOKEN_API_PASSWORD", "magic@yabx"))) {
 			Map<String, String> jsonResponse = adminService.getAuthToken(msisdn);
 			if (jsonResponse == null)
 				return new ResponseEntity<>("user not found or msisdn is null for this user", HttpStatus.NOT_FOUND);
@@ -71,7 +71,7 @@ public class AdminController {
 	@RequestMapping(value = "/admin/otp", method = RequestMethod.GET)
 	public ResponseEntity<?> findOTP(@RequestParam("msisdn") String msisdn,
 			@RequestParam(value = "secret_key", required = true) String secret_key) {
-		if (secret_key.equals(appConfigService.getProperty("GET_AUTH_TOKEN_API_PASSWORD", "magic@yabx-admin-portal"))) {
+		if (secret_key.equals(appConfigService.getProperty("GET_AUTH_TOKEN_API_PASSWORD", "magic@yabx"))) {
 			Map<String, String> jsonResponse = new HashMap<String, String>();
 			jsonResponse.put("OTP", otpService.findOtpByMsisdn(msisdn));
 			return new ResponseEntity<>(jsonResponse, HttpStatus.OK);
