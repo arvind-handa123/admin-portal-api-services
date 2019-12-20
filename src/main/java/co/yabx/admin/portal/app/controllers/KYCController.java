@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import co.yabx.admin.portal.app.enums.KycStatus;
 import co.yabx.admin.portal.app.kyc.dto.PagesDTO;
 import co.yabx.admin.portal.app.kyc.dto.RemarksDTO;
+import co.yabx.admin.portal.app.kyc.dto.ResponseDTO;
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.FieldRemarkService;
 import co.yabx.admin.portal.app.kyc.service.KYCService;
@@ -62,8 +63,23 @@ public class KYCController {
 	public ResponseEntity<?> findOTP(@RequestParam("productId") Long productId,
 			@RequestParam(value = "secret_key", required = true) String secret_key) {
 		if (secret_key.equals(appConfigService.getProperty("GET_AUTH_TOKEN_API_PASSWORD", "magic@yabx-admin-portal"))) {
-			List<PagesDTO> pages = adminPortalService.fetchProductDetails(productId);
-			return new ResponseEntity<>(pages, HttpStatus.OK);
+			ResponseDTO statusDto = new ResponseDTO();
+			try {
+				List<PagesDTO> pages = adminPortalService.fetchProductDetails(productId);
+				if (pages != null && !pages.isEmpty()) {
+					statusDto.setRetailerInfo(pages);
+					statusDto.setStatusCode("200");
+					statusDto.setMessage("SUCCESS");
+					return new ResponseEntity<>(statusDto, HttpStatus.OK);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOGGER.error("Exception raised while redaing pages for product={},error={}", productId, e.getMessage());
+				statusDto.setStatusCode("501");
+				statusDto.setMessage(e.getMessage());
+				return new ResponseEntity<>(statusDto, HttpStatus.OK);
+			}
+			return new ResponseEntity<>(statusDto, HttpStatus.OK);
 		}
 		return new ResponseEntity<>("Invalid secret key", HttpStatus.UNAUTHORIZED);
 
@@ -75,8 +91,24 @@ public class KYCController {
 			@RequestBody List<RemarksDTO> RemarksDTOList) {
 		LOGGER.info("/v1/kyc/remark request received for userId={},remarkBy={} and ramark={}", user_id, remarkBy,
 				RemarksDTOList);
-		fieldRemarkService.updateRemark(user_id, remarkBy, RemarksDTOList);
-		return new ResponseEntity<>(HttpStatus.OK);
+		ResponseDTO statusDto = new ResponseDTO();
+		try {
+			boolean status = fieldRemarkService.updateRemark(user_id, remarkBy, RemarksDTOList);
+			if (status) {
+				statusDto.setMessage("SUCCESS");
+				statusDto.setStatusCode("200");
+			} else {
+				statusDto.setMessage("FAILED");
+				statusDto.setStatusCode("501");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOGGER.error("Something went wrong while pushing remark for user={}, by ={}, error={}", user_id, remarkBy,
+					e.getMessage());
+			statusDto.setMessage(e.getMessage());
+			statusDto.setStatusCode("501");
+		}
+		return new ResponseEntity<>(statusDto, HttpStatus.OK);
 	}
 
 }
