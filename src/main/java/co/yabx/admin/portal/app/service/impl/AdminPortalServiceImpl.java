@@ -17,11 +17,13 @@ import javax.crypto.NoSuchPaddingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import co.yabx.admin.portal.app.admin.entities.Pages;
 import co.yabx.admin.portal.app.admin.entities.ProductConfigurations;
 import co.yabx.admin.portal.app.admin.repositories.ProductConfigurationRepository;
+import co.yabx.admin.portal.app.cache.RedisRepository;
 import co.yabx.admin.portal.app.dto.LoginDto;
 import co.yabx.admin.portal.app.dto.dtoHelper.DsrDtoHelper;
 import co.yabx.admin.portal.app.dto.dtoHelper.PagesDTOHeper;
@@ -42,6 +44,8 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 	private AuthInfoRepository authInfoRepository;
 	@Autowired
 	private AuthInfoService authInfoService;
+	@Autowired
+	private RedisRepository redisRepository;
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminPortalServiceImpl.class);
 
 	@Override
@@ -81,14 +85,12 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 		Map<String, String> jsonResponse = new HashMap<String, String>();
 		try {
 			String uuid = UUID.randomUUID().toString();
-			/*
-			 * final String salt = UtilHelper
-			 * .getNumericString(appConfigService.getIntProperty("AES_ENCRYPTION_LENGTH",
-			 * 16));
-			 */
 			yabxToken = SecurityUtils.encript(uuid);
 			if (yabxToken != null) {
-				authInfoService.persistYabxTokenAndSecretKey(authInfo, uuid, username, null);
+				authInfo = authInfoService.persistYabxTokenAndSecretKey(authInfo, uuid, username, null);
+				if (authInfo.getYabxToken() != null) {
+					redisRepository.update("YABX_KYC_ACCESS_TOKEN", uuid, authInfo);
+				}
 				jsonResponse.put("YABX_KYC_ACCESS_TOKEN", yabxToken);
 
 			}

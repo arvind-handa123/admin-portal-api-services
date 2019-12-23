@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.yabx.admin.portal.app.cache.RedisRepository;
 import co.yabx.admin.portal.app.kyc.entities.AuthInfo;
 import co.yabx.admin.portal.app.kyc.repositories.AuthInfoRepository;
 import co.yabx.admin.portal.app.kyc.repositories.UserRepository;
@@ -30,7 +31,7 @@ public class AuthInfoServiceImpl implements AuthInfoService {
 	private AuthInfoRepository authInfoRepository;
 
 	@Autowired
-	private UserRepository userRepository;
+	private RedisRepository redisRepository;
 
 	@Autowired
 	private AppConfigService appConfigService;
@@ -49,10 +50,16 @@ public class AuthInfoServiceImpl implements AuthInfoService {
 	@Override
 	public Optional findByToken(String token) {
 		String decryptedToken = SecurityUtils.decript(token);
-		AuthInfo authInfo = authInfoRepository.findByYabxToken(decryptedToken);
+		AuthInfo authInfo = redisRepository.findById("YABX_KYC_ACCESS_TOKEN", decryptedToken);
 		if (authInfo != null) {
 			// User user = userRepository.findByAuthInfo(authInfo);
 			return Optional.of(authInfo);
+		} else {
+			authInfo = authInfoRepository.findByYabxToken(decryptedToken);
+			if (authInfo != null) {
+				// User user = userRepository.findByAuthInfo(authInfo);
+				return Optional.of(authInfo);
+			}
 		}
 		return Optional.empty();
 
