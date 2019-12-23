@@ -82,11 +82,12 @@ public class AdminServiceImpl implements AdminService {
 			 */
 			yabxToken = SecurityUtils.encript(uuid);
 			if (yabxToken != null) {
-				AuthInfo authInfo = persistTokenAndKey(uuid, userName, dsrUser.getMsisdn());
-				if (authInfo != null) {
+				AuthInfo authInfo = persistTokenAndKey(uuid, userName, dsrUser != null ? dsrUser.getMsisdn() : null);
+				if (authInfo != null && dsrUser != null) {
 					dsrService.updateAuthInfo(dsrUser, authInfo);
-					jsonResponse.put("YABX_ACCESS_TOKEN", yabxToken);
 				}
+				jsonResponse.put("YABX_KYC_ACCESS_TOKEN", yabxToken);
+
 			}
 		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException
 				| BadPaddingException e) {

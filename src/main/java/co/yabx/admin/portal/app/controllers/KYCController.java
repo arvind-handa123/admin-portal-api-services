@@ -25,11 +25,12 @@ import co.yabx.admin.portal.app.kyc.dto.ResponseDTO;
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.FieldRemarkService;
 import co.yabx.admin.portal.app.kyc.service.KYCService;
+import co.yabx.admin.portal.app.kyc.service.StorageService;
 import co.yabx.admin.portal.app.service.AdminPortalService;
 
 @Controller
 @CrossOrigin
-@RequestMapping(value = "/v1")
+@RequestMapping(value = "/version/v1")
 public class KYCController {
 
 	@Autowired
@@ -43,6 +44,9 @@ public class KYCController {
 
 	@Autowired
 	private FieldRemarkService fieldRemarkService;
+
+	@Autowired
+	private StorageService storageService;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(KYCController.class);
 
@@ -60,7 +64,7 @@ public class KYCController {
 	}
 
 	@RequestMapping(value = "/kyc/pages", method = RequestMethod.GET)
-	public ResponseEntity<?> findOTP(@RequestParam("productId") Long productId,
+	public ResponseEntity<?> pages(@RequestParam("productId") Long productId,
 			@RequestParam(value = "secret_key", required = true) String secret_key) {
 		if (secret_key.equals(appConfigService.getProperty("GET_AUTH_TOKEN_API_PASSWORD", "magic@yabx-admin-portal"))) {
 			ResponseDTO statusDto = new ResponseDTO();
@@ -111,4 +115,23 @@ public class KYCController {
 		return new ResponseEntity<>(statusDto, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/kyc/retailer/image/file", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> getImages(@RequestParam("retailerId") Long retailerId,
+			@RequestParam("filename") String filename, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse) {
+		LOGGER.info("/retailer/image request recieved for retailer={},  filename={}", retailerId, filename);
+		try {
+			if (filename != null && !filename.isEmpty()) {
+				return new ResponseEntity<>(storageService.getImage(filename, retailerId), HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOGGER.error("exception raised while fetching retailer={} image={},error={}", retailerId, filename,
+					e.getMessage());
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
 }
