@@ -8,12 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import co.yabx.admin.portal.app.enums.KycStatus;
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
@@ -22,8 +22,8 @@ import co.yabx.admin.portal.app.kyc.service.FieldRemarkService;
 import co.yabx.admin.portal.app.kyc.service.KYCService;
 import co.yabx.admin.portal.app.kyc.service.StorageService;
 
-@Controller
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
+@RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(value = "/verson/v1")
 public class RMController {
 
