@@ -91,6 +91,14 @@ public class SectionDtoHelper implements Serializable {
 				return KycStatus.APPROVED;
 			else if (sectionTitle.equalsIgnoreCase(KycStatus.SUBMITTED.name()))
 				return KycStatus.SUBMITTED;
+			else if (sectionTitle.equalsIgnoreCase(KycStatus.LOC_GENERATED.name()))
+				return KycStatus.LOC_GENERATED;
+			else if (sectionTitle.equalsIgnoreCase(KycStatus.LOC_ISSUED.name()))
+				return KycStatus.LOC_ISSUED;
+			else if (sectionTitle.equalsIgnoreCase(KycStatus.RE_SUBMITTED.name()))
+				return KycStatus.RE_SUBMITTED;
+			else if (sectionTitle.equalsIgnoreCase(KycStatus.UNDER_REVIEW.name()))
+				return KycStatus.UNDER_REVIEW;
 			else
 				return null;
 		}

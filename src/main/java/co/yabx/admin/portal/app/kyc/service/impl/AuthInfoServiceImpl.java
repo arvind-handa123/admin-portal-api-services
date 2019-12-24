@@ -83,6 +83,18 @@ public class AuthInfoServiceImpl implements AuthInfoService {
 	}
 
 	@Override
+	public boolean isAuthorizedByUsername(String username, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse) {
+		String token = httpServletRequest.getHeader("YABX_KYC_ACCESS_TOKEN");
+		AuthInfo authInfo = null;
+		if (appConfigService.getBooleanProperty("IS_CACHING_ENABLED", false) && redisRepository != null)
+			authInfo = redisRepository.findById("YABX_KYC_ACCESS_TOKEN", token);
+		if (authInfo == null)
+			authInfo = findByYabxToken(token);
+		return authInfo != null && authInfo.getUsername().equals(username);
+	}
+
+	@Override
 	public AuthInfo persistYabxTokenAndSecretKey(AuthInfo authInfo, String uuid, String userName, String msisdn) {
 		if (authInfo != null) {
 			authInfo.setMsisdn(msisdn);

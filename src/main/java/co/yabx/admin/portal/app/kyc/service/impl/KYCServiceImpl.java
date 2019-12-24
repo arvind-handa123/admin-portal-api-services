@@ -138,4 +138,16 @@ public class KYCServiceImpl implements KYCService {
 		return appPagesDTOList;
 	}
 
+	@Override
+	public AccountStatuses updateKycStatus(String msisdn, String username, KycStatus status) {
+		AccountStatuses accountStatuses = accountStatusesRepository.findByMsisdn(msisdn);
+		if (accountStatuses != null) {
+			accountStatuses.setKycVerified(status);
+			accountStatuses.setUpdatedBy(username);
+			accountStatuses = accountStatusesRepository.save(accountStatuses);
+			return accountStatuses;
+		}
+		return null;
+	}
+
 }

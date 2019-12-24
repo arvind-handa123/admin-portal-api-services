@@ -26,6 +26,9 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
 			HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
 //		Optional tokenParam = Optional.ofNullable(httpServletRequest.getHeader("YABX_ACCESS_TOKEN")); // Authorization:
 		String token = httpServletRequest.getHeader("YABX_KYC_ACCESS_TOKEN");
+		if (token == null) {
+			token = httpServletRequest.getHeader("YABX_ACCESS_TOKEN");
+		}
 		if (token != null)
 			token = StringUtils.removeStart(token, "Bearer").trim();
 		Authentication requestAuthentication = new UsernamePasswordAuthenticationToken(token, token);

@@ -20,4 +20,7 @@ public interface AuthInfoService {
 
 	boolean isAuthorized(String msisdn, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse);
 
+	boolean isAuthorizedByUsername(String username, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse);
+
 }
