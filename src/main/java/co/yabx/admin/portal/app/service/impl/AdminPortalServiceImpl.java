@@ -31,6 +31,7 @@ import co.yabx.admin.portal.app.kyc.dto.PagesDTO;
 import co.yabx.admin.portal.app.kyc.dto.ResponseDTO;
 import co.yabx.admin.portal.app.kyc.entities.AuthInfo;
 import co.yabx.admin.portal.app.kyc.repositories.AuthInfoRepository;
+import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.AuthInfoService;
 import co.yabx.admin.portal.app.security.SecurityUtils;
 import co.yabx.admin.portal.app.service.AdminPortalService;
@@ -46,6 +47,9 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 	private AuthInfoService authInfoService;
 	@Autowired
 	private RedisRepository redisRepository;
+	@Autowired
+	private AppConfigService appConfigService;
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminPortalServiceImpl.class);
 
 	@Override
@@ -88,8 +92,9 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 			yabxToken = SecurityUtils.encript(uuid);
 			if (yabxToken != null) {
 				authInfo = authInfoService.persistYabxTokenAndSecretKey(authInfo, uuid, username, null);
-				if (authInfo.getYabxToken() != null) {
-					redisRepository.update("YABX_KYC_ACCESS_TOKEN", uuid, authInfo);
+				if (authInfo.getYabxToken() != null && redisRepository != null) {
+					if (appConfigService.getBooleanProperty("IS_CACHING_ENABLED", false))
+						redisRepository.update("YABX_KYC_ACCESS_TOKEN", uuid, authInfo);
 				}
 				jsonResponse.put("YABX_KYC_ACCESS_TOKEN", yabxToken);
 

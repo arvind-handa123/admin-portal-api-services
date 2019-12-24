@@ -50,7 +50,9 @@ public class AuthInfoServiceImpl implements AuthInfoService {
 	@Override
 	public Optional findByToken(String token) {
 		String decryptedToken = SecurityUtils.decript(token);
-		AuthInfo authInfo = redisRepository.findById("YABX_KYC_ACCESS_TOKEN", decryptedToken);
+		AuthInfo authInfo = null;
+		if (appConfigService.getBooleanProperty("IS_CACHING_ENABLED", false) && redisRepository != null)
+			authInfo = redisRepository.findById("YABX_KYC_ACCESS_TOKEN", decryptedToken);
 		if (authInfo != null) {
 			// User user = userRepository.findByAuthInfo(authInfo);
 			return Optional.of(authInfo);
