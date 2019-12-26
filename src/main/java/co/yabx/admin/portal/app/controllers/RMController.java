@@ -139,4 +139,18 @@ public class RMController {
 		}
 
 	}
+
+	@RequestMapping(value = "/rm/kyc/documents/disclaimer", method = RequestMethod.GET)
+	@ResponseBody
+	public ResponseEntity<?> getDisclaimerDoc(@RequestParam String msisdn, @RequestParam String username,
+			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+		LOGGER.info("/rm/kyc/documents/disclaimer request received for msisdn={},username={}", msisdn, username);
+		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
+				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
+			return new ResponseEntity<>(kycService.getDisclaimerDocuments(msisdn, username), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		}
+
+	}
 }

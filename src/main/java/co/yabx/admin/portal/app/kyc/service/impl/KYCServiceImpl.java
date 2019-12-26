@@ -13,9 +13,11 @@ import org.springframework.stereotype.Service;
 import co.yabx.admin.portal.app.dto.dtoHelper.PagesDTOHeper;
 import co.yabx.admin.portal.app.enums.KycStatus;
 import co.yabx.admin.portal.app.enums.PageType;
+import co.yabx.admin.portal.app.enums.ProductName;
 import co.yabx.admin.portal.app.enums.Relationship;
 import co.yabx.admin.portal.app.enums.UserType;
 import co.yabx.admin.portal.app.kyc.dto.PagesDTO;
+import co.yabx.admin.portal.app.kyc.dto.ProductDocumentsDTO;
 import co.yabx.admin.portal.app.kyc.entities.AccountStatuses;
 import co.yabx.admin.portal.app.kyc.entities.AddressDetails;
 import co.yabx.admin.portal.app.kyc.entities.AttachmentDetails;
@@ -27,6 +29,7 @@ import co.yabx.admin.portal.app.kyc.entities.LiabilitiesDetails;
 import co.yabx.admin.portal.app.kyc.entities.LoanPurposeDetails;
 import co.yabx.admin.portal.app.kyc.entities.MonthlyTransactionProfiles;
 import co.yabx.admin.portal.app.kyc.entities.Pages;
+import co.yabx.admin.portal.app.kyc.entities.ProductDocuments;
 import co.yabx.admin.portal.app.kyc.entities.User;
 import co.yabx.admin.portal.app.kyc.entities.UserRelationships;
 import co.yabx.admin.portal.app.kyc.entities.WorkEducationDetails;
@@ -34,6 +37,7 @@ import co.yabx.admin.portal.app.kyc.repositories.AccountStatusesRepository;
 import co.yabx.admin.portal.app.kyc.repositories.AddressDetailsRepository;
 import co.yabx.admin.portal.app.kyc.repositories.BankAccountDetailsRepository;
 import co.yabx.admin.portal.app.kyc.repositories.FieldRemarksRepository;
+import co.yabx.admin.portal.app.kyc.repositories.ProductDocumentsRepository;
 import co.yabx.admin.portal.app.kyc.repositories.UserRelationshipsRepository;
 import co.yabx.admin.portal.app.kyc.repositories.UserRepository;
 import co.yabx.admin.portal.app.kyc.service.KYCService;
@@ -65,6 +69,9 @@ public class KYCServiceImpl implements KYCService {
 
 	@Autowired
 	private FieldRemarksRepository fieldRemarksRepository;
+
+	@Autowired
+	private ProductDocumentsRepository productDocumentsRepository;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(KYCServiceImpl.class);
 
@@ -148,6 +155,21 @@ public class KYCServiceImpl implements KYCService {
 			return accountStatuses;
 		}
 		return null;
+	}
+
+	@Override
+	public List<ProductDocumentsDTO> getDisclaimerDocuments(String msisdn, String username) {
+		List<ProductDocuments> productDocuments = productDocumentsRepository.findByProductName(ProductName.KYC);
+		List<ProductDocumentsDTO> productDocumentsDTOs = new ArrayList<ProductDocumentsDTO>();
+		for (ProductDocuments documents : productDocuments) {
+			ProductDocumentsDTO productDocumentsDTO = new ProductDocumentsDTO();
+			productDocumentsDTO.setDisplayOrder(documents.getDisplayOrder());
+			productDocumentsDTO.setDocumentFor(documents.getDocumentFor());
+			productDocumentsDTO.setDocumentName(documents.getDocumentName());
+			productDocumentsDTO.setFileName(documents.getFileName());
+			productDocumentsDTOs.add(productDocumentsDTO);
+		}
+		return productDocumentsDTOs;
 	}
 
 }
