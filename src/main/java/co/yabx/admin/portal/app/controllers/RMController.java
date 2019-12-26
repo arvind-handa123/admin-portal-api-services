@@ -22,7 +22,7 @@ import co.yabx.admin.portal.app.kyc.service.KYCService;
 import co.yabx.admin.portal.app.kyc.service.StorageService;
 
 @RestController
-@RequestMapping(value = "/verson/v1")
+@RequestMapping(value = "/v1")
 public class RMController {
 
 	@Autowired

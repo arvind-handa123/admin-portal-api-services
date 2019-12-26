@@ -88,7 +88,7 @@ public class KYCController {
 			}
 			return new ResponseEntity<>(statusDto, HttpStatus.OK);
 		}
-		return new ResponseEntity<>("Invalid secret key", HttpStatus.UNAUTHORIZED);
+		return new ResponseEntity<>("Invalid authentication", HttpStatus.UNAUTHORIZED);
 
 	}
 
