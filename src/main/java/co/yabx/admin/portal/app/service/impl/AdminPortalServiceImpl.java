@@ -75,9 +75,9 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 			if (optional.isPresent()) {
 				if (password.equalsIgnoreCase(optional.get().getPassword())) {
 					ResponseDTO responseDTO = DsrDtoHelper.getLoginDTO("", "SUCCESS", "200", null);
+					responseDTO.setUsername(username);
 					responseDTO.setAuthInfo(prepareTokenAndKey(optional.get(), username));
 					return responseDTO;
-
 				}
 			}
 		}

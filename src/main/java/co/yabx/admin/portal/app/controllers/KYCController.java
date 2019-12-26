@@ -103,7 +103,7 @@ public class KYCController {
 					RemarksDTOList);
 			ResponseDTO statusDto = new ResponseDTO();
 			try {
-				boolean status = fieldRemarkService.updateRemark(user_id, remarkBy, RemarksDTOList);
+				boolean status = fieldRemarkService.updateRemark(user_id, username, RemarksDTOList);
 				if (status) {
 					statusDto.setMessage("SUCCESS");
 					statusDto.setStatusCode("200");
