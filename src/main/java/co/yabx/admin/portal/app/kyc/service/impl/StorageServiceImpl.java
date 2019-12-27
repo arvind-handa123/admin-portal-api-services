@@ -3,7 +3,11 @@ package co.yabx.admin.portal.app.kyc.service.impl;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
@@ -66,6 +70,15 @@ public class StorageServiceImpl implements StorageService {
 		byte[] imageInByte = baos.toByteArray();
 		baos.close();
 		return imageInByte;
+	}
+
+	@Override
+	public byte[] getDisclaimerDocuments(String filename) throws Exception {
+
+		String uri = appConfigService.getProperty("DISCLAIMER_DOCUMENT_STORAGE_BASE_PATH", "/var/lib/kyc/disclaimer_documents")
+				+ "/" + filename;
+		Path path = Paths.get(uri);
+		return Files.readAllBytes(path);
 	}
 
 }

@@ -8,4 +8,6 @@ public interface StorageService {
 
 	byte[] getImage(String filename, Long userId) throws Exception;
 
+	byte[] getDisclaimerDocuments(String filename) throws Exception;
+
 }

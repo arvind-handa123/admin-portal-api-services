@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.yabx.admin.portal.app.enums.KycStatus;
+import co.yabx.admin.portal.app.enums.Relationship;
+import co.yabx.admin.portal.app.kyc.entities.User;
+import co.yabx.admin.portal.app.kyc.entities.UserRelationships;
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.AuthInfoService;
 import co.yabx.admin.portal.app.kyc.service.FieldRemarkService;
@@ -151,6 +154,34 @@ public class RMController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
+
+	}
+
+	@RequestMapping(value = "/rm/doc/disclaimer/file", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> getImages(@RequestParam("username") String username,
+			@RequestParam(name = "retailerId", required = false) Long retailerId,
+			@RequestParam("filename") String filename, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse) {
+		if (authInfoService.isAuthorizedByUsername(username, httpServletRequest, httpServletResponse)) {
+			LOGGER.info("/retailer/image request recieved for retailer={}, dsr={}, filename={}", retailerId, username,
+					filename);
+			if (filename != null && !filename.isEmpty()) {
+				try {
+					if (filename != null && !filename.isEmpty()) {
+						return new ResponseEntity<>(storageService.getDisclaimerDocuments(filename), HttpStatus.OK);
+					} else {
+						return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					LOGGER.error("exception raised while fetching retailer={} image={},error={}", retailerId, filename,
+							e.getMessage());
+					return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+
+			}
+		}
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
 	}
 }
