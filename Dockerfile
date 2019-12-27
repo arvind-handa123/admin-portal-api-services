@@ -1,6 +1,6 @@
 From openjdk:8
 MAINTAINER yabx.co
-WORKDIR /var/lib/jenkins/workspace/admin-portal-pipeline/admin-portal/target/
+WORKDIR /var/lib/jenkins/workspace/admin-portal-pipeline/target/
 EXPOSE 8080
 EXPOSE 3306
 EXPOSE 6379
