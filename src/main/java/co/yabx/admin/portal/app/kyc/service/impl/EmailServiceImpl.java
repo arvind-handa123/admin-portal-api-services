@@ -62,13 +62,13 @@ public class EmailServiceImpl implements EmailService {
 			if (mail != null && !mail.isEmpty()) {
 				if (ActionType.Verify == actionType)
 					mailSource.sendMailTLS(mail, appConfigService.getProperty("VERIFY_EMAIL_SUBJECT", "Verify Email!"),
-							appConfigService.getProperty("VERIFY_EMAIL_TEMPLATE_PATH", "D:\\templates\\")
+							appConfigService.getProperty("VERIFY_EMAIL_TEMPLATE_PATH", "/tmp/templates")
 									+ "/mail_templates",
 							appConfigService.getProperty("VERIFY_EMAIL_TEMPLATE_FILE_NAME", "verify_email.ftl"),
 							variables);
 				else
 					mailSource.sendMailTLS(mail, appConfigService.getProperty("LOGIN_OTP_EMAIL_SUBJECT", "Login OTP!"),
-							appConfigService.getProperty("LOGIN_OTP_EMAIL_TEMPLATE_PATH", "D:\\templates\\")
+							appConfigService.getProperty("LOGIN_OTP_EMAIL_TEMPLATE_PATH", "/tmp/templates/")
 									+ "/mail_templates",
 							appConfigService.getProperty("LOGIN_OTP_EMAIL_TEMPLATE_FILE_NAME",
 									"login_mail_templates.ftl"),

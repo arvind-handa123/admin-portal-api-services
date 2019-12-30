@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.yabx.admin.portal.app.enums.KycStatus;
-import co.yabx.admin.portal.app.enums.Relationship;
-import co.yabx.admin.portal.app.kyc.entities.User;
-import co.yabx.admin.portal.app.kyc.entities.UserRelationships;
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.AuthInfoService;
 import co.yabx.admin.portal.app.kyc.service.FieldRemarkService;
