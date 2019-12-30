@@ -158,7 +158,7 @@ public class RMController {
 	}
 
 	@RequestMapping(value = "/rm/doc/disclaimer/file", method = RequestMethod.GET)
-	public ResponseEntity<byte[]> getImages(@RequestParam("username") String username,
+	public ResponseEntity<byte[]> getDisclaimerFile(@RequestParam("username") String username,
 			@RequestParam(name = "retailerId", required = false) Long retailerId,
 			@RequestParam("filename") String filename, HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse) {
@@ -181,6 +181,31 @@ public class RMController {
 
 			}
 		}
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+	}
+
+	@RequestMapping(value = "/rm/retailer/image/file", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> getRetailersDoc(@RequestParam("username") String username,
+			@RequestParam("retailerId") Long retailerId, @RequestParam("filename") String filename,
+			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+		if (authInfoService.isAuthorizedByUsername(username, httpServletRequest, httpServletResponse)) {
+			LOGGER.info("/rm/retailer/image/file request recieved for retailer={}, dsr={}, filename={}", retailerId,
+					username, filename);
+			try {
+				if (filename != null && !filename.isEmpty()) {
+					return new ResponseEntity<>(storageService.getImage(filename, retailerId), HttpStatus.OK);
+				} else {
+					return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOGGER.error("exception raised while fetching retailer={} image={},error={}", retailerId, filename,
+						e.getMessage());
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
+
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
 	}

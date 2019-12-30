@@ -254,8 +254,8 @@ public class RetailerController {
 			@RequestParam("retailerId") Long retailerId, @RequestParam("filename") String filename,
 			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 		if (authInfoService.isAuthorized(msisdn, httpServletRequest, httpServletResponse)) {
-			LOGGER.info("/retailer/image request recieved for retailer={}, dsr={}, filename={}", retailerId, msisdn,
-					filename);
+			LOGGER.info("/retailer/image/file request recieved for retailer={}, dsr={}, filename={}", retailerId,
+					msisdn, filename);
 			User user = userService.getRetailerById(retailerId);
 			if (user != null) {
 				UserRelationships userRelationships = relationshipsRepository
