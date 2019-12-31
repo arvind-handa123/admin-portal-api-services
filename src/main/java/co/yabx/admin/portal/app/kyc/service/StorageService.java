@@ -6,8 +6,8 @@ public interface StorageService {
 
 	String uploadImage(MultipartFile file, Long userId, boolean createFileName) throws Exception;
 
-	byte[] getImage(String filename, Long userId) throws Exception;
+	byte[] getImage(String filename, Long userId);
 
-	byte[] getDisclaimerDocuments(String filename) throws Exception;
+	byte[] getDisclaimerDocuments(String filename);
 
 }

@@ -65,7 +65,7 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	@Override
-	public byte[] getImage(String filename, Long retailerId) throws Exception {
+	public byte[] getImage(String filename, Long retailerId) {
 		try {
 			String path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/tmp/") + retailerId + "/"
 					+ filename;
@@ -79,7 +79,6 @@ public class StorageServiceImpl implements StorageService {
 			baos.close();
 			return imageInByte;
 		} catch (Exception e) {
-			e.printStackTrace();
 			LOGGER.error("exception raised while fetching retailer={} image={},error={}", retailerId, filename,
 					e.getMessage());
 			return null;
@@ -87,11 +86,16 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	@Override
-	public byte[] getDisclaimerDocuments(String filename) throws Exception {
-		String uri = appConfigService.getProperty("DISCLAIMER_DOCUMENT_STORAGE_BASE_PATH",
-				"/var/lib/jenkins/workspace/admin-portal/disclaimer_documents") + "/" + filename;
-		Path path = Paths.get(uri);
-		return Files.readAllBytes(path);
+	public byte[] getDisclaimerDocuments(String filename) {
+		try {
+			String uri = appConfigService.getProperty("DISCLAIMER_DOCUMENT_STORAGE_BASE_PATH",
+					"/var/lib/jenkins/workspace/admin-portal/disclaimer_documents") + "/" + filename;
+			Path path = Paths.get(uri);
+			return Files.readAllBytes(path);
+		} catch (Exception e) {
+			LOGGER.error("exception raised while fetching image={},error={}", filename, e.getMessage());
+			return null;
+		}
 	}
 
 }

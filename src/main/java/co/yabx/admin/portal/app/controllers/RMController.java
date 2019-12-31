@@ -166,22 +166,16 @@ public class RMController {
 			LOGGER.info("/retailer/image request recieved for retailer={}, dsr={}, filename={}", retailerId, username,
 					filename);
 			if (filename != null && !filename.isEmpty()) {
-				try {
-					if (filename != null && !filename.isEmpty()) {
-						byte[] doc = storageService.getImage(filename, retailerId);
-						if (doc == null || doc.length == 0)
-							return new ResponseEntity<>(storageService.getDisclaimerDocuments(filename), HttpStatus.OK);
-						else
-							return new ResponseEntity<>(doc, HttpStatus.OK);
 
-					} else {
-						return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					LOGGER.error("exception raised while fetching retailer={} image={},error={}", retailerId, filename,
-							e.getMessage());
-					return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+				if (filename != null && !filename.isEmpty()) {
+					byte[] doc = storageService.getImage(filename, retailerId);
+					if (doc == null || doc.length == 0)
+						return new ResponseEntity<>(storageService.getDisclaimerDocuments(filename), HttpStatus.OK);
+					else
+						return new ResponseEntity<>(doc, HttpStatus.OK);
+
+				} else {
+					return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 				}
 
 			}
@@ -217,7 +211,7 @@ public class RMController {
 
 	@RequestMapping(value = "/rm/upload/image", method = RequestMethod.POST)
 	public ResponseEntity<?> uploadImage(@RequestParam("username") String username,
-			@RequestParam("retailerId") Long retailerId, @RequestParam MultipartFile files,
+			@RequestParam("retailerId") Long retailerId, @RequestParam("files") MultipartFile files,
 			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
 		if (authInfoService.isAuthorizedByUsername(username, httpServletRequest, httpServletResponse)) {
 			LOGGER.info("/rm/upload/image request recieved for retailer={}, username={}, file={}", retailerId, username,
