@@ -168,7 +168,12 @@ public class RMController {
 			if (filename != null && !filename.isEmpty()) {
 				try {
 					if (filename != null && !filename.isEmpty()) {
-						return new ResponseEntity<>(storageService.getDisclaimerDocuments(filename), HttpStatus.OK);
+						byte[] doc = storageService.getImage(filename, retailerId);
+						if (doc.length == 0)
+							return new ResponseEntity<>(storageService.getDisclaimerDocuments(filename), HttpStatus.OK);
+						else
+							return new ResponseEntity<>(doc, HttpStatus.OK);
+
 					} else {
 						return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 					}
@@ -221,9 +226,9 @@ public class RMController {
 			if (user != null) {
 				String filename = storageService.uploadImage(files, retailerId, false);
 				try {
-					AttachmentDetails attachmentDetails = attachmentService.persistInDb(user, files, filename,false);
+					AttachmentDetails attachmentDetails = attachmentService.persistInDb(user, files, filename, false);
 					if (attachmentDetails != null)
-						return new ResponseEntity<>(files, HttpStatus.OK);
+						return new ResponseEntity<>(HttpStatus.OK);
 					else {
 						return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 					}
