@@ -153,12 +153,19 @@ public class AttachmentServiceImpl implements AttachmentService {
 					attachmentDetails);
 			return attachmentDetails;
 		} else {
-			attachments = getDisclaimerAttachement(user, attachmentType, saveFileName);
+			attachmentDetails = getDisclaimerAttachement(user, attachmentType, saveFileName);
+			if (attachmentDetails != null) {
+				Set<Attachments> attachmentsSet = attachmentDetails.getAttachments();
+				Optional<Attachments> optional = attachmentsSet.stream()
+						.filter(f -> saveFileName.equalsIgnoreCase(f.getDocumentUrl())).findFirst();
+				if (optional.isPresent())
+					attachments = optional.get();
+			}else {
+				attachmentDetails = new AttachmentDetails();
+				attachments = new Attachments();
+			}
 			if (attachments == null) {
 				attachments = new Attachments();
-				attachmentDetails = new AttachmentDetails();
-			} else {
-				attachmentDetails = attachments.getAttachmentDetails();
 			}
 			attachments.setDocumentUrl(saveFileName);
 			attachmentList.add(attachments);
@@ -172,14 +179,14 @@ public class AttachmentServiceImpl implements AttachmentService {
 
 	}
 
-	private Attachments getDisclaimerAttachement(User user, AttachmentType attachmentType, String fileName) {
+	private AttachmentDetails getDisclaimerAttachement(User user, AttachmentType attachmentType, String fileName) {
 		List<AttachmentDetails> attachmentDetailsList = attachmentDetailsRepository.findByUserAndAttachmentType(user,
 				attachmentType);
 		for (AttachmentDetails details : attachmentDetailsList) {
 			for (Attachments attachment : details.getAttachments()) {
 				String attachmentFilename = attachment.getDocumentUrl();
 				if (fileName.equalsIgnoreCase(attachmentFilename)) {
-					return attachment;
+					return details;
 				}
 			}
 		}
