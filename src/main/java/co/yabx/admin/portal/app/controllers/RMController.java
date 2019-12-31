@@ -169,7 +169,7 @@ public class RMController {
 				try {
 					if (filename != null && !filename.isEmpty()) {
 						byte[] doc = storageService.getImage(filename, retailerId);
-						if (doc.length == 0)
+						if (doc == null || doc.length == 0)
 							return new ResponseEntity<>(storageService.getDisclaimerDocuments(filename), HttpStatus.OK);
 						else
 							return new ResponseEntity<>(doc, HttpStatus.OK);

@@ -16,6 +16,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -64,16 +66,24 @@ public class StorageServiceImpl implements StorageService {
 
 	@Override
 	public byte[] getImage(String filename, Long retailerId) throws Exception {
-		String path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/tmp/") + retailerId + "/" + filename;
-		File file = new File(path);
-		BufferedImage image = ImageIO.read(file);
-		String extension = FilenameUtils.getExtension(path);
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write(image, extension, baos);
-		baos.flush();
-		byte[] imageInByte = baos.toByteArray();
-		baos.close();
-		return imageInByte;
+		try {
+			String path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/tmp/") + retailerId + "/"
+					+ filename;
+			File file = new File(path);
+			BufferedImage image = ImageIO.read(file);
+			String extension = FilenameUtils.getExtension(path);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(image, extension, baos);
+			baos.flush();
+			byte[] imageInByte = baos.toByteArray();
+			baos.close();
+			return imageInByte;
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOGGER.error("exception raised while fetching retailer={} image={},error={}", retailerId, filename,
+					e.getMessage());
+			return null;
+		}
 	}
 
 	@Override
