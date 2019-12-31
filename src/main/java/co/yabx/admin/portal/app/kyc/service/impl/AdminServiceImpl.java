@@ -86,7 +86,7 @@ public class AdminServiceImpl implements AdminService {
 				if (authInfo != null && dsrUser != null) {
 					dsrService.updateAuthInfo(dsrUser, authInfo);
 				}
-				jsonResponse.put("YABX_KYC_ACCESS_TOKEN", yabxToken);
+				jsonResponse.put("YABX_ACCESS_TOKEN", yabxToken);
 
 			}
 		} catch (InvalidKeyException | NoSuchAlgorithmException | NoSuchPaddingException | IllegalBlockSizeException
