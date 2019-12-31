@@ -13,13 +13,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import co.yabx.admin.portal.app.enums.KycStatus;
-import co.yabx.admin.portal.app.kyc.service.AppConfigService;
+import co.yabx.admin.portal.app.kyc.entities.AttachmentDetails;
+import co.yabx.admin.portal.app.kyc.entities.User;
+import co.yabx.admin.portal.app.kyc.service.AttachmentService;
 import co.yabx.admin.portal.app.kyc.service.AuthInfoService;
-import co.yabx.admin.portal.app.kyc.service.FieldRemarkService;
 import co.yabx.admin.portal.app.kyc.service.KYCService;
 import co.yabx.admin.portal.app.kyc.service.StorageService;
+import co.yabx.admin.portal.app.kyc.service.UserService;
 
 @RestController
 @RequestMapping(value = "/v1")
@@ -29,13 +32,13 @@ public class RMController {
 	private KYCService kycService;
 
 	@Autowired
-	private AppConfigService appConfigService;
+	private UserService userService;
 
 	@Autowired
 	private AuthInfoService authInfoService;
 
 	@Autowired
-	private FieldRemarkService fieldRemarkService;
+	private AttachmentService attachmentService;
 
 	@Autowired
 	private StorageService storageService;
@@ -203,6 +206,36 @@ public class RMController {
 			}
 		}
 
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+
+	}
+
+	@RequestMapping(value = "/rm/upload/image", method = RequestMethod.POST)
+	public ResponseEntity<?> uploadImage(@RequestParam("username") String username,
+			@RequestParam("retailerId") Long retailerId, @RequestParam MultipartFile files,
+			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
+		if (authInfoService.isAuthorizedByUsername(username, httpServletRequest, httpServletResponse)) {
+			LOGGER.info("/rm/upload/image request recieved for retailer={}, username={}, file={}", retailerId, username,
+					files != null ? files.getOriginalFilename() : null);
+			User user = userService.getRetailerById(retailerId);
+			if (user != null) {
+				String filename = storageService.uploadImage(files, retailerId, false);
+				try {
+					AttachmentDetails attachmentDetails = attachmentService.persistInDb(user, files, filename,false);
+					if (attachmentDetails != null)
+						return new ResponseEntity<>(files, HttpStatus.OK);
+					else {
+						return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					LOGGER.error("exception raised while uploading image={},retailer={},error={}",
+							files.getOriginalFilename(), retailerId, e.getMessage());
+					return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+				}
+
+			}
+		}
 		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
 	}

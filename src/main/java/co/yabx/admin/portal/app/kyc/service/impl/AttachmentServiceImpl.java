@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -49,19 +50,25 @@ public class AttachmentServiceImpl implements AttachmentService {
 
 	@Override
 	@Transactional
-	public AttachmentDetails persistInDb(User user, MultipartFile file, String saveFileName) throws Exception {
+	public AttachmentDetails persistInDb(User user, MultipartFile file, String saveFileName, boolean checkFileName)
+			throws Exception {
 		LOGGER.info("File={} saved for retailer={}", file.getOriginalFilename(), user.getId());
 		String fileName = file.getOriginalFilename().replaceAll(" ", "_");
 		String extension = FilenameUtils.getExtension(file.getOriginalFilename());
 		Set<Attachments> attachmentList = new HashSet<Attachments>();
-		String[] fileNames = fileName.replaceAll("." + extension, "").split("-");
 		DocumentType documentType = null;
 		DocumentSide documentSide = null;
 		AttachmentDetails attachmentDetails = null;
 		Attachments attachments = null;
 		AttachmentType attachmentType = null;
 		boolean isNew = false;
-		if (fileNames.length > 1) {
+		String[] fileNames = null;
+		if (checkFileName) {
+			fileNames = fileName.replaceAll("." + extension, "").split("-");
+		} else {
+			attachmentType = AttachmentType.DisclaimerDocument;
+		}
+		if (checkFileName && fileNames != null && fileNames.length > 1) {
 			for (String name : fileNames) {
 				if (name.equalsIgnoreCase("DRIVING_LICENSE") || name.equalsIgnoreCase("DRIVING LICENSE")) {
 					documentType = DocumentType.DRIVING_LICENSE;
@@ -77,7 +84,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 					attachmentType = AttachmentType.AddressProof;
 				}
 			}
-		} else {
+		} else if (checkFileName) {
 			if (fileNames[0].equalsIgnoreCase("tinCertificates")) {
 				documentType = DocumentType.TIN_CERTIFICATE;
 			} else if (fileNames[0].equalsIgnoreCase("tradeLicense")) {
@@ -145,9 +152,38 @@ public class AttachmentServiceImpl implements AttachmentService {
 			LOGGER.info("File={} saved for retailer={}, detailes={}", file.getOriginalFilename(), user.getId(),
 					attachmentDetails);
 			return attachmentDetails;
+		} else {
+			attachments = getDisclaimerAttachement(user, attachmentType, saveFileName);
+			if (attachments == null) {
+				attachments = new Attachments();
+				attachmentDetails = new AttachmentDetails();
+			} else {
+				attachmentDetails = attachments.getAttachmentDetails();
+			}
+			attachments.setDocumentUrl(saveFileName);
+			attachmentList.add(attachments);
+			attachmentDetails.setAttachments(attachmentList);
+			attachmentDetails.setDocumentType(documentType);
+			attachmentDetails.setAttachmentType(attachmentType);
+			attachmentDetails.setUser(user);
+			attachmentDetails = attachmentDetailsRepository.save(attachmentDetails);
+			return attachmentDetails;
 		}
-		return attachmentDetails;
 
+	}
+
+	private Attachments getDisclaimerAttachement(User user, AttachmentType attachmentType, String fileName) {
+		List<AttachmentDetails> attachmentDetailsList = attachmentDetailsRepository.findByUserAndAttachmentType(user,
+				attachmentType);
+		for (AttachmentDetails details : attachmentDetailsList) {
+			for (Attachments attachment : details.getAttachments()) {
+				String attachmentFilename = attachment.getDocumentUrl();
+				if (fileName.equalsIgnoreCase(attachmentFilename)) {
+					return attachment;
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override

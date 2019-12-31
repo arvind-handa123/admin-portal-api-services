@@ -197,9 +197,10 @@ public class RetailerController {
 				UserRelationships userRelationships = relationshipsRepository
 						.findByMsisdnAndRelationshipAndRelative(msisdn, Relationship.RETAILER, user);
 				if (userRelationships != null) {
-					String filename = storageService.uploadImage(files, retailerId);
+					String filename = storageService.uploadImage(files, retailerId, true);
 					try {
-						AttachmentDetails attachmentDetails = attachmentService.persistInDb(user, files, filename);
+						AttachmentDetails attachmentDetails = attachmentService.persistInDb(user, files, filename,
+								true);
 						if (attachmentDetails != null)
 							return new ResponseEntity<>(files, HttpStatus.OK);
 						else {

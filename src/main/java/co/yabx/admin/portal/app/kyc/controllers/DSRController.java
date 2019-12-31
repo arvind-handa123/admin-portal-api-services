@@ -133,7 +133,7 @@ public class DSRController {
 			User user = userService.getDSRByMsisdn(msisdn);
 			if (user != null) {
 				try {
-					String saveFileName = storageService.uploadImage(files, user.getId());
+					String saveFileName = storageService.uploadImage(files, user.getId(), true);
 					AttachmentDetails attachmentDetails = attachmentService.persistDsrProfilePicInDb(user, files,
 							saveFileName);
 					if (attachmentDetails != null) {

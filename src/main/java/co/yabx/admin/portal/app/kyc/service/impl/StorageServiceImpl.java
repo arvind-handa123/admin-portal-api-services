@@ -36,11 +36,15 @@ public class StorageServiceImpl implements StorageService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(StorageServiceImpl.class);
 
 	@Override
-	public String uploadImage(MultipartFile file, Long retailerId) throws Exception {
+	public String uploadImage(MultipartFile file, Long retailerId, boolean createFileName) throws Exception {
 		String fileName = file.getOriginalFilename().replaceAll(" ", "_");
 		String extension = FilenameUtils.getExtension(file.getOriginalFilename());
-		String newFileName = System.currentTimeMillis() + "." + extension;
 		File convFile = new File(fileName);
+		String newFileName = null;
+		if (createFileName)
+			newFileName = System.currentTimeMillis() + "." + extension;
+		else
+			newFileName = fileName;
 		String path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/tmp/") + retailerId + "/"
 				+ newFileName;
 		convFile.createNewFile();
@@ -74,8 +78,8 @@ public class StorageServiceImpl implements StorageService {
 
 	@Override
 	public byte[] getDisclaimerDocuments(String filename) throws Exception {
-		String uri = appConfigService.getProperty("DISCLAIMER_DOCUMENT_STORAGE_BASE_PATH", "/var/lib/jenkins/workspace/admin-portal/disclaimer_documents")
-				+ "/" + filename;
+		String uri = appConfigService.getProperty("DISCLAIMER_DOCUMENT_STORAGE_BASE_PATH",
+				"/var/lib/jenkins/workspace/admin-portal/disclaimer_documents") + "/" + filename;
 		Path path = Paths.get(uri);
 		return Files.readAllBytes(path);
 	}

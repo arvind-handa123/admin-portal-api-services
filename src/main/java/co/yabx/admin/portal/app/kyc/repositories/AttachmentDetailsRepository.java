@@ -20,4 +20,6 @@ public interface AttachmentDetailsRepository extends CrudRepository<AttachmentDe
 	AttachmentDetails findByUserAndDocumentTypeAndAttachmentType(User user, DocumentType documentType,
 			AttachmentType attachmentType);
 
+	List<AttachmentDetails> findByUserAndAttachmentType(User user, AttachmentType attachmentType);
+
 }

@@ -15,7 +15,7 @@ import co.yabx.admin.portal.app.kyc.entities.User;
  */
 public interface AttachmentService {
 
-	AttachmentDetails persistInDb(User user, MultipartFile file, String filename) throws Exception;
+	AttachmentDetails persistInDb(User user, MultipartFile file, String filename, boolean checkFileName) throws Exception;
 
 	AttachmentDetails persistDsrProfilePicInDb(User user, MultipartFile files, String saveFileName);
 
