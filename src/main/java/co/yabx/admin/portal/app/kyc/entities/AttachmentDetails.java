@@ -24,7 +24,6 @@ import javax.persistence.Table;
 import co.yabx.admin.portal.app.enums.AttachmentType;
 import co.yabx.admin.portal.app.enums.DocumentType;
 
-
 /**
  * 
  * @author Asad Ali
@@ -186,9 +185,7 @@ public class AttachmentDetails implements Serializable {
 	}
 
 	public void setAttachments(Set<Attachments> attachments) {
-		for (Attachments details : attachments) {
-			details.setAttachmentDetails(this);
-		}
+
 		this.attachments = attachments;
 	}
 
