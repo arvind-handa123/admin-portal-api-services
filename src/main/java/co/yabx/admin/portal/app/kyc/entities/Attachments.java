@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -42,6 +43,18 @@ public class Attachments implements Serializable {
 
 	@Column(name = "updated_at")
 	private Date updatedAt;
+
+	@ManyToOne
+	@JoinColumn(name = "attachment_details_id")
+	AttachmentDetails attachmentDetails;
+
+	public AttachmentDetails getAttachmentDetails() {
+		return attachmentDetails;
+	}
+
+	public void setAttachmentDetails(AttachmentDetails attachmentDetails) {
+		this.attachmentDetails = attachmentDetails;
+	}
 
 	public Long getId() {
 		return id;
