@@ -10,6 +10,34 @@ public class RemarksDTO implements Serializable {
 	private String remark;
 	private String fieldId;
 	private String side;
+	private String fieldValue;
+	private Integer groupId;
+	private Integer sectionId;
+	private Integer pageId;
+
+	public Integer getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
+	}
+
+	public Integer getSectionId() {
+		return sectionId;
+	}
+
+	public void setSectionId(Integer sectionId) {
+		this.sectionId = sectionId;
+	}
+
+	public Integer getPageId() {
+		return pageId;
+	}
+
+	public void setPageId(Integer pageId) {
+		this.pageId = pageId;
+	}
 
 	public String getRemark() {
 		return remark;
@@ -38,6 +66,14 @@ public class RemarksDTO implements Serializable {
 	@Override
 	public String toString() {
 		return "RemarksDTO [remark=" + remark + ", fieldId=" + fieldId + ", side=" + side + "]";
+	}
+
+	public String getFieldValue() {
+		return fieldValue;
+	}
+
+	public void setFieldValue(String fieldValue) {
+		this.fieldValue = fieldValue;
 	}
 
 }

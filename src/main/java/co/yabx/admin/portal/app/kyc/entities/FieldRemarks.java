@@ -48,11 +48,23 @@ public class FieldRemarks implements Serializable {
 	@Column(length = 500)
 	private String remark;
 
+	@Column(name = "field_value")
+	private String fieldValue;
+
 	@Column(name = "remark_by")
 	private String remarkBy;
 
 	@Column(name = "side")
 	private String side;
+
+	@Column(name = "group_id")
+	private Integer groupId;
+
+	@Column(name = "section_id")
+	private Integer sectionId;
+
+	@Column(name = "page_id")
+	private Integer pageId;
 
 	public Long getId() {
 		return id;
@@ -138,5 +150,29 @@ public class FieldRemarks implements Serializable {
 
 	public void setSide(String side) {
 		this.side = side;
+	}
+
+	public Integer getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(Integer groupId) {
+		this.groupId = groupId;
+	}
+
+	public Integer getSectionId() {
+		return sectionId;
+	}
+
+	public void setSectionId(Integer sectionId) {
+		this.sectionId = sectionId;
+	}
+
+	public Integer getPageId() {
+		return pageId;
+	}
+
+	public void setPageId(Integer pageId) {
+		this.pageId = pageId;
 	}
 }
