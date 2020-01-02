@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import co.yabx.admin.portal.app.kyc.entities.Fields;
 
-@Repository
+@Repository("kycFieldsRepository")
 public interface FieldsRepository extends CrudRepository<Fields, Long> {
 
 	Fields findByFieldId(String fieldId);
