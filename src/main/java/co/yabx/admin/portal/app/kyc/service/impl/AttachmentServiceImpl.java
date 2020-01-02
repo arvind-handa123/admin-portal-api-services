@@ -143,7 +143,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 					attachments.setDocumentSide(documentSide);
 				}
 				attachments.setDocumentUrl(saveFileName);
-				attachments.setAttachmentDetails(attachmentDetails);
+				//attachments.setAttachmentDetails(attachmentDetails);
 				attachmentsRepository.save(attachments);
 			} else {
 				attachments.setDocumentUrl(saveFileName);
