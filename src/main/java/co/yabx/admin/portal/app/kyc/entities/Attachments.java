@@ -83,14 +83,6 @@ public class Attachments implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public AttachmentDetails getAttachmentDetails() {
-		return attachmentDetails;
-	}
-
-	public void setAttachmentDetails(AttachmentDetails attachmentDetails) {
-		this.attachmentDetails = attachmentDetails;
-	}
-
 	@PrePersist
 	protected void insertDates() {
 		if (createdAt == null) {
