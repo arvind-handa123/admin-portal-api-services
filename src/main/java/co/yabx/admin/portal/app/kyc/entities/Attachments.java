@@ -18,7 +18,6 @@ import javax.persistence.Table;
 
 import co.yabx.admin.portal.app.enums.DocumentSide;
 
-
 /**
  * 
  * @author Asad Ali
@@ -43,9 +42,6 @@ public class Attachments implements Serializable {
 
 	@Column(name = "updated_at")
 	private Date updatedAt;
-
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity = AttachmentDetails.class)
-	AttachmentDetails attachmentDetails;
 
 	public Long getId() {
 		return id;
