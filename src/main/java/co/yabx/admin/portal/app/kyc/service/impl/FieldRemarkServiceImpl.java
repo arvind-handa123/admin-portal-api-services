@@ -137,7 +137,13 @@ public class FieldRemarkServiceImpl implements FieldRemarkService {
 			co.yabx.admin.portal.app.kyc.entities.filter.SubGroups subGroups = null;
 			for (RemarksDTO remarksDTO : remarksDTOList) {
 				if (remarksDTO.getRemark() != null && !remarksDTO.getRemark().isEmpty()) {
-					persistRemarks(remarksDTO, user_id, fieldRemarksList, remarkBy);
+					try {
+						persistRemarks(remarksDTO, user_id, fieldRemarksList, remarkBy);
+					} catch (Exception e) {
+						e.printStackTrace();
+						LOGGER.error("Exception raised while pushing remark for user={},error={}", user_id,
+								e.getMessage());
+					}
 				}
 				if (remarksDTO.getFieldValue() != null && !remarksDTO.getFieldValue().isEmpty()) {
 					if (groups == null || !groups.getGroupId().equals(Long.valueOf(remarksDTO.getGroupId()))
@@ -199,13 +205,21 @@ public class FieldRemarkServiceImpl implements FieldRemarkService {
 				}
 			}
 			userRepository.save(user);
+			if(addressDetails!=null)
 			addressDetailsRepository.save(addressDetails);
+			if(businessDetails!=null)
 			businessDetailsRepository.save(businessDetails);
+			if(licenseDetails!=null)
 			licenseDetailsRepository.save(licenseDetails);
+			if(workEducationDetails!=null)
 			workEducationDetailsRepository.save(workEducationDetails);
+			if(liabilitiesDetails!=null)
 			liabilitiesDetailsRepository.save(liabilitiesDetails);
+			if(bankAccountDetails!=null)
 			bankAccountDetailsRepository.save(bankAccountDetails);
+			if(introducerDetails!=null)
 			introducerDetailsRepository.save(introducerDetails);
+			if(monthlyTransactionProfiles!=null)
 			monthlyTransactionProfilesRepository.save(monthlyTransactionProfiles);
 
 			return true;
