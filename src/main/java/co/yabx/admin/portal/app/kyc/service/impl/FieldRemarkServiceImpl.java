@@ -250,10 +250,12 @@ public class FieldRemarkServiceImpl implements FieldRemarkService {
 
 	private Object getLicenseType(co.yabx.admin.portal.app.kyc.entities.filter.SubGroups subGroups) {
 		LicenseType licenseType = null;
-		if (subGroups.getGroupType().equalsIgnoreCase("Trade License")) {
-			licenseType = LicenseType.TRADE;
-		} else if (subGroups.getGroupType().equalsIgnoreCase("Other License")) {
-			licenseType = LicenseType.OTHER;
+		if (subGroups != null) {
+			if (subGroups.getGroupType().equalsIgnoreCase("Trade License")) {
+				licenseType = LicenseType.TRADE;
+			} else if (subGroups.getGroupType().equalsIgnoreCase("Other License")) {
+				licenseType = LicenseType.OTHER;
+			}
 		}
 		return licenseType;
 	}
@@ -364,14 +366,16 @@ public class FieldRemarkServiceImpl implements FieldRemarkService {
 
 	private Object getAddressType(co.yabx.admin.portal.app.kyc.entities.filter.SubGroups subGroups) {
 		AddressType addressType = null;
-		if (subGroups.getGroupType().equalsIgnoreCase("Permanent Address")) {
-			addressType = AddressType.PERMANNET;
-		} else if (subGroups.getGroupType().equalsIgnoreCase("Present Address")) {
-			addressType = AddressType.PRESENT;
-		} else if (subGroups.getGroupType().equalsIgnoreCase("Registered Address")) {
-			addressType = AddressType.BUSINESS_REGISTERED_ADDRESS;
-		} else if (subGroups.getGroupType().equalsIgnoreCase("Office Address")) {
-			addressType = AddressType.BUSINESS_OFFICE_ADDRESS;
+		if (subGroups != null) {
+			if (subGroups.getGroupType().equalsIgnoreCase("Permanent Address")) {
+				addressType = AddressType.PERMANNET;
+			} else if (subGroups.getGroupType().equalsIgnoreCase("Present Address")) {
+				addressType = AddressType.PRESENT;
+			} else if (subGroups.getGroupType().equalsIgnoreCase("Registered Address")) {
+				addressType = AddressType.BUSINESS_REGISTERED_ADDRESS;
+			} else if (subGroups.getGroupType().equalsIgnoreCase("Office Address")) {
+				addressType = AddressType.BUSINESS_OFFICE_ADDRESS;
+			}
 		}
 		return addressType;
 	}
