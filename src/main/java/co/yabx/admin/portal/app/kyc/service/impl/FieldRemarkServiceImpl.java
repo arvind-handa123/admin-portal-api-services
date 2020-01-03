@@ -101,7 +101,7 @@ public class FieldRemarkServiceImpl implements FieldRemarkService {
 	public boolean updateRemark(Long user_id, String remarkBy, List<RemarksDTO> remarksDTOList) {
 		Optional<User> userOptional = userRepository.findById(user_id);
 		if (userOptional.isPresent()) {
-			try {
+			
 				User user = userOptional.get();
 				Set<AddressDetails> businessAddressDetailsSet = null;
 				BusinessDetails businessDetails = user.getBusinessDetails() != null
@@ -207,10 +207,7 @@ public class FieldRemarkServiceImpl implements FieldRemarkService {
 				bankAccountDetailsRepository.save(bankAccountDetails);
 				introducerDetailsRepository.save(introducerDetails);
 				monthlyTransactionProfilesRepository.save(monthlyTransactionProfiles);
-			} catch (Exception e) {
-				e.printStackTrace();
-				LOGGER.error("Exception raised while pushing remark for user={},error={}", user_id, e.getMessage());
-			}
+			} 
 			return true;
 		}
 		return false;
