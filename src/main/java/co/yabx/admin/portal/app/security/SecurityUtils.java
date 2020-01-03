@@ -106,33 +106,11 @@ public class SecurityUtils {
 
 	}
 
-	/*
-	 * public static void main(String[] args) throws Exception {
-	 * 
-	 * String accessToken =
-	 * "EMAWeTETvXHLWwho8EAU69XeJXQK1NN3GKx8Pw6lZCJ4lFoXmtI9IlgSyZAC7o7Lo2iPDih977ZBaHO45ZBYyyxD1HMnB9kyx7NMXZB9jvbEgZDZD"
-	 * ;
-	 * 
-	 * try { Mac hmac = Mac.getInstance(FONE_VERIFY_ALGORITHM); SecretKeySpec
-	 * secret_key = new SecretKeySpec(FONE_VERIFY_SECRET_KEY.getBytes("UTF-8"),
-	 * FONE_VERIFY_ALGORITHM); hmac.init(secret_key); String enryptedToken = new
-	 * String(Hex.encodeHex(hmac.doFinal(accessToken.getBytes("UTF-8"))));
-	 * System.out.println(enryptedToken); } catch (NoSuchAlgorithmException |
-	 * InvalidKeyException | UnsupportedEncodingException e) { // TODO
-	 * Auto-generated catch block e.printStackTrace(); }
-	 * 
-	 * 
-	 * String payload =
-	 * "eyJyZXF1ZXN0Tm9uY2UiOiJGMTNGMUE2Mi0wMTQ1LTQ5MjEtODYyRC02MUZDMjhGNjZBMTciLCJyZXF1ZXN0VGltZSI6MTUzMDYwNDU2OSwicGhvbmVOdW1iZXIiOiIrOTE3ODM4NTU3MjkyIiwiZmlyc3ROYW1lIjoiQW5raXQiLCJsYXN0TmFtZSI6IkIiLCJnZW5kZXIiOiJOIiwiY291bnRyeUNvZGUiOiJpbiIsImVtYWlsIjoiYW5raXRiYXRyYS4xOTg5QGdtYWlsLmNvbSIsImlzVHJ1ZU5hbWUiOmZhbHNlLCJpc0FtYmFzc2Fkb3IiOmZhbHNlfQ==";
-	 * String publicKeyString =
-	 * "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDEpFwIarbm48m6ueG+jhpt2vCGaqXZlwR/HPuL4zH1DQ/eWFbgQtVnrta8QhQz3ywLnbX6s7aecxUzzNJsTtS8VxKAYll4E1lJUqrNdWt8CU+TaUQuFm8vzLoPiYKEXl4bX5rzMQUMqA228gWuYmRFQnpduQTgnYIMO8XVUQXl5wIDAQAB";
-	 * String requestNonce = "01029627-6870-46da-b739-9bbc40a0d881"; String
-	 * signedString =
-	 * "OX8QPVMfIMReB/UXFrrJuoWO0UlczJuPQD2mTyvGdIG5N5evNgq6HdDDCFxAtVMCZEvTS8TefNjKdq2tk+FLs97Paz+xo8RpKKLPHmhyEyIo5E6+9N2KYx0v5hxK9HLCazo7ixFvIZXVvWkMNbWGXj5kVhDZtmkNSvgJslwGff8=";
-	 * 
-	 * // System.out.println(verify(KEYTYPE, publicKeyString, payload, //
-	 * signedString, SIGNATURE_ALGOTITHM)); }
-	 */
+	public static void main(String[] args) throws Exception {
+
+		String accessToken = "f0fed96e-c954-48b3-9446-b0574eed58f9";
+		System.out.println(decript("7So0qhrS/w7HOmjsXJshPsd8BuPEWIM5qEYsjXFL+ak1rjLCDu43trxFpXsl7KQW"));
+	}
 
 	/**
 	 * @param keyType            (keyType attribute from publicKey api endpoint

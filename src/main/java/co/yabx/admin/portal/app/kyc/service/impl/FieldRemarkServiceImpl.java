@@ -149,7 +149,7 @@ public class FieldRemarkServiceImpl implements FieldRemarkService {
 					if (groups == null || !groups.getGroupId().equals(Long.valueOf(remarksDTO.getGroupId()))
 							|| (subGroups != null && subGroups.getId().equals(Long.valueOf(remarksDTO.getGroupId()))))
 						if (fields == null || !fields.getFieldId().equalsIgnoreCase(remarksDTO.getFieldId())) {
-							fields = fieldsRepository.findByFieldId(remarksDTO.getFieldId());
+							fields = fieldsRepository.findByFieldId(remarksDTO.getFieldId()).get(0);
 							if (fields != null) {
 								subGroupsSet = fields.getSubGroups();
 								subGroups = getSubGroup(subGroupsSet, remarksDTO);
@@ -205,22 +205,22 @@ public class FieldRemarkServiceImpl implements FieldRemarkService {
 				}
 			}
 			userRepository.save(user);
-			if(addressDetails!=null)
-			addressDetailsRepository.save(addressDetails);
-			if(businessDetails!=null)
-			businessDetailsRepository.save(businessDetails);
-			if(licenseDetails!=null)
-			licenseDetailsRepository.save(licenseDetails);
-			if(workEducationDetails!=null)
-			workEducationDetailsRepository.save(workEducationDetails);
-			if(liabilitiesDetails!=null)
-			liabilitiesDetailsRepository.save(liabilitiesDetails);
-			if(bankAccountDetails!=null)
-			bankAccountDetailsRepository.save(bankAccountDetails);
-			if(introducerDetails!=null)
-			introducerDetailsRepository.save(introducerDetails);
-			if(monthlyTransactionProfiles!=null)
-			monthlyTransactionProfilesRepository.save(monthlyTransactionProfiles);
+			if (addressDetails != null)
+				addressDetailsRepository.save(addressDetails);
+			if (businessDetails != null)
+				businessDetailsRepository.save(businessDetails);
+			if (licenseDetails != null)
+				licenseDetailsRepository.save(licenseDetails);
+			if (workEducationDetails != null)
+				workEducationDetailsRepository.save(workEducationDetails);
+			if (liabilitiesDetails != null)
+				liabilitiesDetailsRepository.save(liabilitiesDetails);
+			if (bankAccountDetails != null)
+				bankAccountDetailsRepository.save(bankAccountDetails);
+			if (introducerDetails != null)
+				introducerDetailsRepository.save(introducerDetails);
+			if (monthlyTransactionProfiles != null)
+				monthlyTransactionProfilesRepository.save(monthlyTransactionProfiles);
 
 			return true;
 		}
@@ -269,10 +269,12 @@ public class FieldRemarkServiceImpl implements FieldRemarkService {
 	}
 
 	private LiabilityType getLiabilitiyType(co.yabx.admin.portal.app.kyc.entities.filter.SubGroups subGroups) {
-		if (subGroups.getGroupType().equalsIgnoreCase("Personal Liabilities")) {
-			return LiabilityType.PERSONAL;
-		} else if (subGroups.getGroupType().equalsIgnoreCase("Business Liabilities")) {
-			return LiabilityType.BUSINESS;
+		if (subGroups != null) {
+			if (subGroups.getGroupType().equalsIgnoreCase("Personal Liabilities")) {
+				return LiabilityType.PERSONAL;
+			} else if (subGroups.getGroupType().equalsIgnoreCase("Business Liabilities")) {
+				return LiabilityType.BUSINESS;
+			}
 		}
 		return null;
 	}
