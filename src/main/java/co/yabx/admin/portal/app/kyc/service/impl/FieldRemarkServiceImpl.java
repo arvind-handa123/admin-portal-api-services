@@ -875,7 +875,7 @@ public class FieldRemarkServiceImpl implements FieldRemarkService {
 		} else {
 			Optional<FieldRemarks> fieldRemarksOptional = fieldRemarksList.stream()
 					.filter(f -> f.getGroupId() != null && f.getSectionId() != null && f.getPageId() != null
-							&& f.getFieldId().equalsIgnoreCase(remarksDTO.getFieldId())
+							&& f.getFieldId() != null && f.getFieldId().equalsIgnoreCase(remarksDTO.getFieldId())
 							&& f.getGroupId().equals(remarksDTO.getGroupId())
 							&& f.getSectionId().equals(remarksDTO.getSectionId())
 							&& f.getPageId().equals(remarksDTO.getPageId()))
