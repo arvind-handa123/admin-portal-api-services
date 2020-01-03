@@ -65,7 +65,8 @@ public class RemarksDTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "RemarksDTO [remark=" + remark + ", fieldId=" + fieldId + ", side=" + side + "]";
+		return "RemarksDTO [remark=" + remark + ", fieldId=" + fieldId + ", side=" + side + ", fieldValue=" + fieldValue
+				+ ", groupId=" + groupId + ", sectionId=" + sectionId + ", pageId=" + pageId + "]";
 	}
 
 	public String getFieldValue() {
