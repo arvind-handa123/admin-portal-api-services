@@ -101,113 +101,113 @@ public class FieldRemarkServiceImpl implements FieldRemarkService {
 	public boolean updateRemark(Long user_id, String remarkBy, List<RemarksDTO> remarksDTOList) {
 		Optional<User> userOptional = userRepository.findById(user_id);
 		if (userOptional.isPresent()) {
-			
-				User user = userOptional.get();
-				Set<AddressDetails> businessAddressDetailsSet = null;
-				BusinessDetails businessDetails = user.getBusinessDetails() != null
-						&& user.getBusinessDetails().stream().findFirst().isPresent()
-								? user.getBusinessDetails().stream().findFirst().get()
-								: null;
-				if (businessDetails != null) {
-					businessAddressDetailsSet = businessDetails.getAddressDetails();
+
+			User user = userOptional.get();
+			Set<AddressDetails> businessAddressDetailsSet = null;
+			BusinessDetails businessDetails = user.getBusinessDetails() != null
+					&& user.getBusinessDetails().stream().findFirst().isPresent()
+							? user.getBusinessDetails().stream().findFirst().get()
+							: null;
+			if (businessDetails != null) {
+				businessAddressDetailsSet = businessDetails.getAddressDetails();
+			}
+			BankAccountDetails bankAccountDetails = user.getBankAccountDetails() != null
+					&& user.getBankAccountDetails().stream().findFirst().isPresent()
+							? user.getBankAccountDetails().stream().findFirst().get()
+							: null;
+			LiabilitiesDetails liabilitiesDetails = null;
+			AddressDetails addressDetails = null;
+			LicenseDetails licenseDetails = null;
+			MonthlyTransactionProfiles monthlyTransactionProfiles = user.getMonthlyTransactionProfiles() != null
+					&& user.getMonthlyTransactionProfiles().stream().findFirst().isPresent()
+							? user.getMonthlyTransactionProfiles().stream().findFirst().get()
+							: null;
+			WorkEducationDetails workEducationDetails = user.getWorkEducationDetails() != null
+					&& user.getWorkEducationDetails().stream().findFirst().isPresent()
+							? user.getWorkEducationDetails().stream().findFirst().get()
+							: null;
+			IntroducerDetails introducerDetails = user.getIntroducerDetails() != null
+					&& user.getIntroducerDetails().stream().findFirst().isPresent()
+							? user.getIntroducerDetails().stream().findFirst().get()
+							: null;
+			List<FieldRemarks> fieldRemarksList = fieldRemarksRepository.findByUserId(user_id);
+			Groups groups = null;
+			Fields fields = null;
+			Set<co.yabx.admin.portal.app.kyc.entities.filter.SubGroups> subGroupsSet = null;
+			co.yabx.admin.portal.app.kyc.entities.filter.SubGroups subGroups = null;
+			for (RemarksDTO remarksDTO : remarksDTOList) {
+				if (remarksDTO.getRemark() != null && !remarksDTO.getRemark().isEmpty()) {
+					persistRemarks(remarksDTO, user_id, fieldRemarksList, remarkBy);
 				}
-				BankAccountDetails bankAccountDetails = user.getBankAccountDetails() != null
-						&& user.getBankAccountDetails().stream().findFirst().isPresent()
-								? user.getBankAccountDetails().stream().findFirst().get()
-								: null;
-				LiabilitiesDetails liabilitiesDetails = null;
-				AddressDetails addressDetails = null;
-				LicenseDetails licenseDetails = null;
-				MonthlyTransactionProfiles monthlyTransactionProfiles = user.getMonthlyTransactionProfiles() != null
-						&& user.getMonthlyTransactionProfiles().stream().findFirst().isPresent()
-								? user.getMonthlyTransactionProfiles().stream().findFirst().get()
-								: null;
-				WorkEducationDetails workEducationDetails = user.getWorkEducationDetails() != null
-						&& user.getWorkEducationDetails().stream().findFirst().isPresent()
-								? user.getWorkEducationDetails().stream().findFirst().get()
-								: null;
-				IntroducerDetails introducerDetails = user.getIntroducerDetails() != null
-						&& user.getIntroducerDetails().stream().findFirst().isPresent()
-								? user.getIntroducerDetails().stream().findFirst().get()
-								: null;
-				List<FieldRemarks> fieldRemarksList = fieldRemarksRepository.findByUserId(user_id);
-				Groups groups = null;
-				Fields fields = null;
-				Set<co.yabx.admin.portal.app.kyc.entities.filter.SubGroups> subGroupsSet = null;
-				co.yabx.admin.portal.app.kyc.entities.filter.SubGroups subGroups = null;
-				for (RemarksDTO remarksDTO : remarksDTOList) {
-					if (remarksDTO.getRemark() != null && !remarksDTO.getRemark().isEmpty()) {
-						persistRemarks(remarksDTO, user_id, fieldRemarksList, remarkBy);
-					}
-					if (remarksDTO.getFieldValue() != null && !remarksDTO.getFieldValue().isEmpty()) {
-						if (groups == null || !groups.getGroupId().equals(Long.valueOf(remarksDTO.getGroupId()))
-								|| subGroups.getId().equals(Long.valueOf(remarksDTO.getGroupId())))
-							if (fields == null || !fields.getFieldId().equalsIgnoreCase(remarksDTO.getFieldId())) {
-								fields = fieldsRepository.findByFieldId(remarksDTO.getFieldId());
-								if (fields != null) {
-									subGroupsSet = fields.getSubGroups();
-									subGroups = getSubGroup(subGroupsSet, remarksDTO);
-									groups = fields.getGroups();
-								}
+				if (remarksDTO.getFieldValue() != null && !remarksDTO.getFieldValue().isEmpty()) {
+					if (groups == null || !groups.getGroupId().equals(Long.valueOf(remarksDTO.getGroupId()))
+							|| (subGroups != null && subGroups.getId().equals(Long.valueOf(remarksDTO.getGroupId()))))
+						if (fields == null || !fields.getFieldId().equalsIgnoreCase(remarksDTO.getFieldId())) {
+							fields = fieldsRepository.findByFieldId(remarksDTO.getFieldId());
+							if (fields != null) {
+								subGroupsSet = fields.getSubGroups();
+								subGroups = getSubGroup(subGroupsSet, remarksDTO);
+								groups = fields.getGroups();
 							}
-						if (groups.getGroupName().equalsIgnoreCase("PERSONAL_INFO")) {
-							user = setUserPersonalInfo(user, remarksDTO);
-						} else if (groups.getGroupName().equalsIgnoreCase("addresses")) {
-							addressDetails = getAddressDetails(user.getAddressDetails(), subGroups);
+						}
+					if (groups.getGroupName().equalsIgnoreCase("PERSONAL_INFO")) {
+						user = setUserPersonalInfo(user, remarksDTO);
+					} else if (groups.getGroupName().equalsIgnoreCase("addresses")) {
+						addressDetails = getAddressDetails(user.getAddressDetails(), subGroups);
+						if (addressDetails != null) {
+							addressDetails = setAddressDetails(addressDetails, remarksDTO);
+						} else {
+							addressDetails = getAddressDetails(businessAddressDetailsSet, subGroups);
 							if (addressDetails != null) {
-								addressDetails = setAddressDetails(addressDetails, remarksDTO);
-							} else {
-								addressDetails = getAddressDetails(businessAddressDetailsSet, subGroups);
-								if (addressDetails != null) {
-									setAddressDetails(addressDetails, remarksDTO);
-								}
+								setAddressDetails(addressDetails, remarksDTO);
 							}
-						} else if (groups.getGroupName().equalsIgnoreCase("accountInformations")) {
-							if (bankAccountDetails != null) {
-								bankAccountDetails = setUserBankAccountDetails(bankAccountDetails, remarksDTO);
+						}
+					} else if (groups.getGroupName().equalsIgnoreCase("accountInformations")) {
+						if (bankAccountDetails != null) {
+							bankAccountDetails = setUserBankAccountDetails(bankAccountDetails, remarksDTO);
+						}
+					} else if (groups.getGroupName().equalsIgnoreCase("liabilitiesDetails")) {
+						liabilitiesDetails = getLiabilitiesDetails(user.getLiabilitiesDetails(), subGroups);
+						if (liabilitiesDetails != null) {
+							liabilitiesDetails = setUserLiabilitiesDetails(liabilitiesDetails, remarksDTO);
+						}
+					} else if (groups.getGroupName().equalsIgnoreCase("BUSINESS_DETAILS")) {
+						if (businessDetails != null) {
+							businessDetails = setUserBusinessDetails(businessDetails, remarksDTO);
+						}
+					} else if (groups.getGroupName().equalsIgnoreCase("licenseDetails")) {
+						if (businessDetails != null) {
+							licenseDetails = getLicenseDetails(businessDetails.getLicenseDetails(), subGroups);
+							if (licenseDetails != null) {
+								licenseDetails = setLicenseDetails(licenseDetails, remarksDTO);
 							}
-						} else if (groups.getGroupName().equalsIgnoreCase("liabilitiesDetails")) {
-							liabilitiesDetails = getLiabilitiesDetails(user.getLiabilitiesDetails(), subGroups);
-							if (liabilitiesDetails != null) {
-								liabilitiesDetails = setUserLiabilitiesDetails(liabilitiesDetails, remarksDTO);
-							}
-						} else if (groups.getGroupName().equalsIgnoreCase("BUSINESS_DETAILS")) {
-							if (businessDetails != null) {
-								businessDetails = setUserBusinessDetails(businessDetails, remarksDTO);
-							}
-						} else if (groups.getGroupName().equalsIgnoreCase("licenseDetails")) {
-							if (businessDetails != null) {
-								licenseDetails = getLicenseDetails(businessDetails.getLicenseDetails(), subGroups);
-								if (licenseDetails != null) {
-									licenseDetails = setLicenseDetails(licenseDetails, remarksDTO);
-								}
-							}
-						} else if (groups.getGroupName().equalsIgnoreCase("monthlyTxnProfile")) {
-							if (monthlyTransactionProfiles != null) {
-								monthlyTransactionProfiles = setUserMonthlyTxnProfiles(monthlyTransactionProfiles,
-										remarksDTO);
-							}
-						} else if (groups.getGroupName().equalsIgnoreCase("WORK_EDUCATION")) {
-							if (workEducationDetails != null) {
-								workEducationDetails = setUserWorkEducationDetails(workEducationDetails, remarksDTO);
-							}
-						} else if (groups.getGroupName().equalsIgnoreCase("introducerDetails")) {
-							if (introducerDetails != null) {
-								introducerDetails = setUserIntroducerDetails(introducerDetails, remarksDTO);
-							}
+						}
+					} else if (groups.getGroupName().equalsIgnoreCase("monthlyTxnProfile")) {
+						if (monthlyTransactionProfiles != null) {
+							monthlyTransactionProfiles = setUserMonthlyTxnProfiles(monthlyTransactionProfiles,
+									remarksDTO);
+						}
+					} else if (groups.getGroupName().equalsIgnoreCase("WORK_EDUCATION")) {
+						if (workEducationDetails != null) {
+							workEducationDetails = setUserWorkEducationDetails(workEducationDetails, remarksDTO);
+						}
+					} else if (groups.getGroupName().equalsIgnoreCase("introducerDetails")) {
+						if (introducerDetails != null) {
+							introducerDetails = setUserIntroducerDetails(introducerDetails, remarksDTO);
 						}
 					}
 				}
-				userRepository.save(user);
-				addressDetailsRepository.save(addressDetails);
-				businessDetailsRepository.save(businessDetails);
-				licenseDetailsRepository.save(licenseDetails);
-				workEducationDetailsRepository.save(workEducationDetails);
-				liabilitiesDetailsRepository.save(liabilitiesDetails);
-				bankAccountDetailsRepository.save(bankAccountDetails);
-				introducerDetailsRepository.save(introducerDetails);
-				monthlyTransactionProfilesRepository.save(monthlyTransactionProfiles);
-			} 
+			}
+			userRepository.save(user);
+			addressDetailsRepository.save(addressDetails);
+			businessDetailsRepository.save(businessDetails);
+			licenseDetailsRepository.save(licenseDetails);
+			workEducationDetailsRepository.save(workEducationDetails);
+			liabilitiesDetailsRepository.save(liabilitiesDetails);
+			bankAccountDetailsRepository.save(bankAccountDetails);
+			introducerDetailsRepository.save(introducerDetails);
+			monthlyTransactionProfilesRepository.save(monthlyTransactionProfiles);
+
 			return true;
 		}
 		return false;
