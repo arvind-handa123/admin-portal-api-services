@@ -896,7 +896,7 @@ public class FieldRemarkServiceImpl implements FieldRemarkService {
 		fieldRemarks.setRemark(remarksDTO.getRemark());
 		fieldRemarks.setRemarkBy(remarkBy);
 		fieldRemarks.setSide(remarksDTO.getSide());
-		fieldRemarksRepository.save(fieldRemarks);
+		fieldRemarks=fieldRemarksRepository.save(fieldRemarks);
 
 	}
 

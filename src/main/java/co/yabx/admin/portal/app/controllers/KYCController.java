@@ -130,7 +130,7 @@ public class KYCController {
 			HttpServletResponse httpServletResponse,
 			@RequestParam(value = "username", required = true) String username) {
 		if (authInfoService.isAuthorizedByUsername(username, httpServletRequest, httpServletResponse)) {
-			LOGGER.info("/retailer/image request recieved for retailer={},  filename={}", retailerId, filename);
+			LOGGER.info("/kyc/retailer/image/file request recieved for retailer={},  filename={}", retailerId, filename);
 			try {
 				if (filename != null && !filename.isEmpty()) {
 					return new ResponseEntity<>(storageService.getImage(filename, retailerId), HttpStatus.OK);
