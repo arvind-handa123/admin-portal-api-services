@@ -869,7 +869,11 @@ public class FieldRemarkServiceImpl implements FieldRemarkService {
 		if (remarksDTO.getSide() != null && !remarksDTO.getSide().isEmpty()) {
 			Optional<FieldRemarks> fieldRemarksOptional = fieldRemarksList.stream()
 					.filter(f -> f.getFieldId().equalsIgnoreCase(remarksDTO.getFieldId())
-							&& remarksDTO.getSide().equalsIgnoreCase(f.getSide()))
+							&& remarksDTO.getSide().equalsIgnoreCase(f.getSide()) && f.getGroupId() != null
+							&& f.getSectionId() != null && f.getPageId() != null
+							&& f.getGroupId().equals(remarksDTO.getGroupId())
+							&& f.getSectionId().equals(remarksDTO.getSectionId())
+							&& f.getPageId().equals(remarksDTO.getPageId()))
 					.findFirst();
 			fieldRemarks = fieldRemarksOptional.isPresent() ? fieldRemarksOptional.get() : null;
 		} else {
@@ -887,16 +891,16 @@ public class FieldRemarkServiceImpl implements FieldRemarkService {
 		if (fieldRemarks == null) {
 			fieldRemarks = new FieldRemarks();
 			fieldRemarks.setUserId(user_id);
-			fieldRemarks.setFieldId(remarksDTO.getFieldId());
 			fieldRemarks.setPageId(remarksDTO.getPageId());
 			fieldRemarks.setSectionId(remarksDTO.getSectionId());
 			fieldRemarks.setGroupId(remarksDTO.getGroupId());
 			fieldRemarks.setFieldId(remarksDTO.getFieldValue());
 		}
 		fieldRemarks.setRemark(remarksDTO.getRemark());
+		fieldRemarks.setFieldId(remarksDTO.getFieldId());
 		fieldRemarks.setRemarkBy(remarkBy);
 		fieldRemarks.setSide(remarksDTO.getSide());
-		fieldRemarks=fieldRemarksRepository.save(fieldRemarks);
+		fieldRemarks = fieldRemarksRepository.save(fieldRemarks);
 
 	}
 
