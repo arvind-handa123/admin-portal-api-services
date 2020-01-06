@@ -47,7 +47,7 @@ public class StorageServiceImpl implements StorageService {
 			newFileName = System.currentTimeMillis() + "." + extension;
 		else
 			newFileName = fileName;
-		String path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/tmp/") + retailerId + "/"
+		String path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/root/kyc/") + retailerId + "/"
 				+ newFileName;
 		convFile.createNewFile();
 		try (FileOutputStream fos = new FileOutputStream(convFile)) {
@@ -57,7 +57,7 @@ public class StorageServiceImpl implements StorageService {
 		image = ImageIO.read(convFile);
 		LOGGER.info("Image getting stored at location={} for retailer={}", path, retailerId);
 		File destination = new File(
-				appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/tmp/") + retailerId + "/");
+				appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/root/kyc/") + retailerId + "/");
 		if (!destination.exists())
 			destination.mkdirs();
 		ImageIO.write(image, extension, new File(path));
@@ -67,7 +67,7 @@ public class StorageServiceImpl implements StorageService {
 	@Override
 	public byte[] getImage(String filename, Long retailerId) {
 		try {
-			String path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/tmp/") + retailerId + "/"
+			String path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/root/kyc/") + retailerId + "/"
 					+ filename;
 			File file = new File(path);
 			BufferedImage image = ImageIO.read(file);
