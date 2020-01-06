@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import co.yabx.admin.portal.app.enums.KycStatus;
+import co.yabx.admin.portal.app.kyc.entities.AccountStatuses;
 import co.yabx.admin.portal.app.kyc.entities.AttachmentDetails;
 import co.yabx.admin.portal.app.kyc.entities.User;
+import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.AttachmentService;
 import co.yabx.admin.portal.app.kyc.service.AuthInfoService;
 import co.yabx.admin.portal.app.kyc.service.KYCService;
@@ -42,6 +44,9 @@ public class RMController {
 
 	@Autowired
 	private StorageService storageService;
+
+	@Autowired
+	private AppConfigService appConfigService;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RMController.class);
 
@@ -121,8 +126,14 @@ public class RMController {
 		LOGGER.info("/rm/kyc/loc/generate request received for msisdn={},username={}", msisdn, username);
 		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.updateKycStatus(msisdn, username, KycStatus.LOC_GENERATED),
-					HttpStatus.OK);
+			AccountStatuses accountStatuses = kycService.updateKycStatus(msisdn, username, KycStatus.LOC_GENERATED);
+			if (accountStatuses != null && KycStatus.LOC_GENERATED.equals(accountStatuses.getKycVerified())) {
+				return new ResponseEntity<>(storageService.getDisclaimerDocuments(
+						appConfigService.getProperty("GENERATE_LOC_FILE_NAME", "05_General_Loan_Agreement.pdf")),
+						HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
@@ -166,10 +177,13 @@ public class RMController {
 			LOGGER.info("/retailer/image request recieved for retailer={}, dsr={}, filename={}", retailerId, username,
 					filename);
 			if (filename != null && !filename.isEmpty()) {
-
 				if (filename != null && !filename.isEmpty()) {
+					// if documents has been signed and uploaded under retailer, then pick from
+					// retailer directory
 					byte[] doc = storageService.getImage(filename, retailerId);
 					if (doc == null || doc.length == 0)
+						// if documents has not been signed and uploaded under retailer, then pick from
+						// disclaimer document directory
 						return new ResponseEntity<>(storageService.getDisclaimerDocuments(filename), HttpStatus.OK);
 					else
 						return new ResponseEntity<>(doc, HttpStatus.OK);
