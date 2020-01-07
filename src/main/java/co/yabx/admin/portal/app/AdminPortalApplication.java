@@ -18,7 +18,7 @@ public class AdminPortalApplication {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedMethods("*").allowedOrigins("*");
+				registry.addMapping("/**").allowedOrigins("http://kyc.yabx.co");
 			}
 		};
 	}
