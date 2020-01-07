@@ -37,14 +37,14 @@ public class ProductDocuments implements Serializable {
 	@Column(name = "file_name")
 	private String fileName;
 
-	@Column(name = "product_name", nullable = false, columnDefinition = "varchar(32)")
+	@Column(name = "product_name", nullable = false, columnDefinition = "varchar(100)")
 	@Enumerated(value = EnumType.STRING)
 	private ProductName productName;
 
-	@Column(name = "document_type", length = 100, columnDefinition = "varchar(32) ")
+	@Column(name = "document_type", length = 100, columnDefinition = "varchar(100) ")
 	private String documentType;
 
-	@Column(name = "attachment_type", length = 100, columnDefinition = "varchar(32) ")
+	@Column(name = "attachment_type", length = 100, columnDefinition = "varchar(100) ")
 	@Enumerated(value = EnumType.STRING)
 	private AttachmentType attachmentType;
 
