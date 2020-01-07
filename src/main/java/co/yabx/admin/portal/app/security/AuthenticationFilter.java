@@ -48,7 +48,7 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
 		response.setHeader("Access-Control-Expose-Headers", "Authorization");
 		response.addHeader("Access-Control-Expose-Headers", "responseType");
 		response.addHeader("Access-Control-Expose-Headers", "observe");
-		//System.out.println("Request Method: " + request.getMethod());
+		// System.out.println("Request Method: " + request.getMethod());
 		if (!(request.getMethod().equalsIgnoreCase("OPTIONS"))) {
 			try {
 				chain.doFilter(request, response);
@@ -65,9 +65,7 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
 					+ "access-control-request-headers,access-control-request-method,accept,origin,authorization,x-requested-with,responseType,observe");
 			response.setStatus(HttpServletResponse.SC_OK);
 		}
-
+		SecurityContextHolder.getContext().setAuthentication(authResult);
 	}
-	/*
-	 * SecurityContextHolder.getContext().setAuthentication(authResult);
-	 */
+
 }
