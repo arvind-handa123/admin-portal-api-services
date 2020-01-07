@@ -78,11 +78,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	 * "POST")); UrlBasedCorsConfigurationSource source = new
 	 * UrlBasedCorsConfigurationSource(); source.registerCorsConfiguration("/**",
 	 * configuration); return source; }
-	 * 
-	 * @Bean public WebMvcConfigurer corsConfigurer() { return new
-	 * WebMvcConfigurer() {
-	 * 
-	 * @Override public void addCorsMappings(CorsRegistry registry) {
-	 * registry.addMapping("/v1").allowedOrigins("http://kyc.yabx.co"); } }; }
 	 */
+
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/**").allowedMethods("*").allowedOrigins("*");
+			}
+		};
+	}
 }
