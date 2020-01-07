@@ -13,13 +13,11 @@ public class AdminPortalApplication {
 		SpringApplication.run(AdminPortalApplication.class, args);
 	}
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("http://kyc.yabx.co");
-			}
-		};
-	}
+	/*
+	 * @Bean public WebMvcConfigurer corsConfigurer() { return new
+	 * WebMvcConfigurer() {
+	 * 
+	 * @Override public void addCorsMappings(CorsRegistry registry) {
+	 * registry.addMapping("/**").allowedOrigins("http://kyc.yabx.co"); } }; }
+	 */
 }
