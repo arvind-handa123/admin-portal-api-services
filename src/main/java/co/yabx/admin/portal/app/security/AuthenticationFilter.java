@@ -44,7 +44,7 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
 		response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
 		response.setHeader("Access-Control-Max-Age", "3600");
 		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
-		SecurityContextHolder.getContext().setAuthentication(authResult);
+		//SecurityContextHolder.getContext().setAuthentication(authResult);
 		chain.doFilter(request, response);
 	}
 }
