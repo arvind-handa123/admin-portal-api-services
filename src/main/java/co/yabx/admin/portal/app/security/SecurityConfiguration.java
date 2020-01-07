@@ -70,23 +70,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return new HttpStatusEntryPoint(HttpStatus.FORBIDDEN);
 	}
 
-	@Bean
-	CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(Arrays.asList("https://kyc.yabx.co", "http://kyc.yabx.co"));
-		configuration.setAllowedMethods(Arrays.asList("GET", "POST"));
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration);
-		return source;
-	}
-
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurer() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/v1").allowedOrigins("http://kyc.yabx.co");
-			}
-		};
-	}
+	/*
+	 * @Bean CorsConfigurationSource corsConfigurationSource() { CorsConfiguration
+	 * configuration = new CorsConfiguration();
+	 * configuration.setAllowedOrigins(Arrays.asList("https://kyc.yabx.co",
+	 * "http://kyc.yabx.co")); configuration.setAllowedMethods(Arrays.asList("GET",
+	 * "POST")); UrlBasedCorsConfigurationSource source = new
+	 * UrlBasedCorsConfigurationSource(); source.registerCorsConfiguration("/**",
+	 * configuration); return source; }
+	 * 
+	 * @Bean public WebMvcConfigurer corsConfigurer() { return new
+	 * WebMvcConfigurer() {
+	 * 
+	 * @Override public void addCorsMappings(CorsRegistry registry) {
+	 * registry.addMapping("/v1").allowedOrigins("http://kyc.yabx.co"); } }; }
+	 */
 }
