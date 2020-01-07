@@ -3,12 +3,10 @@ package co.yabx.admin.portal.app.kyc.service.impl;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
@@ -16,8 +14,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,10 +41,10 @@ public class StorageServiceImpl implements StorageService {
 		String newFileName = System.currentTimeMillis() + "." + extension;
 		String path = null;
 		if (isDisclaimerDoc) {
-			path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/root/kyc/") + retailerId + "/"
+			path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/var/lib/kyc/") + retailerId + "/"
 					+ "disclaimer/" + newFileName;
 		} else {
-			path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/root/kyc/") + retailerId + "/"
+			path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/var/lib/kyc/") + retailerId + "/"
 					+ newFileName;
 		}
 
@@ -60,7 +56,7 @@ public class StorageServiceImpl implements StorageService {
 		image = ImageIO.read(convFile);
 		LOGGER.info("Image getting stored at location={} for retailer={}", path, retailerId);
 		File destination = new File(
-				appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/root/kyc/") + retailerId + "/");
+				appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/var/lib/kyc/") + retailerId + "/");
 		if (!destination.exists())
 			destination.mkdirs();
 		ImageIO.write(image, extension, new File(path));
@@ -72,10 +68,10 @@ public class StorageServiceImpl implements StorageService {
 		try {
 			String path = null;
 			if (isDisclaimerDoc) {
-				path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/root/kyc/") + retailerId + "/"
+				path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/var/lib/kyc/") + retailerId + "/"
 						+ "disclaimer/" + filename;
 			} else {
-				path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/root/kyc/") + retailerId + "/"
+				path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/var/lib/kyc/") + retailerId + "/"
 						+ filename;
 			}
 			File file = new File(path);

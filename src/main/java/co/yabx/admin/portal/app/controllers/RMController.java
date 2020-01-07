@@ -235,8 +235,8 @@ public class RMController {
 			@RequestParam("files") MultipartFile files, HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse) throws Exception {
 		if (authInfoService.isAuthorizedByUsername(username, httpServletRequest, httpServletResponse)) {
-			LOGGER.info("/rm/upload/image request recieved for retailer={}, username={}, file={}", retailerId, username,
-					files != null ? files.getOriginalFilename() : null);
+			LOGGER.info("/rm/upload/image request recieved for retailer={}, username={},documentType={} file={}",
+					retailerId, username, documentType, files != null ? files.getOriginalFilename() : null);
 			User user = userService.getRetailerById(retailerId);
 			if (user != null) {
 				String filename = storageService.uploadImage(files, retailerId, true);
