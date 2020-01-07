@@ -8,7 +8,7 @@ public enum AttachmentType {
 			return AttachmentType.IdentityProof;
 		} else if (value.equalsIgnoreCase("Address Proof")) {
 			return AttachmentType.AddressProof;
-		} else if (value.equalsIgnoreCase("Disclaime rDocument")) {
+		} else if (value.equalsIgnoreCase("Disclaimer rDocument")) {
 			return AttachmentType.DisclaimerDocument;
 		} else {
 			return AttachmentType.valueOf(value);

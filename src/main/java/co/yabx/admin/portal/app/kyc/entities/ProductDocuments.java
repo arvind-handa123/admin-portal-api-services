@@ -15,6 +15,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
+import co.yabx.admin.portal.app.enums.AttachmentType;
 import co.yabx.admin.portal.app.enums.ProductName;
 
 @Entity
@@ -40,6 +41,13 @@ public class ProductDocuments implements Serializable {
 	@Enumerated(value = EnumType.STRING)
 	private ProductName productName;
 
+	@Column(name = "document_type", length = 100, columnDefinition = "varchar(32) ")
+	private String documentType;
+
+	@Column(name = "attachment_type", length = 100, columnDefinition = "varchar(32) ")
+	@Enumerated(value = EnumType.STRING)
+	private AttachmentType attachmentType;
+
 	@Column(name = "created_at")
 	private Date createdAt;
 
@@ -48,6 +56,9 @@ public class ProductDocuments implements Serializable {
 
 	@Column(name = "display_order")
 	private Integer displayOrder;
+
+	@Column(name = "active", columnDefinition = "boolean default true")
+	private boolean active;
 
 	@PrePersist
 	private void prePersist() {
@@ -125,6 +136,30 @@ public class ProductDocuments implements Serializable {
 
 	public void setDisplayOrder(Integer displayOrder) {
 		this.displayOrder = displayOrder;
+	}
+
+	public String getDocumentType() {
+		return documentType;
+	}
+
+	public void setDocumentType(String documentType) {
+		this.documentType = documentType;
+	}
+
+	public AttachmentType getAttachmentType() {
+		return attachmentType;
+	}
+
+	public void setAttachmentType(AttachmentType attachmentType) {
+		this.attachmentType = attachmentType;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 
 }

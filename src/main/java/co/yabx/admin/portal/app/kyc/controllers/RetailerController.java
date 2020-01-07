@@ -199,8 +199,8 @@ public class RetailerController {
 				if (userRelationships != null) {
 					String filename = storageService.uploadImage(files, retailerId, true);
 					try {
-						AttachmentDetails attachmentDetails = attachmentService.persistInDb(user, files, filename,
-								true);
+						AttachmentDetails attachmentDetails = attachmentService.persistInDb(user, files, filename, true,
+								null);
 						if (attachmentDetails != null)
 							return new ResponseEntity<>(files, HttpStatus.OK);
 						else {
@@ -264,7 +264,8 @@ public class RetailerController {
 				if (userRelationships != null) {
 					try {
 						if (filename != null && !filename.isEmpty()) {
-							return new ResponseEntity<>(storageService.getImage(filename, user.getId()), HttpStatus.OK);
+							return new ResponseEntity<>(storageService.getImage(filename, user.getId(), false),
+									HttpStatus.OK);
 						} else {
 							return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 						}

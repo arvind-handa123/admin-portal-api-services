@@ -50,8 +50,8 @@ public class AttachmentServiceImpl implements AttachmentService {
 
 	@Override
 	@Transactional
-	public AttachmentDetails persistInDb(User user, MultipartFile file, String saveFileName, boolean checkFileName)
-			throws Exception {
+	public AttachmentDetails persistInDb(User user, MultipartFile file, String saveFileName, boolean checkFileName,
+			String docType) throws Exception {
 		LOGGER.info("File={} saved for retailer={}", file.getOriginalFilename(), user.getId());
 		String fileName = file.getOriginalFilename().replaceAll(" ", "_");
 		String extension = FilenameUtils.getExtension(file.getOriginalFilename());
@@ -153,6 +153,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 					attachmentDetails);
 			return attachmentDetails;
 		} else {
+			documentType = DocumentType.valueOf(docType);
 			attachmentDetails = getDisclaimerAttachement(user, attachmentType, saveFileName);
 			if (attachmentDetails != null) {
 				Set<Attachments> attachmentsSet = attachmentDetails.getAttachments();
@@ -170,7 +171,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 			attachments.setDocumentUrl(saveFileName);
 			attachmentList.add(attachments);
 			attachmentDetails.setAttachments(attachmentList);
-			attachmentDetails.setDocumentType(documentType != null ? documentType.toString() : null);
+			attachmentDetails.setDocumentType(documentType != null ? documentType.toString() : docType);
 			attachmentDetails.setAttachmentType(attachmentType);
 			attachmentDetails.setUser(user);
 			attachmentDetails = attachmentDetailsRepository.save(attachmentDetails);
@@ -266,7 +267,8 @@ public class AttachmentServiceImpl implements AttachmentService {
 				AttachmentsDTO attachmentsDTO = new AttachmentsDTO();
 				attachmentsDTO.setDocumentSide(attachments.getDocumentSide());
 				try {
-					attachmentsDTO.setByteArray(storageService.getImage(attachments.getDocumentUrl(), retailerId));
+					attachmentsDTO
+							.setByteArray(storageService.getImage(attachments.getDocumentUrl(), retailerId, false));
 					attachmentsDTOs.add(attachmentsDTO);
 				} catch (Exception e) {
 					LOGGER.error("Exception while fetching images={},error={}", attachments.getDocumentUrl(),

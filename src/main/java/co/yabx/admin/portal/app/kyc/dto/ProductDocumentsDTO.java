@@ -26,6 +26,10 @@ public class ProductDocumentsDTO implements Serializable {
 
 	private Integer displayOrder;
 
+	private String documentType;
+
+	private String attachmentType;
+
 	public Long getId() {
 		return id;
 	}
@@ -88,6 +92,22 @@ public class ProductDocumentsDTO implements Serializable {
 
 	public void setDisplayOrder(Integer displayOrder) {
 		this.displayOrder = displayOrder;
+	}
+
+	public String getDocumentType() {
+		return documentType;
+	}
+
+	public void setDocumentType(String documentType) {
+		this.documentType = documentType;
+	}
+
+	public String getAttachmentType() {
+		return attachmentType;
+	}
+
+	public void setAttachmentType(String attachmentType) {
+		this.attachmentType = attachmentType;
 	}
 
 }

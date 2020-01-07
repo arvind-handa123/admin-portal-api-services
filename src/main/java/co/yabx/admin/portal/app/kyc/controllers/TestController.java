@@ -48,7 +48,7 @@ public class TestController {
 		User user = userService.getRetailerById(retailerId);
 		try {
 			String filename = storageService.uploadImage(files, user.getId(), true);
-			AttachmentDetails attachmentDetails = attachmentService.persistInDb(user, files, filename, true);
+			AttachmentDetails attachmentDetails = attachmentService.persistInDb(user, files, filename, true, null);
 			if (attachmentDetails != null)
 				return new ResponseEntity<>(files, HttpStatus.OK);
 			else {

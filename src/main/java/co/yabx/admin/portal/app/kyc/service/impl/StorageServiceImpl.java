@@ -43,7 +43,6 @@ public class StorageServiceImpl implements StorageService {
 		String extension = FilenameUtils.getExtension(file.getOriginalFilename());
 		File convFile = new File(fileName);
 		String newFileName = System.currentTimeMillis() + "." + extension;
-		;
 		String path = null;
 		if (isDisclaimerDoc) {
 			path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/root/kyc/") + retailerId + "/"
@@ -69,10 +68,16 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	@Override
-	public byte[] getImage(String filename, Long retailerId) {
+	public byte[] getImage(String filename, Long retailerId, boolean isDisclaimerDoc) {
 		try {
-			String path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/root/kyc/") + retailerId + "/"
-					+ filename;
+			String path = null;
+			if (isDisclaimerDoc) {
+				path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/root/kyc/") + retailerId + "/"
+						+ "disclaimer/" + filename;
+			} else {
+				path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/root/kyc/") + retailerId + "/"
+						+ filename;
+			}
 			File file = new File(path);
 			BufferedImage image = ImageIO.read(file);
 			String extension = FilenameUtils.getExtension(path);

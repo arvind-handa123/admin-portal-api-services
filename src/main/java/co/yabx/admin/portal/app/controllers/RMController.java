@@ -180,12 +180,16 @@ public class RMController {
 					filename);
 			if (filename != null && !filename.isEmpty()) {
 				if (filename != null && !filename.isEmpty()) {
-					// if documents has been signed and uploaded under retailer, then pick from
-					// retailer directory
-					byte[] doc = storageService.getImage(filename, retailerId);
+					/*
+					 * if documents has been signed and uploaded under retailer, then pick from
+					 * retailer directory
+					 */
+					byte[] doc = storageService.getImage(filename, retailerId, true);
 					if (doc == null || doc.length == 0)
-						// if documents has not been signed and uploaded under retailer, then pick from
-						// disclaimer document directory
+						/*
+						 * if documents has not been signed and uploaded under retailer, then pick from
+						 * disclaimer document directory
+						 */
 						return new ResponseEntity<>(storageService.getDisclaimerDocuments(filename), HttpStatus.OK);
 					else
 						return new ResponseEntity<>(doc, HttpStatus.OK);
@@ -209,7 +213,7 @@ public class RMController {
 					username, filename);
 			try {
 				if (filename != null && !filename.isEmpty()) {
-					return new ResponseEntity<>(storageService.getImage(filename, retailerId), HttpStatus.OK);
+					return new ResponseEntity<>(storageService.getImage(filename, retailerId, false), HttpStatus.OK);
 				} else {
 					return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 				}
@@ -227,16 +231,17 @@ public class RMController {
 
 	@RequestMapping(value = "/rm/upload/image", method = RequestMethod.POST)
 	public ResponseEntity<?> uploadImage(@RequestParam("username") String username,
-			@RequestParam("retailerId") Long retailerId, @RequestParam("files") MultipartFile files,
-			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
+			@RequestParam("retailerId") Long retailerId, @RequestParam("documentType") String documentType,
+			@RequestParam("files") MultipartFile files, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse) throws Exception {
 		if (authInfoService.isAuthorizedByUsername(username, httpServletRequest, httpServletResponse)) {
 			LOGGER.info("/rm/upload/image request recieved for retailer={}, username={}, file={}", retailerId, username,
 					files != null ? files.getOriginalFilename() : null);
 			User user = userService.getRetailerById(retailerId);
 			if (user != null) {
-				String filename = storageService.uploadImage(files, retailerId, false);
+				String filename = storageService.uploadImage(files, retailerId, true);
 				try {
-					AttachmentDetails attachmentDetails = attachmentService.persistInDb(user, files, filename, false);
+					AttachmentDetails attachmentDetails = attachmentService.persistInDb(user, files, filename, false,documentType);
 					if (attachmentDetails != null)
 						return new ResponseEntity<>(HttpStatus.OK);
 					else {

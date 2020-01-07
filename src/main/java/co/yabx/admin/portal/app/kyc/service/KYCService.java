@@ -4,7 +4,7 @@ import java.util.List;
 
 import co.yabx.admin.portal.app.enums.KycStatus;
 import co.yabx.admin.portal.app.kyc.dto.PagesDTO;
-import co.yabx.admin.portal.app.kyc.dto.ProductDocumentsDTO;
+import co.yabx.admin.portal.app.kyc.dto.UserDisclaimerDocumentsDTO;
 import co.yabx.admin.portal.app.kyc.entities.AccountStatuses;
 
 /**
@@ -20,6 +20,6 @@ public interface KYCService {
 
 	AccountStatuses updateKycStatus(String msisdn, String username, KycStatus approved);
 
-	List<ProductDocumentsDTO> getDisclaimerDocuments(String msisdn, String username);
+	UserDisclaimerDocumentsDTO getDisclaimerDocuments(String msisdn, String username);
 
 }

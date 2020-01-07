@@ -3,6 +3,7 @@ package co.yabx.admin.portal.app.kyc.service.impl;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -18,9 +19,11 @@ import co.yabx.admin.portal.app.enums.Relationship;
 import co.yabx.admin.portal.app.enums.UserType;
 import co.yabx.admin.portal.app.kyc.dto.PagesDTO;
 import co.yabx.admin.portal.app.kyc.dto.ProductDocumentsDTO;
+import co.yabx.admin.portal.app.kyc.dto.UserDisclaimerDocumentsDTO;
 import co.yabx.admin.portal.app.kyc.entities.AccountStatuses;
 import co.yabx.admin.portal.app.kyc.entities.AddressDetails;
 import co.yabx.admin.portal.app.kyc.entities.AttachmentDetails;
+import co.yabx.admin.portal.app.kyc.entities.Attachments;
 import co.yabx.admin.portal.app.kyc.entities.BankAccountDetails;
 import co.yabx.admin.portal.app.kyc.entities.BusinessDetails;
 import co.yabx.admin.portal.app.kyc.entities.FieldRemarks;
@@ -158,7 +161,21 @@ public class KYCServiceImpl implements KYCService {
 	}
 
 	@Override
-	public List<ProductDocumentsDTO> getDisclaimerDocuments(String msisdn, String username) {
+	public UserDisclaimerDocumentsDTO getDisclaimerDocuments(String msisdn, String username) {
+		UserDisclaimerDocumentsDTO disclaimerDocumentsDTO = null;
+		User user = userRepository.findBymsisdn(msisdn);
+		if (user != null) {
+			disclaimerDocumentsDTO = new UserDisclaimerDocumentsDTO();
+			disclaimerDocumentsDTO.setUserId(user.getId());
+			disclaimerDocumentsDTO.setMsisdn(msisdn);
+			disclaimerDocumentsDTO.setDisclaimerDocuments(getUserDisclaimerDocuments(user, disclaimerDocumentsDTO));
+		}
+		return disclaimerDocumentsDTO;
+	}
+
+	private List<ProductDocumentsDTO> getUserDisclaimerDocuments(User user,
+			UserDisclaimerDocumentsDTO disclaimerDocumentsDTO) {
+		Set<AttachmentDetails> attachmentDetailsSet = user.getAttachmentDetails();
 		List<ProductDocuments> productDocuments = productDocumentsRepository.findByProductName(ProductName.KYC);
 		List<ProductDocumentsDTO> productDocumentsDTOs = new ArrayList<ProductDocumentsDTO>();
 		for (ProductDocuments documents : productDocuments) {
@@ -166,10 +183,38 @@ public class KYCServiceImpl implements KYCService {
 			productDocumentsDTO.setDisplayOrder(documents.getDisplayOrder());
 			productDocumentsDTO.setDocumentFor(documents.getDocumentFor());
 			productDocumentsDTO.setDocumentName(documents.getDocumentName());
-			productDocumentsDTO.setFileName(documents.getFileName());
+			productDocumentsDTO.setAttachmentType(
+					documents.getAttachmentType() != null ? documents.getAttachmentType().toString() : null);
+			productDocumentsDTO.setDocumentType(documents.getDocumentType());
+			setFileName(productDocumentsDTO, disclaimerDocumentsDTO, attachmentDetailsSet, documents);
 			productDocumentsDTOs.add(productDocumentsDTO);
 		}
 		return productDocumentsDTOs;
+	}
+
+	private void setFileName(ProductDocumentsDTO productDocumentsDTO, UserDisclaimerDocumentsDTO disclaimerDocumentsDTO,
+			Set<AttachmentDetails> attachmentDetailsSet, ProductDocuments documents) {
+		Optional<AttachmentDetails> optional = attachmentDetailsSet.stream()
+				.filter(f -> f.getDocumentType().equalsIgnoreCase(documents.getDocumentType())).findFirst();
+		if (optional.isPresent()) {
+			AttachmentDetails attachmentDetails = optional.get();
+			if (attachmentDetails != null) {
+				Set<Attachments> attachments = attachmentDetails.getAttachments();
+				Optional<Attachments> optionalAttachments = attachments.stream().findFirst();
+				if (optionalAttachments.isPresent()) {
+					productDocumentsDTO.setFileName(optionalAttachments.get().getDocumentUrl());
+				} else {
+					productDocumentsDTO.setFileName(documents.getFileName());
+					disclaimerDocumentsDTO.setDisclaimerDocRecieved(false);
+				}
+			} else {
+				productDocumentsDTO.setFileName(documents.getFileName());
+				disclaimerDocumentsDTO.setDisclaimerDocRecieved(false);
+			}
+		} else {
+			productDocumentsDTO.setFileName(documents.getFileName());
+			disclaimerDocumentsDTO.setDisclaimerDocRecieved(false);
+		}
 	}
 
 }
