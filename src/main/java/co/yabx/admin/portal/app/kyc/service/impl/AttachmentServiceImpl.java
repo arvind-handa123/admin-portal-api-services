@@ -100,7 +100,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 				attachmentDetails = attachmentDetailsRepository.findByUserAndDocumentTypeAndAttachmentType(user,
 						documentType, attachmentType);
 			} else
-				attachmentDetails = attachmentDetailsRepository.findByUserAndDocumentType(user, documentType);
+				attachmentDetails = attachmentDetailsRepository.findByUserAndDocumentType(user, documentType.name());
 			if (attachmentDetails == null) {
 				attachmentDetails = new AttachmentDetails();
 				isNew = true;
@@ -154,7 +154,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 			return attachmentDetails;
 		} else {
 			documentType = DocumentType.valueOf(docType);
-			attachmentDetails = getDisclaimerAttachement(user, documentType);
+			attachmentDetails = getDisclaimerAttachement(user, documentType != null ? documentType.name() : docType);
 			if (attachmentDetails != null) {
 				Set<Attachments> attachmentsSet = attachmentDetails.getAttachments();
 				attachmentsSet.clear();
@@ -168,7 +168,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 			attachments.setDocumentUrl(saveFileName);
 			attachmentList.add(attachments);
 			attachmentDetails.setAttachments(attachmentList);
-			attachmentDetails.setDocumentType(documentType != null ? documentType.toString() : docType);
+			attachmentDetails.setDocumentType(documentType != null ? documentType.name() : docType);
 			attachmentDetails.setAttachmentType(attachmentType);
 			attachmentDetails.setUser(user);
 			attachmentDetails = attachmentDetailsRepository.save(attachmentDetails);
@@ -177,7 +177,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 
 	}
 
-	private AttachmentDetails getDisclaimerAttachement(User user, DocumentType documentType) {
+	private AttachmentDetails getDisclaimerAttachement(User user, String documentType) {
 		return attachmentDetailsRepository.findByUserAndDocumentType(user, documentType);
 
 	}
@@ -186,7 +186,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 	public AttachmentDetails persistDsrProfilePicInDb(User user, MultipartFile files, String saveFileName) {
 		if (user != null) {
 			AttachmentDetails attachmentDetails = attachmentDetailsRepository.findByUserAndDocumentType(user,
-					DocumentType.PROFILE_PIC);
+					DocumentType.PROFILE_PIC.name());
 			Set<Attachments> attachmentsSet = null;
 			if (attachmentDetails != null) {
 				attachmentsSet = attachmentDetails.getAttachments();
@@ -210,7 +210,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 	@Override
 	public String fetchDsrProfilePic(User user) {
 		AttachmentDetails attachmentDetails = attachmentDetailsRepository.findByUserAndDocumentType(user,
-				DocumentType.PROFILE_PIC);
+				DocumentType.PROFILE_PIC.name());
 		if (attachmentDetails != null) {
 			Set<Attachments> attachments = attachmentDetails.getAttachments();
 			if (attachments != null && !attachments.isEmpty()) {

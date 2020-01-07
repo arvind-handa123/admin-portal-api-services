@@ -13,7 +13,7 @@ import co.yabx.admin.portal.app.kyc.entities.User;
 @Repository("attachmentDetailsRepository")
 public interface AttachmentDetailsRepository extends CrudRepository<AttachmentDetails, Long> {
 
-	AttachmentDetails findByUserAndDocumentType(User user, DocumentType documentType);
+	AttachmentDetails findByUserAndDocumentType(User user, String documentType);
 
 	List<AttachmentDetails> findByUser(User user);
 
