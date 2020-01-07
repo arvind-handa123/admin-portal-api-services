@@ -22,8 +22,6 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import co.yabx.admin.portal.app.enums.AttachmentType;
-import co.yabx.admin.portal.app.enums.DocumentType;
-
 
 /**
  * 
@@ -55,8 +53,7 @@ public class AttachmentDetails implements Serializable {
 	private String documentNumber;
 
 	@Column(name = "document_type", length = 100, columnDefinition = "varchar(32) ")
-	@Enumerated(value = EnumType.STRING)
-	private DocumentType documentType;
+	private String documentType;
 
 	@Column(name = "attachment_type", length = 100, columnDefinition = "varchar(32) ")
 	@Enumerated(value = EnumType.STRING)
@@ -165,11 +162,11 @@ public class AttachmentDetails implements Serializable {
 		this.placeOfIssue = placeOfIssue;
 	}
 
-	public DocumentType getDocumentType() {
+	public String getDocumentType() {
 		return documentType;
 	}
 
-	public void setDocumentType(DocumentType documentType) {
+	public void setDocumentType(String documentType) {
 		this.documentType = documentType;
 	}
 

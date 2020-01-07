@@ -132,7 +132,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 				attachments.setDocumentUrl(saveFileName);
 				attachmentList.add(attachments);
 				attachmentDetails.setAttachments(attachmentList);
-				attachmentDetails.setDocumentType(documentType);
+				attachmentDetails.setDocumentType(documentType != null ? documentType.toString() : null);
 				attachmentDetails.setAttachmentType(attachmentType);
 				attachmentDetails.setUser(user);
 				attachmentDetails = attachmentDetailsRepository.save(attachmentDetails);
@@ -143,7 +143,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 					attachments.setDocumentSide(documentSide);
 				}
 				attachments.setDocumentUrl(saveFileName);
-				//attachments.setAttachmentDetails(attachmentDetails);
+				// attachments.setAttachmentDetails(attachmentDetails);
 				attachmentsRepository.save(attachments);
 			} else {
 				attachments.setDocumentUrl(saveFileName);
@@ -160,7 +160,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 						.filter(f -> saveFileName.equalsIgnoreCase(f.getDocumentUrl())).findFirst();
 				if (optional.isPresent())
 					attachments = optional.get();
-			}else {
+			} else {
 				attachmentDetails = new AttachmentDetails();
 				attachments = new Attachments();
 			}
@@ -170,7 +170,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 			attachments.setDocumentUrl(saveFileName);
 			attachmentList.add(attachments);
 			attachmentDetails.setAttachments(attachmentList);
-			attachmentDetails.setDocumentType(documentType);
+			attachmentDetails.setDocumentType(documentType != null ? documentType.toString() : null);
 			attachmentDetails.setAttachmentType(attachmentType);
 			attachmentDetails.setUser(user);
 			attachmentDetails = attachmentDetailsRepository.save(attachmentDetails);
@@ -204,7 +204,7 @@ public class AttachmentServiceImpl implements AttachmentService {
 				attachmentsSet.clear();
 			} else {
 				attachmentDetails = new AttachmentDetails();
-				attachmentDetails.setDocumentType(DocumentType.PROFILE_PIC);
+				attachmentDetails.setDocumentType(DocumentType.PROFILE_PIC.toString());
 				attachmentsSet = new HashSet<Attachments>();
 			}
 			Attachments attachments = new Attachments();

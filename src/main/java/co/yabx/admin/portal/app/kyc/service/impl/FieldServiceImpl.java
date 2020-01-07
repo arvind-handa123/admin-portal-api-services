@@ -451,7 +451,7 @@ public class FieldServiceImpl implements FieldService {
 			FieldsDTO appDynamicFieldsDTO) {
 		Set<Attachments> attachmentsSet = new HashSet<Attachments>();
 		addAttachement(null, appDynamicFieldsDTO.getResponse(), attachmentsSet);
-		attachmentDetails.setDocumentType(documentType);
+		attachmentDetails.setDocumentType(documentType != null ? documentType.toString() : null);
 		attachmentDetails.setAttachments(attachmentsSet);
 	}
 
@@ -461,7 +461,7 @@ public class FieldServiceImpl implements FieldService {
 		if (documentType != null) {
 			List<SubFieldsDTO> subFieldsDTOList = appDynamicFieldsDTO.getSubFields();
 			attachmentDetails.setAttachments(getAttachmentsSet(subFieldsDTOList));
-			attachmentDetails.setDocumentType(documentType);
+			attachmentDetails.setDocumentType(documentType != null ? documentType.toString() : null);
 			attachmentDetailsSet.add(attachmentDetails);
 		}
 	}
