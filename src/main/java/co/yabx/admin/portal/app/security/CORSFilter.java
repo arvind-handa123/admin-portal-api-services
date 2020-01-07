@@ -21,7 +21,7 @@ public class CORSFilter extends GenericFilterBean implements Filter {
 		response.setHeader("Access-Control-Allow-Methods", "*");
 		response.setHeader("Access-Control-Allow-Headers", "*");
 		response.setHeader("Access-Control-Max-Age", "3600");
-		response.setHeader("Access-Control-Allow-Credentials", "false");
+		response.setHeader("Access-Control-Allow-Credentials", "true");
 		chain.doFilter(servletRequest, servletResponse);
 
 	}
