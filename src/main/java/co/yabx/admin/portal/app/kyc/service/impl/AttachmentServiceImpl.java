@@ -154,13 +154,10 @@ public class AttachmentServiceImpl implements AttachmentService {
 			return attachmentDetails;
 		} else {
 			documentType = DocumentType.valueOf(docType);
-			attachmentDetails = getDisclaimerAttachement(user, attachmentType, saveFileName);
+			attachmentDetails = getDisclaimerAttachement(user, documentType);
 			if (attachmentDetails != null) {
 				Set<Attachments> attachmentsSet = attachmentDetails.getAttachments();
-				Optional<Attachments> optional = attachmentsSet.stream()
-						.filter(f -> saveFileName.equalsIgnoreCase(f.getDocumentUrl())).findFirst();
-				if (optional.isPresent())
-					attachments = optional.get();
+				attachmentsSet.clear();
 			} else {
 				attachmentDetails = new AttachmentDetails();
 				attachments = new Attachments();
@@ -180,18 +177,9 @@ public class AttachmentServiceImpl implements AttachmentService {
 
 	}
 
-	private AttachmentDetails getDisclaimerAttachement(User user, AttachmentType attachmentType, String fileName) {
-		List<AttachmentDetails> attachmentDetailsList = attachmentDetailsRepository.findByUserAndAttachmentType(user,
-				attachmentType);
-		for (AttachmentDetails details : attachmentDetailsList) {
-			for (Attachments attachment : details.getAttachments()) {
-				String attachmentFilename = attachment.getDocumentUrl();
-				if (fileName.equalsIgnoreCase(attachmentFilename)) {
-					return details;
-				}
-			}
-		}
-		return null;
+	private AttachmentDetails getDisclaimerAttachement(User user, DocumentType documentType) {
+		return attachmentDetailsRepository.findByUserAndDocumentType(user, documentType);
+
 	}
 
 	@Override
