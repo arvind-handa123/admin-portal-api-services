@@ -38,17 +38,21 @@ public class StorageServiceImpl implements StorageService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(StorageServiceImpl.class);
 
 	@Override
-	public String uploadImage(MultipartFile file, Long retailerId, boolean createFileName) throws Exception {
+	public String uploadImage(MultipartFile file, Long retailerId, boolean isDisclaimerDoc) throws Exception {
 		String fileName = file.getOriginalFilename().replaceAll(" ", "_");
 		String extension = FilenameUtils.getExtension(file.getOriginalFilename());
 		File convFile = new File(fileName);
-		String newFileName = null;
-		if (createFileName)
-			newFileName = System.currentTimeMillis() + "." + extension;
-		else
-			newFileName = fileName;
-		String path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/root/kyc/") + retailerId + "/"
-				+ newFileName;
+		String newFileName = System.currentTimeMillis() + "." + extension;
+		;
+		String path = null;
+		if (isDisclaimerDoc) {
+			path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/root/kyc/") + retailerId + "/"
+					+ "disclaimer/" + newFileName;
+		} else {
+			path = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/root/kyc/") + retailerId + "/"
+					+ newFileName;
+		}
+
 		convFile.createNewFile();
 		try (FileOutputStream fos = new FileOutputStream(convFile)) {
 			fos.write(file.getBytes());
