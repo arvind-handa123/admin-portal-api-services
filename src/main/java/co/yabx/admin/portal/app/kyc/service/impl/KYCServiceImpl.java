@@ -161,16 +161,24 @@ public class KYCServiceImpl implements KYCService {
 	}
 
 	@Override
-	public UserDisclaimerDocumentsDTO getDisclaimerDocuments(String msisdn, String username) {
-		UserDisclaimerDocumentsDTO disclaimerDocumentsDTO = null;
+	public UserDisclaimerDocumentsDTO getDisclaimerDocuments(String msisdn) {
 		User user = userRepository.findBymsisdn(msisdn);
 		if (user != null) {
-			disclaimerDocumentsDTO = new UserDisclaimerDocumentsDTO();
-			disclaimerDocumentsDTO.setUserId(user.getId());
-			disclaimerDocumentsDTO.setMsisdn(msisdn);
-			disclaimerDocumentsDTO.setDisclaimerDocuments(getUserDisclaimerDocuments(user, disclaimerDocumentsDTO));
+			return getDisclaimerDocuments(user);
 		}
-		return disclaimerDocumentsDTO;
+		return null;
+	}
+
+	@Override
+	public UserDisclaimerDocumentsDTO getDisclaimerDocuments(User user) {
+		if (user != null) {
+			UserDisclaimerDocumentsDTO disclaimerDocumentsDTO = new UserDisclaimerDocumentsDTO();
+			disclaimerDocumentsDTO.setUserId(user.getId());
+			disclaimerDocumentsDTO.setMsisdn(user.getMsisdn());
+			disclaimerDocumentsDTO.setDisclaimerDocuments(getUserDisclaimerDocuments(user, disclaimerDocumentsDTO));
+			return disclaimerDocumentsDTO;
+		}
+		return null;
 	}
 
 	private List<ProductDocumentsDTO> getUserDisclaimerDocuments(User user,

@@ -6,6 +6,7 @@ import co.yabx.admin.portal.app.enums.KycStatus;
 import co.yabx.admin.portal.app.kyc.dto.PagesDTO;
 import co.yabx.admin.portal.app.kyc.dto.UserDisclaimerDocumentsDTO;
 import co.yabx.admin.portal.app.kyc.entities.AccountStatuses;
+import co.yabx.admin.portal.app.kyc.entities.User;
 
 /**
  * 
@@ -20,6 +21,8 @@ public interface KYCService {
 
 	AccountStatuses updateKycStatus(String msisdn, String username, KycStatus approved);
 
-	UserDisclaimerDocumentsDTO getDisclaimerDocuments(String msisdn, String username);
+	UserDisclaimerDocumentsDTO getDisclaimerDocuments(String msisdn);
+
+	UserDisclaimerDocumentsDTO getDisclaimerDocuments(User user);
 
 }

@@ -163,7 +163,7 @@ public class RMController {
 		LOGGER.info("/rm/kyc/documents/disclaimer request received for msisdn={},username={}", msisdn, username);
 		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.getDisclaimerDocuments(msisdn, username), HttpStatus.OK);
+			return new ResponseEntity<>(kycService.getDisclaimerDocuments(msisdn), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
@@ -241,9 +241,10 @@ public class RMController {
 			if (user != null) {
 				String filename = storageService.uploadImage(files, retailerId, true);
 				try {
-					AttachmentDetails attachmentDetails = attachmentService.persistInDb(user, files, filename, false,documentType);
+					AttachmentDetails attachmentDetails = attachmentService.persistInDb(user, files, filename, false,
+							documentType);
 					if (attachmentDetails != null)
-						return new ResponseEntity<>(HttpStatus.OK);
+						return new ResponseEntity<>(kycService.getDisclaimerDocuments(user), HttpStatus.OK);
 					else {
 						return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 					}
