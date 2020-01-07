@@ -80,12 +80,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return source;
 	}
 
-	/*
-	 * @Bean public WebMvcConfigurer corsConfigurer() { return new
-	 * WebMvcConfigurer() {
-	 * 
-	 * @Override public void addCorsMappings(CorsRegistry registry) {
-	 * registry.addMapping("/greeting-javaconfig").allowedOrigins(
-	 * "http://kyc.yabx.co:8082"); } }; }
-	 */
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/v1").allowedOrigins("http://kyc.yabx.co:8082");
+			}
+		};
+	}
 }
