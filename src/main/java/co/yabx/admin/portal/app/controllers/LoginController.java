@@ -23,7 +23,7 @@ import co.yabx.admin.portal.app.kyc.service.StorageService;
 import co.yabx.admin.portal.app.service.AdminPortalService;
 
 @RestController
-@CrossOrigin(origins = "http://kyc.yabx.co:8082")
+@CrossOrigin(origins = "http://kyc.yabx.co:4200")
 @RequestMapping(value = "/v1")
 public class LoginController {
 
