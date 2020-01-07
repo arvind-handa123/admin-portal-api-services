@@ -21,6 +21,8 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
@@ -77,4 +79,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
 	}
+
+	/*
+	 * @Bean public WebMvcConfigurer corsConfigurer() { return new
+	 * WebMvcConfigurer() {
+	 * 
+	 * @Override public void addCorsMappings(CorsRegistry registry) {
+	 * registry.addMapping("/greeting-javaconfig").allowedOrigins(
+	 * "http://kyc.yabx.co:8082"); } }; }
+	 */
 }
