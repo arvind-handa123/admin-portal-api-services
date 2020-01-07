@@ -39,6 +39,11 @@ public class AuthenticationFilter extends AbstractAuthenticationProcessingFilter
 	@Override
 	protected void successfulAuthentication(final HttpServletRequest request, final HttpServletResponse response,
 			final FilterChain chain, final Authentication authResult) throws IOException, ServletException {
+		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		response.setHeader("Access-Control-Allow-Credentials", "true");
+		response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+		response.setHeader("Access-Control-Max-Age", "3600");
+		response.setHeader("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, remember-me");
 		SecurityContextHolder.getContext().setAuthentication(authResult);
 		chain.doFilter(request, response);
 	}
