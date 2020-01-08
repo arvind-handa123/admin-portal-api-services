@@ -30,9 +30,9 @@ public class GroupsDTO implements Serializable, Comparable<GroupsDTO> {
 
 	private Integer displayOrder;
 
-	private boolean visible;
+	private Boolean visible;
 
-	private boolean mandatoryFieldReceived;
+	private Boolean mandatoryFieldReceived;
 
 	public Date getCreatedAt() {
 		return createdAt;
@@ -121,19 +121,19 @@ public class GroupsDTO implements Serializable, Comparable<GroupsDTO> {
 		this.displayOrder = displayOrder;
 	}
 
-	public boolean isVisible() {
+	public Boolean isVisible() {
 		return visible;
 	}
 
-	public void setVisible(boolean visible) {
+	public void setVisible(Boolean visible) {
 		this.visible = visible;
 	}
 
-	public boolean isMandatoryFieldReceived() {
+	public Boolean isMandatoryFieldReceived() {
 		return mandatoryFieldReceived;
 	}
 
-	public void setMandatoryFieldReceived(boolean mandatoryFieldReceived) {
+	public void setMandatoryFieldReceived(Boolean mandatoryFieldReceived) {
 		this.mandatoryFieldReceived = mandatoryFieldReceived;
 	}
 

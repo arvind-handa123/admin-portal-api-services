@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import co.yabx.admin.portal.app.kyc.dto.FieldsDTO;
 import co.yabx.admin.portal.app.kyc.dto.Functionality;
 import co.yabx.admin.portal.app.kyc.dto.GroupsDTO;
+import co.yabx.admin.portal.app.kyc.dto.SectionsDTO;
 import co.yabx.admin.portal.app.kyc.dto.SubFieldsDTO;
 import co.yabx.admin.portal.app.kyc.entities.AddressDetails;
 import co.yabx.admin.portal.app.kyc.entities.BankAccountDetails;
@@ -176,6 +177,22 @@ public class GroupDtoHelper implements Serializable {
 		appDynamicFieldsDTO.setValidation(dynamicFields.getValidation());
 		appDynamicFieldsDTO.setDisplayOrder(dynamicFields.getDisplayOrder());
 		return appDynamicFieldsDTO;
+	}
+
+	public static List<GroupsDTO> getGroups(Set<co.yabx.admin.portal.app.admin.entities.Groups> groupSet) {
+		List<GroupsDTO> groupsDTOs = new ArrayList<GroupsDTO>();
+		for (co.yabx.admin.portal.app.admin.entities.Groups groups : groupSet) {
+			GroupsDTO groupsDTO = new GroupsDTO();
+			groupsDTO.setGroupId(groups.getGroupId());
+			groupsDTO.setGroupName(groups.getGroupName());
+			groupsDTO.setGroupTitle(groups.getGroupTitle());
+			groupsDTO.setDisplayOrder(groups.getDisplayOrder());
+			groupsDTO.setEnable(groups.isEnable());
+			groupsDTOs.add(groupsDTO);
+		}
+		return groupsDTOs.stream().sorted(Comparator.comparing(GroupsDTO::getDisplayOrder))
+				.collect(Collectors.toList());
+
 	}
 
 }

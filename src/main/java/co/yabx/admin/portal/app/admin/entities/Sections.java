@@ -2,7 +2,9 @@ package co.yabx.admin.portal.app.admin.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -50,6 +53,9 @@ public class Sections implements Serializable {
 
 	@Column(name = "display_order")
 	private Integer displayOrder;
+
+	@OneToMany(mappedBy = "sections", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	private Set<Groups> groups;
 
 	public String getSectionType() {
 		return sectionType;
@@ -132,6 +138,14 @@ public class Sections implements Serializable {
 
 	public void setPages(Pages pages) {
 		this.pages = pages;
+	}
+
+	public Set<Groups> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(Set<Groups> groups) {
+		this.groups = groups;
 	}
 
 }

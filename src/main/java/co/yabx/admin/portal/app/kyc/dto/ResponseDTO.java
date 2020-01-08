@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import co.yabx.admin.portal.app.admin.entities.ProductConfigurations;
 import co.yabx.admin.portal.app.enums.UserStatus;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -17,6 +16,7 @@ public class ResponseDTO implements Serializable {
 	private List<RetailersDTO> retailers;
 	private List<PagesDTO> retailerInfo;
 	private List<PagesDTO> dsrInfo;
+	private List<PagesDTO> menu;
 	private Map<String, String> authInfo;
 	private Integer totalCount;
 	private QuestionAnswerDTO questionAnswerDTO;
@@ -160,6 +160,14 @@ public class ResponseDTO implements Serializable {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public List<PagesDTO> getMenu() {
+		return menu;
+	}
+
+	public void setMenu(List<PagesDTO> menu) {
+		this.menu = menu;
 	}
 
 }

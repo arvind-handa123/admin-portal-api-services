@@ -59,22 +59,27 @@ public class SectionDtoHelper implements Serializable {
 	}
 
 	public static List<SectionsDTO> getSections(
-			Set<co.yabx.admin.portal.app.admin.entities.Sections> appPagesSectionsSet) {
+			Set<co.yabx.admin.portal.app.admin.entities.Sections> appPagesSectionsSet, boolean isKyc) {
 
 		List<SectionsDTO> appPagesSectionDTOSet = new ArrayList<SectionsDTO>();
 		for (co.yabx.admin.portal.app.admin.entities.Sections appPagesSections : appPagesSectionsSet) {
 			SectionsDTO appPagesSectionsDTO = new SectionsDTO();
-			KycStatus kycStatus = getKycStatus(appPagesSections.getSectionTitle());
-			if (kycStatus != null) {
-				appPagesSectionsDTO
-						.setPagesDTOs(SpringUtil.bean(KYCService.class).fetchRetailersByKycStatus(kycStatus));
-				appPagesSectionsDTO.setEnable(appPagesSections.isEnable());
-				appPagesSectionsDTO.setSectionId(appPagesSections.getSectionId());
-				appPagesSectionsDTO.setSectionName(appPagesSections.getSectionName());
-				appPagesSectionsDTO.setSectionTitle(appPagesSections.getSectionTitle());
-				appPagesSectionsDTO.setDisplayOrder(appPagesSections.getDisplayOrder());
-				appPagesSectionDTOSet.add(appPagesSectionsDTO);
+			if (isKyc) {
+				KycStatus kycStatus = getKycStatus(appPagesSections.getSectionTitle());
+				if (kycStatus != null) {
+					appPagesSectionsDTO
+							.setPagesDTOs(SpringUtil.bean(KYCService.class).fetchRetailersByKycStatus(kycStatus));
+				}
+			} else {
+				appPagesSectionsDTO.setGroups(GroupDtoHelper.getGroups(appPagesSections.getGroups()));
 			}
+			appPagesSectionsDTO.setEnable(appPagesSections.isEnable());
+			appPagesSectionsDTO.setSectionId(appPagesSections.getSectionId());
+			appPagesSectionsDTO.setSectionName(appPagesSections.getSectionName());
+			appPagesSectionsDTO.setSectionTitle(appPagesSections.getSectionTitle());
+			appPagesSectionsDTO.setDisplayOrder(appPagesSections.getDisplayOrder());
+			appPagesSectionDTOSet.add(appPagesSectionsDTO);
+
 		}
 
 		return appPagesSectionDTOSet;

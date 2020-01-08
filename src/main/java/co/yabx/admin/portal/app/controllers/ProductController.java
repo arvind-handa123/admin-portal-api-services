@@ -1,5 +1,7 @@
 package co.yabx.admin.portal.app.controllers;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.yabx.admin.portal.app.admin.entities.ProductConfigurations;
+import co.yabx.admin.portal.app.kyc.dto.PagesDTO;
+import co.yabx.admin.portal.app.kyc.dto.ResponseDTO;
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.AuthInfoService;
 import co.yabx.admin.portal.app.kyc.service.FieldRemarkService;
@@ -92,4 +96,30 @@ public class ProductController {
 
 	}
 
+	@RequestMapping(value = "/products/pages", method = RequestMethod.GET)
+	public ResponseEntity<?> pages(@RequestParam("productId") Long productId,
+			@RequestParam(value = "username", required = true) String username, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse) {
+		if (authInfoService.isAuthorizedByUsername(username, httpServletRequest, httpServletResponse)) {
+			ResponseDTO statusDto = new ResponseDTO();
+			try {
+				List<PagesDTO> pages = adminPortalService.fetchProductDetails(productId);
+				if (pages != null && !pages.isEmpty()) {
+					statusDto.setMenu(pages);
+					statusDto.setStatusCode("200");
+					statusDto.setMessage("SUCCESS");
+					return new ResponseEntity<>(statusDto, HttpStatus.OK);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOGGER.error("Exception raised while redaing pages for product={},error={}", productId, e.getMessage());
+				statusDto.setStatusCode("501");
+				statusDto.setMessage(e.getMessage());
+				return new ResponseEntity<>(statusDto, HttpStatus.OK);
+			}
+			return new ResponseEntity<>(statusDto, HttpStatus.OK);
+		}
+		return new ResponseEntity<>("Invalid authentication", HttpStatus.UNAUTHORIZED);
+
+	}
 }

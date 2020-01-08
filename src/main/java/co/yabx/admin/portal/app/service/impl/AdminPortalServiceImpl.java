@@ -27,6 +27,8 @@ import co.yabx.admin.portal.app.cache.RedisRepository;
 import co.yabx.admin.portal.app.dto.LoginDto;
 import co.yabx.admin.portal.app.dto.dtoHelper.DsrDtoHelper;
 import co.yabx.admin.portal.app.dto.dtoHelper.PagesDTOHeper;
+import co.yabx.admin.portal.app.enums.PageType;
+import co.yabx.admin.portal.app.enums.ProductName;
 import co.yabx.admin.portal.app.kyc.dto.PagesDTO;
 import co.yabx.admin.portal.app.kyc.dto.ResponseDTO;
 import co.yabx.admin.portal.app.kyc.entities.AuthInfo;
@@ -59,9 +61,14 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 		Optional<ProductConfigurations> productConfigurations = productConfigurationRepository.findById(productId);
 		List<PagesDTO> appPagesDTOList = new ArrayList<PagesDTO>();
 		if (productConfigurations.isPresent()) {
-			List<Pages> appPages = pagesRepository.findByProductConfig(productConfigurations.get());
+			ProductConfigurations configurations = productConfigurations.get();
+			List<Pages> appPages = pagesRepository.findByProductConfig(configurations);
 			for (Pages pages : appPages) {
-				appPagesDTOList.add(PagesDTOHeper.prepareAppPagesDto(pages));
+				if (ProductName.KYC.equals(configurations.getProductName())) {
+					appPagesDTOList.add(PagesDTOHeper.prepareKycPagesDto(pages));
+				} else {
+					appPagesDTOList.add(PagesDTOHeper.prepareAirtelPagesDto(pages));
+				}
 			}
 			return appPagesDTOList;
 		}

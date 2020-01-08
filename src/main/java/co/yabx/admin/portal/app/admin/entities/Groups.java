@@ -12,10 +12,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import co.yabx.admin.portal.app.admin.entities.filter.SubGroups;
 
 /**
  * The persistent class for the Question database table.
@@ -54,6 +53,9 @@ public class Groups implements Serializable {
 
 	@Column(name = "display_order")
 	private Integer displayOrder;
+
+	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Sections.class)
+	private Sections sections;
 
 	public Integer getDisplayOrder() {
 		return displayOrder;
@@ -125,6 +127,14 @@ public class Groups implements Serializable {
 
 	public void setTotalFields(Integer totalFields) {
 		this.totalFields = totalFields;
+	}
+
+	public Sections getSections() {
+		return sections;
+	}
+
+	public void setSections(Sections sections) {
+		this.sections = sections;
 	}
 
 	@Override
