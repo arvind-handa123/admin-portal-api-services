@@ -2,17 +2,15 @@ package co.yabx.admin.portal.app.admin.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.Index;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -20,7 +18,7 @@ import javax.persistence.Table;
 import co.yabx.admin.portal.app.enums.ProductName;
 
 @Entity
-@Table(name = "product_configs")
+@Table(name = "product_configs", indexes = { @Index(name = "active", columnList = "active") })
 public class ProductConfigurations implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -33,16 +31,21 @@ public class ProductConfigurations implements Serializable {
 	@Enumerated(value = EnumType.STRING)
 	private ProductName productName;
 
-	private String region;
+	@Column(name = "title", length = 100, columnDefinition = "varchar(100)")
+	private String title;
 
-	@OneToMany(mappedBy = "productConfig", fetch = FetchType.EAGER)
-	private Set<Pages> pages;
+	private String region;
 
 	@Column(name = "created_at")
 	private Date createdAt;
 
 	@Column(name = "updated_at")
 	private Date updatedAt;
+
+	@Column(name = "active", columnDefinition = "boolean default true")
+	private boolean active;
+
+	private String icon;
 
 	public Date getCreatedAt() {
 		return createdAt;
@@ -99,16 +102,39 @@ public class ProductConfigurations implements Serializable {
 		this.region = region;
 	}
 
-	public Set<Pages> getPages() {
-		return pages;
-	}
-
-	public void setPages(Set<Pages> pages) {
-		this.pages = pages;
-	}
-
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	@Override
+	public String toString() {
+		return "ProductConfigurations [id=" + id + ", productName=" + productName + ", title=" + title + ", region="
+				+ region + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + ", icon="
+				+ icon + "]";
 	}
 
 }

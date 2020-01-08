@@ -9,5 +9,4 @@ public interface StorageService {
 	byte[] getImage(String filename, Long userId, boolean isDisclaimerDocuments);
 
 	byte[] getDisclaimerDocuments(String filename);
-
 }

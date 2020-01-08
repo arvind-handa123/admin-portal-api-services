@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import co.yabx.admin.portal.app.admin.entities.ProductConfigurations;
 import co.yabx.admin.portal.app.enums.UserStatus;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

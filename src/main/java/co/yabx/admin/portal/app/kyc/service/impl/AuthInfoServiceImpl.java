@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import co.yabx.admin.portal.app.cache.RedisRepository;
 import co.yabx.admin.portal.app.kyc.entities.AuthInfo;
 import co.yabx.admin.portal.app.kyc.repositories.AuthInfoRepository;
-import co.yabx.admin.portal.app.kyc.repositories.UserRepository;
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.AuthInfoService;
 import co.yabx.admin.portal.app.security.SecurityUtils;
@@ -51,7 +50,7 @@ public class AuthInfoServiceImpl implements AuthInfoService {
 	public Optional findByToken(String token) {
 		String decryptedToken = SecurityUtils.decript(token);
 		AuthInfo authInfo = null;
-		if (appConfigService.getBooleanProperty("IS_CACHING_ENABLED", false) && redisRepository != null)
+		if (appConfigService.getBooleanProperty("IS_CACHING_ENABLED", true) && redisRepository != null)
 			authInfo = redisRepository.findById("YABX_KYC_ACCESS_TOKEN", decryptedToken);
 		if (authInfo != null) {
 			// User user = userRepository.findByAuthInfo(authInfo);
@@ -87,7 +86,7 @@ public class AuthInfoServiceImpl implements AuthInfoService {
 			HttpServletResponse httpServletResponse) {
 		String token = httpServletRequest.getHeader("YABX_KYC_ACCESS_TOKEN");
 		AuthInfo authInfo = null;
-		if (appConfigService.getBooleanProperty("IS_CACHING_ENABLED", false) && redisRepository != null)
+		if (appConfigService.getBooleanProperty("IS_CACHING_ENABLED", true) && redisRepository != null)
 			authInfo = redisRepository.findById("YABX_KYC_ACCESS_TOKEN", token);
 		if (authInfo == null)
 			authInfo = findByYabxToken(token);

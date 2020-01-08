@@ -17,11 +17,11 @@ import javax.crypto.NoSuchPaddingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import co.yabx.admin.portal.app.admin.entities.Pages;
 import co.yabx.admin.portal.app.admin.entities.ProductConfigurations;
+import co.yabx.admin.portal.app.admin.repositories.PagesRepository;
 import co.yabx.admin.portal.app.admin.repositories.ProductConfigurationRepository;
 import co.yabx.admin.portal.app.cache.RedisRepository;
 import co.yabx.admin.portal.app.dto.LoginDto;
@@ -49,6 +49,8 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 	private RedisRepository redisRepository;
 	@Autowired
 	private AppConfigService appConfigService;
+	@Autowired
+	private PagesRepository pagesRepository;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminPortalServiceImpl.class);
 
@@ -57,7 +59,7 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 		Optional<ProductConfigurations> productConfigurations = productConfigurationRepository.findById(productId);
 		List<PagesDTO> appPagesDTOList = new ArrayList<PagesDTO>();
 		if (productConfigurations.isPresent()) {
-			Set<Pages> appPages = productConfigurations.get().getPages();
+			List<Pages> appPages = pagesRepository.findByProductConfig(productConfigurations.get());
 			for (Pages pages : appPages) {
 				appPagesDTOList.add(PagesDTOHeper.prepareAppPagesDto(pages));
 			}
@@ -106,6 +108,11 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 					e.getMessage());
 		}
 		return jsonResponse;
+	}
+
+	@Override
+	public Iterable<ProductConfigurations> fetchProducts() {
+		return productConfigurationRepository.findAll();
 	}
 
 }
