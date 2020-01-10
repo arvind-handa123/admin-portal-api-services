@@ -1,8 +1,10 @@
 package co.yabx.admin.portal.app.connect.service;
 
-import java.util.Iterator;
+import java.util.List;
+
+import co.yabx.admin.portal.app.kyc.dto.FieldsDTO;
 
 public interface EntityManagerService {
 
-	Iterator<?> executeQuery(String filename);
+	List<FieldsDTO> executeQuery(String filename);
 }

@@ -1,6 +1,8 @@
 package co.yabx.admin.portal.app.connect.service.impl;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -16,6 +18,7 @@ import co.yabx.admin.portal.app.admin.repositories.PagesRepository;
 import co.yabx.admin.portal.app.admin.repositories.ProductConfigurationRepository;
 import co.yabx.admin.portal.app.cache.RedisRepository;
 import co.yabx.admin.portal.app.connect.service.EntityManagerService;
+import co.yabx.admin.portal.app.kyc.dto.FieldsDTO;
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.AuthInfoService;
 
@@ -38,11 +41,28 @@ public class EntityManagerServiceImpl implements EntityManagerService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityManagerServiceImpl.class);
 
 	@Override
-	public Iterator<?> executeQuery(String filename) {
+	public List<FieldsDTO> executeQuery(String filename) {
 		String queryString = "SELECT cus.created_at as created_at,cus.msisdn as msisdn,cus.instruments_count as instruments_count,cus.customer_at as customer_at,cus.updated_at as updated_at FROM customers cus where cus.partner_id = 38 order by cus.id desc";
 		Query query = connectEntityManagerFactory.createNativeQuery(queryString);
 		Iterator<?> queryItr = query.getResultList().iterator();
-		return queryItr;
+		List<FieldsDTO> fieldsDTOList = new ArrayList<FieldsDTO>();
+		while (queryItr.hasNext()) {
+			Object[] tuple = (Object[]) queryItr.next();
+			FieldsDTO fieldsDTO = new FieldsDTO();
+			fieldsDTO.setFieldName("created_at");
+			fieldsDTO.setSavedData(tuple != null && tuple.length > 0 ? tuple[0] : null);
+			fieldsDTO.setFieldName("msisdn");
+			fieldsDTO.setSavedData(tuple != null && tuple.length > 1 ? tuple[1] : null);
+			fieldsDTO.setFieldName("instruments_count");
+			fieldsDTO.setSavedData(tuple != null && tuple.length > 2 ? tuple[2] : null);
+			fieldsDTO.setFieldName("customer_at");
+			fieldsDTO.setSavedData(tuple != null && tuple.length > 3 ? tuple[3] : null);
+			fieldsDTO.setFieldName("updated_at");
+			fieldsDTO.setSavedData(tuple != null && tuple.length > 4 ? tuple[4] : null);
+			fieldsDTOList.add(fieldsDTO);
+
+		}
+		return fieldsDTOList;
 	}
 
 }
