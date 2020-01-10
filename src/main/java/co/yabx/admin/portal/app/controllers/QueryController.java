@@ -51,7 +51,7 @@ public class QueryController {
 			@RequestParam(value = "filename", required = true) String filename, HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse) {
 		if (authInfoService.isAuthorizedByUsername(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(entityManagerService.getResult(filename), HttpStatus.OK);
+			return new ResponseEntity<>(entityManagerService.getFieldsDtoList(filename), HttpStatus.OK);
 		}
 		return new ResponseEntity<>("Invalid authentication", HttpStatus.UNAUTHORIZED);
 
