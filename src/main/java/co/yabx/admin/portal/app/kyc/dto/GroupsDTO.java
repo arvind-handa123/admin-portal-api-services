@@ -20,7 +20,7 @@ public class GroupsDTO implements Serializable, Comparable<GroupsDTO> {
 
 	private Date updatedAt;
 
-	private boolean enable;
+	private Boolean enable;
 
 	private Integer totalFields;
 
@@ -68,11 +68,11 @@ public class GroupsDTO implements Serializable, Comparable<GroupsDTO> {
 		this.groupTitle = groupTitle;
 	}
 
-	public boolean isEnable() {
+	public Boolean isEnable() {
 		return enable;
 	}
 
-	public void setEnable(boolean enable) {
+	public void setEnable(Boolean enable) {
 		this.enable = enable;
 	}
 

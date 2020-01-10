@@ -35,11 +35,11 @@ public class FieldsDTO implements Serializable {
 
 	private Date updatedAt;
 
-	private boolean camera;
+	private Boolean camera;
 
-	private boolean editable;
+	private Boolean editable;
 
-	private boolean mandatory;
+	private Boolean mandatory;
 
 	private String response;
 
@@ -111,19 +111,19 @@ public class FieldsDTO implements Serializable {
 		this.validation = validation;
 	}
 
-	public boolean isCamera() {
+	public Boolean isCamera() {
 		return camera;
 	}
 
-	public void setCamera(boolean camera) {
+	public void setCamera(Boolean camera) {
 		this.camera = camera;
 	}
 
-	public boolean isEditable() {
+	public Boolean isEditable() {
 		return editable;
 	}
 
-	public void setEditable(boolean editable) {
+	public void setEditable(Boolean editable) {
 		this.editable = editable;
 	}
 
@@ -151,11 +151,11 @@ public class FieldsDTO implements Serializable {
 		this.dataType = dataType;
 	}
 
-	public boolean isMandatory() {
+	public Boolean isMandatory() {
 		return mandatory;
 	}
 
-	public void setMandatory(boolean mandatory) {
+	public void setMandatory(Boolean mandatory) {
 		this.mandatory = mandatory;
 	}
 
