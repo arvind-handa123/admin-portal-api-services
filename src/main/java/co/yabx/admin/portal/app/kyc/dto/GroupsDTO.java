@@ -34,6 +34,8 @@ public class GroupsDTO implements Serializable, Comparable<GroupsDTO> {
 
 	private Boolean mandatoryFieldReceived;
 
+	private String filename;
+
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -141,6 +143,14 @@ public class GroupsDTO implements Serializable, Comparable<GroupsDTO> {
 	public int compareTo(GroupsDTO groupsDTO) {
 		return groupId.compareTo(groupsDTO.getGroupId());
 
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 
 }
