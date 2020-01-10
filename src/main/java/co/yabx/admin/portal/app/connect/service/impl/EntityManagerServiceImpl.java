@@ -41,35 +41,35 @@ public class EntityManagerServiceImpl implements EntityManagerService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EntityManagerServiceImpl.class);
 
 	@Override
-	public List<FieldsDTO> executeQuery(String filename) {
+	public List<FieldsDTO[]> executeQuery(String filename) {
 		String queryString = "SELECT cus.created_at as created_at,cus.msisdn as msisdn,cus.instruments_count as instruments_count,cus.customer_at as customer_at,cus.updated_at as updated_at FROM customers cus where cus.partner_id = 38 order by cus.id desc";
 		Query query = connectEntityManagerFactory.createNativeQuery(queryString);
 		Iterator<?> queryItr = query.getResultList().iterator();
-		List<FieldsDTO> fieldsDTOs = new ArrayList<FieldsDTO>();
+		List<FieldsDTO[]> fieldsDTOs = new ArrayList<FieldsDTO[]>();
 		while (queryItr.hasNext()) {
 			Object[] tuple = (Object[]) queryItr.next();
-			List<FieldsDTO> fieldsDTOList = new ArrayList<FieldsDTO>();
+			FieldsDTO[] fieldsDTOList = new FieldsDTO[tuple.length];
 			FieldsDTO fieldsDTO = new FieldsDTO();
 			fieldsDTO.setFieldName("created_at");
 			fieldsDTO.setSavedData(tuple != null && tuple.length > 0 ? tuple[0] : null);
-			fieldsDTOList.add(fieldsDTO);
+			fieldsDTOList[0] = fieldsDTO;
 			fieldsDTO = new FieldsDTO();
 			fieldsDTO.setFieldName("msisdn");
 			fieldsDTO.setSavedData(tuple != null && tuple.length > 1 ? tuple[1] : null);
-			fieldsDTOList.add(fieldsDTO);
+			fieldsDTOList[1] = fieldsDTO;
 			fieldsDTO = new FieldsDTO();
 			fieldsDTO.setFieldName("instruments_count");
 			fieldsDTO.setSavedData(tuple != null && tuple.length > 2 ? tuple[2] : null);
-			fieldsDTOList.add(fieldsDTO);
+			fieldsDTOList[2] = fieldsDTO;
 			fieldsDTO = new FieldsDTO();
 			fieldsDTO.setFieldName("customer_at");
 			fieldsDTO.setSavedData(tuple != null && tuple.length > 3 ? tuple[3] : null);
-			fieldsDTOList.add(fieldsDTO);
+			fieldsDTOList[3] = fieldsDTO;
 			fieldsDTO = new FieldsDTO();
 			fieldsDTO.setFieldName("updated_at");
 			fieldsDTO.setSavedData(tuple != null && tuple.length > 4 ? tuple[4] : null);
-			fieldsDTOList.add(fieldsDTO);
-			fieldsDTOs.addAll(fieldsDTOList);
+			fieldsDTOList[4] = fieldsDTO;
+			fieldsDTOs.add(fieldsDTOList);
 
 		}
 		return fieldsDTOs;

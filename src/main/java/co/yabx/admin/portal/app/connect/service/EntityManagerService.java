@@ -6,5 +6,5 @@ import co.yabx.admin.portal.app.kyc.dto.FieldsDTO;
 
 public interface EntityManagerService {
 
-	List<FieldsDTO> executeQuery(String filename);
+	List<FieldsDTO[]> executeQuery(String filename);
 }
