@@ -1,6 +1,7 @@
 package co.yabx.admin.portal.app.admin.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -62,7 +64,10 @@ public class Pages implements Serializable {
 
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = ProductConfigurations.class)
 	private ProductConfigurations productConfig;
-	
+
+	@ManyToMany
+	private Collection<Pages> subPages;
+
 	public Integer getDisplayOrder() {
 		return displayOrder;
 	}
@@ -144,6 +149,22 @@ public class Pages implements Serializable {
 
 	public void setSections(Set<Sections> sections) {
 		this.sections = sections;
+	}
+
+	public ProductConfigurations getProductConfig() {
+		return productConfig;
+	}
+
+	public void setProductConfig(ProductConfigurations productConfig) {
+		this.productConfig = productConfig;
+	}
+
+	public Collection<Pages> getSubPages() {
+		return subPages;
+	}
+
+	public void setSubPages(Collection<Pages> subPages) {
+		this.subPages = subPages;
 	}
 
 }
