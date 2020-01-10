@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,34 +20,37 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(entityManagerFactoryRef = "adminEntityManagerFactory", transactionManagerRef = "transactionManager", basePackages = {
-		"co.yabx.admin.portal.app.admin.repositories" })
-public class AdminPortalDbConfig {
+@EnableJpaRepositories(entityManagerFactoryRef = "connectEntityManagerFactory", transactionManagerRef = "connectTransactionManager", basePackages = {
+		"co.yabx.admin.portal.app.connect.repositories" })
+public class ConnectDbConfig {
 	@Autowired
 	private Environment env;
 
-	@Bean(name = "dataSource")
-	// @ConfigurationProperties(prefix = "spring.datasource")
+	@Primary
+	@Bean(name = "connectDataSource")
+	@ConfigurationProperties(prefix = "connect.datasource")
 	public DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		dataSource.setDriverClassName(env.getProperty("spring.datasource.driver-class-name"));
-		dataSource.setUrl(env.getProperty("spring.datasource.jdbc-url"));
-		dataSource.setUsername(env.getProperty("spring.datasource.username"));
-		dataSource.setPassword(env.getProperty("spring.datasource.password"));
+		dataSource.setDriverClassName(env.getProperty("connect.datasource.driver-class-name"));
+		dataSource.setUrl(env.getProperty("connect.datasource.jdbc-url"));
+		dataSource.setUsername(env.getProperty("connect.datasource.username"));
+		dataSource.setPassword(env.getProperty("connect.datasource.password"));
 		return dataSource;
 
 	}
 
-	@Bean(name = "adminEntityManagerFactory")
+	@Primary
+	@Bean(name = "connectEntityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder,
-			@Qualifier("dataSource") DataSource dataSource) {
-		return builder.dataSource(dataSource).packages("co.yabx.admin.portal.app.admin.entities")
-				.persistenceUnit("AppConfigurations").build();
+			@Qualifier("connectDataSource") DataSource connectDataSource) {
+		return builder.dataSource(connectDataSource).packages("co.yabx.admin.portal.app.connect.entities")
+				.persistenceUnit("Users").build();
 	}
 
-	@Bean(name = "transactionManager")
+	@Primary
+	@Bean(name = "connectTransactionManager")
 	public PlatformTransactionManager transactionManager(
-			@Qualifier("adminEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
-		return new JpaTransactionManager(entityManagerFactory);
+			@Qualifier("connectEntityManagerFactory") EntityManagerFactory connectEntityManagerFactory) {
+		return new JpaTransactionManager(connectEntityManagerFactory);
 	}
 }
