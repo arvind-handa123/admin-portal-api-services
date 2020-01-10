@@ -57,6 +57,9 @@ public class Groups implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = Sections.class)
 	private Sections sections;
 
+	@Column(name = "file_name")
+	private String filename;
+
 	public Integer getDisplayOrder() {
 		return displayOrder;
 	}
@@ -135,6 +138,14 @@ public class Groups implements Serializable {
 
 	public void setSections(Sections sections) {
 		this.sections = sections;
+	}
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
 	}
 
 	@Override
