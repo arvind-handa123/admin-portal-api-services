@@ -1,6 +1,7 @@
 package co.yabx.admin.portal.app.kyc.service.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
@@ -17,9 +18,13 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import co.yabx.admin.portal.app.enums.KycStatus;
+import co.yabx.admin.portal.app.enums.Relationship;
 import co.yabx.admin.portal.app.interceptor.HeaderRequestInterceptor;
 import co.yabx.admin.portal.app.kyc.entities.DeviceInformations;
 import co.yabx.admin.portal.app.kyc.entities.User;
+import co.yabx.admin.portal.app.kyc.entities.UserRelationships;
+import co.yabx.admin.portal.app.kyc.repositories.UserRelationshipsRepository;
 import co.yabx.admin.portal.app.kyc.service.AndroidPushNotificationsService;
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.UserService;
@@ -36,6 +41,9 @@ public class AndroidPushNotificationsServiceImpl implements AndroidPushNotificat
 	private UserService userService;
 
 	@Autowired
+	private UserRelationshipsRepository userRelationshipsRepository;
+
+	@Autowired
 	private AppConfigService appConfigService;
 
 	public CompletableFuture<String> send(HttpEntity<String> entity) {
@@ -43,12 +51,14 @@ public class AndroidPushNotificationsServiceImpl implements AndroidPushNotificat
 		RestTemplate restTemplate = new RestTemplate();
 
 		ArrayList<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
-		interceptors.add(new HeaderRequestInterceptor("Authorization",
-				"key=" + appConfigService.getProperty("FIREBASE_SERVER_KEY")));
+		interceptors.add(new HeaderRequestInterceptor("Authorization", "key=" + appConfigService.getProperty(
+				"FIREBASE_SERVER_KEY",
+				"AAAAoW1A0_Y:APA91bGPjTzkRcAZ90tSl58-lhmTfe0Qi2JAnp6pQGm93R-Du5i9Rlc8A-kCu-ZHBMhb6B3laTNJp-6KUnxPMP_X_UubY4BAlQyqVbCt2JVqNblacu2CW560ZSfSNYEGo4Rqe-Equ4Oi")));
 		interceptors.add(new HeaderRequestInterceptor("Content-Type", "application/json"));
 		restTemplate.setInterceptors(interceptors);
 
-		String firebaseResponse = restTemplate.postForObject(appConfigService.getProperty("FIREBASE_API_URL"), entity,
+		String firebaseResponse = restTemplate.postForObject(
+				appConfigService.getProperty("FIREBASE_API_URL", "https://fcm.googleapis.com/fcm/send"), entity,
 				String.class);
 
 		return CompletableFuture.completedFuture(firebaseResponse);
@@ -104,8 +114,8 @@ public class AndroidPushNotificationsServiceImpl implements AndroidPushNotificat
 
 	}
 
+	@Override
 	public void sendNotificationToUser(String msisdn, String title, String message, String data) {
-
 		User user = userService.getDSRByMsisdn(msisdn);
 		if (user != null) {
 			DeviceInformations deviceToken = user.getDeviceInformation();
@@ -119,5 +129,27 @@ public class AndroidPushNotificationsServiceImpl implements AndroidPushNotificat
 	@Async
 	public void notifyAllQC() {
 
+	}
+
+	@Override
+	@Async
+	public void notifyDSR(String msisdn, String username, KycStatus status) {
+		User user = userService.getUser(msisdn);
+		if (user != null) {
+			List<UserRelationships> userRelationshipsList = userRelationshipsRepository.findByRelative(user);
+			for (UserRelationships userRelationships : userRelationshipsList) {
+				if (Relationship.DISTRIBUTOR.equals(userRelationships.getRelationship())) {
+					sendNotificationtoDSR(userRelationships, username, status);
+				}
+			}
+
+		}
+	}
+
+	private void sendNotificationtoDSR(UserRelationships userRelationships, String username, KycStatus status) {
+		if (userRelationships != null) {
+			sendNotificationToUserAsync(userRelationships.getMsisdn(), "Kyc status changed!",
+					"KYc status has been updated " + status.toString() + " by " + username, "Status changed");
+		}
 	}
 }

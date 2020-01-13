@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import co.yabx.admin.portal.app.kyc.entities.AttachmentDetails;
 import co.yabx.admin.portal.app.kyc.entities.User;
+import co.yabx.admin.portal.app.kyc.service.AndroidPushNotificationsService;
 import co.yabx.admin.portal.app.kyc.service.AttachmentService;
 import co.yabx.admin.portal.app.kyc.service.StorageService;
 import co.yabx.admin.portal.app.kyc.service.UserService;
@@ -40,6 +41,9 @@ public class TestController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	AndroidPushNotificationsService androidPushNotificationsService;
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestController.class);
 
 	@RequestMapping(value = "/upload/image", method = RequestMethod.POST)
@@ -58,6 +62,23 @@ public class TestController {
 			e.printStackTrace();
 			LOGGER.error("exception raised while uploading image={},retailer={},error={}", files.getOriginalFilename(),
 					retailerId, e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+
+	@RequestMapping(value = "/test/notification", method = RequestMethod.POST)
+	public ResponseEntity<?> notification(@RequestParam("deviceId") String deviceId,
+			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
+		try {
+
+			return new ResponseEntity<>(androidPushNotificationsService.sendNotificationToDevice(deviceId,
+					"Kyc status changed!", "KYc status has been updated by " + "Asad", "Status changed"),
+					HttpStatus.OK);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 

@@ -43,6 +43,8 @@ import co.yabx.admin.portal.app.kyc.repositories.FieldRemarksRepository;
 import co.yabx.admin.portal.app.kyc.repositories.ProductDocumentsRepository;
 import co.yabx.admin.portal.app.kyc.repositories.UserRelationshipsRepository;
 import co.yabx.admin.portal.app.kyc.repositories.UserRepository;
+import co.yabx.admin.portal.app.kyc.service.AndroidPushNotificationsService;
+import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.KYCService;
 import co.yabx.admin.portal.app.kyc.service.UserService;
 
@@ -75,6 +77,12 @@ public class KYCServiceImpl implements KYCService {
 
 	@Autowired
 	private ProductDocumentsRepository productDocumentsRepository;
+
+	@Autowired
+	private AndroidPushNotificationsService androidPushNotificationsService;
+
+	@Autowired
+	private AppConfigService appConfigService;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(KYCServiceImpl.class);
 
@@ -155,6 +163,8 @@ public class KYCServiceImpl implements KYCService {
 			accountStatuses.setKycVerified(status);
 			accountStatuses.setUpdatedBy(username);
 			accountStatuses = accountStatusesRepository.save(accountStatuses);
+			if (appConfigService.getBooleanProperty("FCM_NOTIFICATION_ENABLED", false))
+				androidPushNotificationsService.notifyDSR(msisdn, username, status);
 			return accountStatuses;
 		}
 		return null;

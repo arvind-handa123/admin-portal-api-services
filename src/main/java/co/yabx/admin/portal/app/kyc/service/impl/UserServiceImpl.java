@@ -328,4 +328,9 @@ public class UserServiceImpl implements UserService {
 
 	}
 
+	@Override
+	public User getUser(String msisdn) {
+		return userRepository.findBymsisdn(msisdn);
+	}
+
 }

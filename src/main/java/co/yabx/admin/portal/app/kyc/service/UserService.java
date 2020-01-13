@@ -23,4 +23,6 @@ public interface UserService {
 
 	List<User> findUserByUserType(UserType retailers);
 
+	User getUser(String msisdn);
+
 }
