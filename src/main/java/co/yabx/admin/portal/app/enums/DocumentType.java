@@ -40,15 +40,15 @@ public enum DocumentType {
 		} else if (super.toString().equals("INCOME_TAX_RETURN")) {
 			return "Income Tax Return";
 		} else if (super.toString().equals("BIRTH_CERTIFICATE")) {
-			return "Birth Certificate";
+			return "BIRTH CERTIFICATE";
 		} else if (super.toString().equals("VAT_REGISTRATION_NUMBER")) {
 			return "VAT Registration Number";
 		} else if (super.toString().equals("TAX_IDENTIFICATION_NUMBER")) {
 			return "TAX Identification Number";
 		} else if (super.toString().equals("NATIONAL_IDENTIFICATION_NUMBER")) {
-			return "National Identification Number";
+			return "NATIONAL IDENTIFICATION NUMBER";
 		} else if (super.toString().equals("DRIVING_LICENSE")) {
-			return "Driving License";
+			return "DRIVING LICENSE";
 		} else if (super.toString().equals("PROFILE_PIC")) {
 			return "PROFILE PIC";
 		} else if (super.toString().equals("NOMINEE_PHOTO")) {

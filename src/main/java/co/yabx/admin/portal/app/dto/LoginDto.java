@@ -8,7 +8,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class LoginDto implements Serializable {
 
 	private String username;
-	private String password;
+	private String currentPassword;
+	private String newPassword;
 
 	public String getUsername() {
 		return username;
@@ -19,11 +20,19 @@ public class LoginDto implements Serializable {
 	}
 
 	public String getPassword() {
-		return password;
+		return currentPassword;
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.currentPassword = password;
+	}
+
+	public String getNewPassword() {
+		return newPassword;
+	}
+
+	public void setNewPassword(String newPassword) {
+		this.newPassword = newPassword;
 	}
 
 }

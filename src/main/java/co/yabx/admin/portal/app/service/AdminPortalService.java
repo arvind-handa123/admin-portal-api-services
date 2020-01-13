@@ -17,6 +17,6 @@ public interface AdminPortalService {
 
 	ResponseDTO logout(String username);
 
-	ResponseDTO changePassword(String username, String currentPassword, String newPassword);
+	ResponseDTO changePassword(String username, LoginDto loginDto);
 
 }

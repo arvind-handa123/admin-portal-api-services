@@ -130,9 +130,10 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 	}
 
 	@Override
-	public ResponseDTO changePassword(String username, String currentPassword, String newPassword) {
-		if (neitherNullNorEmpty(username) && neitherNullNorEmpty(currentPassword) && neitherNullNorEmpty(newPassword)) {
-			authInfoRepository.updatePassword(username, currentPassword, newPassword);
+	public ResponseDTO changePassword(String username, LoginDto loginDto) {
+		if (neitherNullNorEmpty(username) && loginDto != null && neitherNullNorEmpty(loginDto.getPassword())
+				&& neitherNullNorEmpty(loginDto.getNewPassword())) {
+			authInfoRepository.updatePassword(username, loginDto.getPassword(), loginDto.getNewPassword());
 			return DsrDtoHelper.getLoginDTO(username, "SUCCESS", "200", null);
 		}
 		return DsrDtoHelper.getLoginDTO(username, "DSR Not Found", "404", null);
