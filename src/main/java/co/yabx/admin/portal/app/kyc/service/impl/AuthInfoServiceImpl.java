@@ -109,4 +109,14 @@ public class AuthInfoServiceImpl implements AuthInfoService {
 		return authInfo;
 	}
 
+	@Override
+	public void resetYabxToken(String username) {
+		Optional<AuthInfo> authInfoOptional = authInfoRepository.findByUsername(username);
+		AuthInfo authInfo = authInfoOptional.isPresent() ? authInfoOptional.get() : null;
+		if (authInfo != null) {
+			authInfo.setYabxToken(null);
+			authInfoRepository.save(authInfo);
+		}
+	}
+
 }

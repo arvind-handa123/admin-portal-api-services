@@ -23,4 +23,6 @@ public interface AuthInfoService {
 	boolean isAuthorizedByUsername(String username, HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse);
 
+	void resetYabxToken(String username);
+
 }

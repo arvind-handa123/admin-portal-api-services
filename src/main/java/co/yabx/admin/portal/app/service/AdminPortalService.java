@@ -15,4 +15,8 @@ public interface AdminPortalService {
 
 	Iterable<ProductConfigurations> fetchProducts();
 
+	ResponseDTO logout(String username);
+
+	ResponseDTO changePassword(String username, String currentPassword, String newPassword);
+
 }

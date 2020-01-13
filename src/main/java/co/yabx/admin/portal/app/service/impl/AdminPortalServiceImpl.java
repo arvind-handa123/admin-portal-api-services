@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.crypto.BadPaddingException;
@@ -27,7 +26,6 @@ import co.yabx.admin.portal.app.cache.RedisRepository;
 import co.yabx.admin.portal.app.dto.LoginDto;
 import co.yabx.admin.portal.app.dto.dtoHelper.DsrDtoHelper;
 import co.yabx.admin.portal.app.dto.dtoHelper.PagesDTOHeper;
-import co.yabx.admin.portal.app.enums.PageType;
 import co.yabx.admin.portal.app.enums.ProductName;
 import co.yabx.admin.portal.app.kyc.dto.PagesDTO;
 import co.yabx.admin.portal.app.kyc.dto.ResponseDTO;
@@ -120,6 +118,29 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 	@Override
 	public Iterable<ProductConfigurations> fetchProducts() {
 		return productConfigurationRepository.findAll();
+	}
+
+	@Override
+	public ResponseDTO logout(String username) {
+		if (username != null) {
+			authInfoService.resetYabxToken(username);
+			return DsrDtoHelper.getLoginDTO(username, "SUCCESS", "200", null);
+		}
+		return DsrDtoHelper.getLoginDTO(username, "DSR Not Found", "404", null);
+	}
+
+	@Override
+	public ResponseDTO changePassword(String username, String currentPassword, String newPassword) {
+		if (neitherNullNorEmpty(username) && neitherNullNorEmpty(currentPassword) && neitherNullNorEmpty(newPassword)) {
+			authInfoRepository.updatePassword(username, currentPassword, newPassword);
+			return DsrDtoHelper.getLoginDTO(username, "SUCCESS", "200", null);
+		}
+		return DsrDtoHelper.getLoginDTO(username, "DSR Not Found", "404", null);
+
+	}
+
+	private boolean neitherNullNorEmpty(String data) {
+		return data != null && !data.isEmpty();
 	}
 
 }
