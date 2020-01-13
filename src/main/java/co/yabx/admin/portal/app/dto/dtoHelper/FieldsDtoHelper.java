@@ -242,22 +242,22 @@ public class FieldsDtoHelper implements Serializable {
 
 			} else if (dynamicFields.getFieldId().equals("tinCertificates")) {
 				attachmentDetails = attachmentDetailsSet.stream().filter(f -> f != null && f.getDocumentType() != null
-						&& f.getDocumentType().equals(DocumentType.TIN_CERTIFICATE)).findFirst();
+						&& f.getDocumentType().equals(DocumentType.TIN_CERTIFICATE.toString())).findFirst();
 				setSavedAttachment(dynamicFields, attachmentDetails, filledVsUnfilled);
 
 			} else if (dynamicFields.getFieldId().equals("tradeLicense")) {
 				attachmentDetails = attachmentDetailsSet.stream().filter(f -> f != null && f.getDocumentType() != null
-						&& f.getDocumentType().equals(DocumentType.TRADE_LICENSE)).findFirst();
+						&& f.getDocumentType().equals(DocumentType.TRADE_LICENSE.toString())).findFirst();
 				setSavedAttachment(dynamicFields, attachmentDetails, filledVsUnfilled);
 
 			} else if (dynamicFields.getFieldId().equals("nomineePhoto")) {
 				attachmentDetails = attachmentDetailsSet.stream().filter(f -> f != null && f.getDocumentType() != null
-						&& f.getDocumentType().equals(DocumentType.NOMINEE_PHOTO)).findFirst();
+						&& f.getDocumentType().equals(DocumentType.NOMINEE_PHOTO.toString())).findFirst();
 				setSavedAttachment(dynamicFields, attachmentDetails, filledVsUnfilled);
 
 			} else if (dynamicFields.getFieldId().equals("signature")) {
 				attachmentDetails = attachmentDetailsSet.stream().filter(f -> f != null && f.getDocumentType() != null
-						&& f.getDocumentType().equals(DocumentType.SIGNATURE)).findFirst();
+						&& f.getDocumentType().equals(DocumentType.SIGNATURE.toString())).findFirst();
 				setSavedAttachment(dynamicFields, attachmentDetails, filledVsUnfilled);
 			}
 			FieldsDTO fieldsDTO = getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers);
