@@ -36,7 +36,7 @@ public enum DocumentType {
 	@Override
 	public String toString() {
 		if (super.toString().equals("TRADE_LICENSE")) {
-			return "TRADE_LICENSE";
+			return "TRADE LICENSE";
 		} else if (super.toString().equals("INCOME_TAX_RETURN")) {
 			return "Income Tax Return";
 		} else if (super.toString().equals("BIRTH_CERTIFICATE")) {
