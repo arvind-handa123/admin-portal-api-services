@@ -66,8 +66,7 @@ public class LoginLogoutController {
 	public ResponseEntity<?> resetPassword(@RequestParam String username, @RequestBody LoginDto loginDto,
 			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 		LOGGER.info("/admin/kyc/password/change request received for username={},loginDto={}", username, loginDto);
-		if (neitherNullNorEmpty(username) && neitherNullNorEmpty(username)
-				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
+		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
 			ResponseDTO loginDTO = adminPortalService.changePassword(username, loginDto);
 			return new ResponseEntity<>(loginDTO, HttpStatus.OK);
 		} else {
