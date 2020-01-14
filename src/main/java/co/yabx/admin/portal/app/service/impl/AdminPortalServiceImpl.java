@@ -77,7 +77,7 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 	public ResponseDTO login(LoginDto loginDto) {
 		if (loginDto != null) {
 			String username = loginDto.getUsername();
-			String password = loginDto.getPassword();
+			String password = loginDto.getCurrentPassword();
 			Optional<AuthInfo> optional = authInfoRepository.findByUsername(username);
 			if (optional.isPresent()) {
 				if (password.equalsIgnoreCase(optional.get().getPassword())) {
@@ -131,9 +131,9 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 
 	@Override
 	public ResponseDTO changePassword(String username, LoginDto loginDto) {
-		if (neitherNullNorEmpty(username) && loginDto != null && neitherNullNorEmpty(loginDto.getPassword())
+		if (neitherNullNorEmpty(username) && loginDto != null && neitherNullNorEmpty(loginDto.getCurrentPassword())
 				&& neitherNullNorEmpty(loginDto.getNewPassword())) {
-			authInfoRepository.updatePassword(username, loginDto.getPassword(), loginDto.getNewPassword());
+			authInfoRepository.updatePassword(username, loginDto.getCurrentPassword(), loginDto.getNewPassword());
 			return DsrDtoHelper.getLoginDTO(username, "SUCCESS", "200", null);
 		}
 		return DsrDtoHelper.getLoginDTO(username, "currentPassword/newPassword is null or empty", "404", null);
