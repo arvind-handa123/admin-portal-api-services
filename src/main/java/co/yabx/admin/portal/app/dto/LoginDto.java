@@ -10,6 +10,7 @@ public class LoginDto implements Serializable {
 	private String username;
 	private String currentPassword;
 	private String newPassword;
+	private String password;
 
 	public String getUsername() {
 		return username;
@@ -39,6 +40,14 @@ public class LoginDto implements Serializable {
 	public String toString() {
 		return "LoginDto [username=" + username + ", currentPassword=" + currentPassword + ", newPassword="
 				+ newPassword + "]";
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

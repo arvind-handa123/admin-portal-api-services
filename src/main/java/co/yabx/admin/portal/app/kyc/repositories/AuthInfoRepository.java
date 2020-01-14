@@ -3,6 +3,7 @@ package co.yabx.admin.portal.app.kyc.repositories;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,6 +28,7 @@ public interface AuthInfoRepository extends JpaRepository<AuthInfo, Long> {
 
 	Optional<AuthInfo> findByUsername(String userName);
 
+	@Modifying
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	@Query(value = "update AuthInfo a set a.password=?3 , a.yabxToken=null where a.username = ?1 and a.password = ?2 ")
 	void updatePassword(String username, String currentPassword, String newPassword);
