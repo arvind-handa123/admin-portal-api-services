@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.yabx.admin.portal.app.documents.pdf.IGPA_FIXED_AND_FLOATING_1;
 import co.yabx.admin.portal.app.dto.dtoHelper.PagesDTOHeper;
 import co.yabx.admin.portal.app.enums.KycStatus;
 import co.yabx.admin.portal.app.enums.PageType;
@@ -172,7 +173,7 @@ public class KYCServiceImpl implements KYCService {
 
 	@Override
 	public UserDisclaimerDocumentsDTO getDisclaimerDocuments(String msisdn) {
-		User user = userRepository.findBymsisdn(msisdn);
+		User user = userRepository.findBymsisdnAndUserType(msisdn, UserType.RETAILERS.toString());
 		if (user != null) {
 			return getDisclaimerDocuments(user);
 		}
@@ -185,7 +186,8 @@ public class KYCServiceImpl implements KYCService {
 			UserDisclaimerDocumentsDTO disclaimerDocumentsDTO = new UserDisclaimerDocumentsDTO();
 			disclaimerDocumentsDTO.setUserId(user.getId());
 			disclaimerDocumentsDTO.setMsisdn(user.getMsisdn());
-			disclaimerDocumentsDTO.setDisclaimerDocuments(getUserDisclaimerDocuments(user, disclaimerDocumentsDTO));
+			List<ProductDocumentsDTO> productDocumentsDTOs = getUserDisclaimerDocuments(user, disclaimerDocumentsDTO);
+			disclaimerDocumentsDTO.setDisclaimerDocuments(productDocumentsDTOs);
 			return disclaimerDocumentsDTO;
 		}
 		return null;
@@ -204,14 +206,15 @@ public class KYCServiceImpl implements KYCService {
 			productDocumentsDTO.setAttachmentType(
 					documents.getAttachmentType() != null ? documents.getAttachmentType().toString() : null);
 			productDocumentsDTO.setDocumentType(documents.getDocumentType());
-			setFileName(productDocumentsDTO, disclaimerDocumentsDTO, attachmentDetailsSet, documents);
+			setFileName(user, productDocumentsDTO, disclaimerDocumentsDTO, attachmentDetailsSet, documents);
 			productDocumentsDTOs.add(productDocumentsDTO);
 		}
 		return productDocumentsDTOs;
 	}
 
-	private void setFileName(ProductDocumentsDTO productDocumentsDTO, UserDisclaimerDocumentsDTO disclaimerDocumentsDTO,
-			Set<AttachmentDetails> attachmentDetailsSet, ProductDocuments documents) {
+	private void setFileName(User user, ProductDocumentsDTO productDocumentsDTO,
+			UserDisclaimerDocumentsDTO disclaimerDocumentsDTO, Set<AttachmentDetails> attachmentDetailsSet,
+			ProductDocuments documents) {
 		Optional<AttachmentDetails> optional = attachmentDetailsSet.stream()
 				.filter(f -> f.getDocumentType().equalsIgnoreCase(documents.getDocumentType())).findFirst();
 		if (optional.isPresent()) {
@@ -230,7 +233,7 @@ public class KYCServiceImpl implements KYCService {
 				disclaimerDocumentsDTO.setDisclaimerDocRecieved(false);
 			}
 		} else {
-			productDocumentsDTO.setFileName(documents.getFileName());
+			productDocumentsDTO.setFileName(IGPA_FIXED_AND_FLOATING_1.getDocuments(user));
 			disclaimerDocumentsDTO.setDisclaimerDocRecieved(false);
 		}
 	}
