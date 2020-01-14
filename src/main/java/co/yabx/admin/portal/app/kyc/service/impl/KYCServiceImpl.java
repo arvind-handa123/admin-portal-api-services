@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import co.yabx.admin.portal.app.documents.pdf.IGPA_FIXED_AND_FLOATING_1;
 import co.yabx.admin.portal.app.dto.dtoHelper.PagesDTOHeper;
 import co.yabx.admin.portal.app.enums.KycStatus;
 import co.yabx.admin.portal.app.enums.PageType;
