@@ -77,7 +77,7 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 	public ResponseDTO login(LoginDto loginDto) {
 		if (loginDto != null) {
 			String username = loginDto.getUsername();
-			String password = loginDto.getCurrentPassword();
+			String password = loginDto.getPassword();
 			Optional<AuthInfo> optional = authInfoRepository.findByUsername(username);
 			if (optional.isPresent()) {
 				if (password.equalsIgnoreCase(optional.get().getPassword())) {
