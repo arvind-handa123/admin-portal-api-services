@@ -153,28 +153,38 @@ public class AttachmentServiceImpl implements AttachmentService {
 					attachmentDetails);
 			return attachmentDetails;
 		} else {
-			documentType = DocumentType.valueOf(docType);
-			attachmentDetails = getDisclaimerAttachement(user, documentType != null ? documentType.name() : docType);
-			if (attachmentDetails != null) {
-				Set<Attachments> attachmentsSet = attachmentDetails.getAttachments();
-				attachmentsSet.clear();
-			} else {
-				attachmentDetails = new AttachmentDetails();
-				attachments = new Attachments();
-			}
-			if (attachments == null) {
-				attachments = new Attachments();
-			}
-			attachments.setDocumentUrl(saveFileName);
-			attachmentList.add(attachments);
-			attachmentDetails.setAttachments(attachmentList);
-			attachmentDetails.setDocumentType(documentType != null ? documentType.name() : docType);
-			attachmentDetails.setAttachmentType(attachmentType);
-			attachmentDetails.setUser(user);
-			attachmentDetails = attachmentDetailsRepository.save(attachmentDetails);
-			return attachmentDetails;
+			return saveAttachments(user, docType, saveFileName, attachmentType);
+
 		}
 
+	}
+
+	@Override
+	public AttachmentDetails saveAttachments(User user, String docType, String saveFileName,
+			AttachmentType attachmentType) {
+		Set<Attachments> attachmentList = new HashSet<Attachments>();
+		DocumentType documentType = DocumentType.valueOf(docType);
+		Attachments attachments = null;
+		AttachmentDetails attachmentDetails = getDisclaimerAttachement(user,
+				documentType != null ? documentType.name() : docType);
+		if (attachmentDetails != null) {
+			Set<Attachments> attachmentsSet = attachmentDetails.getAttachments();
+			attachmentsSet.clear();
+		} else {
+			attachmentDetails = new AttachmentDetails();
+			attachments = new Attachments();
+		}
+		if (attachments == null) {
+			attachments = new Attachments();
+		}
+		attachments.setDocumentUrl(saveFileName);
+		attachmentList.add(attachments);
+		attachmentDetails.setAttachments(attachmentList);
+		attachmentDetails.setDocumentType(documentType != null ? documentType.name() : docType);
+		attachmentDetails.setAttachmentType(attachmentType);
+		attachmentDetails.setUser(user);
+		attachmentDetails = attachmentDetailsRepository.save(attachmentDetails);
+		return attachmentDetails;
 	}
 
 	private AttachmentDetails getDisclaimerAttachement(User user, String documentType) {

@@ -9,7 +9,7 @@ public enum DocumentType {
 	PERFORMANCE_SECURITY_FORMAT, GENERAL_INSTRUCTION, FATCA_FORM_INDIVIDUAL_AND_PROPRIETOR, SBS_FORMS,
 	COUNTER_GUARANTEE, EFT_AUTHORIZATION_FORM, LETTER_OF_LIEN_AND_SET_OFF_DEPOSIT_ACCOUNT_OR_MARGIN;
 
-	public static DocumentType getAddressType(String value) {
+	public static DocumentType getDocumentType(String value) {
 		if (value.equalsIgnoreCase("DRIVING LICENSE")) {
 			return DocumentType.DRIVING_LICENSE;
 		} else if (value.equalsIgnoreCase("NATIONAL IDENTIFICATION NUMBER")) {

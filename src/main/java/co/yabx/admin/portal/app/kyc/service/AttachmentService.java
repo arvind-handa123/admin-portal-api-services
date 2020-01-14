@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import co.yabx.admin.portal.app.enums.AttachmentType;
 import co.yabx.admin.portal.app.kyc.dto.AttachmentDetailsDTO;
 import co.yabx.admin.portal.app.kyc.entities.AttachmentDetails;
 import co.yabx.admin.portal.app.kyc.entities.User;
@@ -23,5 +24,7 @@ public interface AttachmentService {
 	String fetchDsrProfilePic(User user);
 
 	List<AttachmentDetailsDTO> getRetailerDocuments(User user);
+
+	AttachmentDetails saveAttachments(User user, String docType, String saveFileName, AttachmentType attachmentType);
 
 }
