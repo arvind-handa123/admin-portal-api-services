@@ -35,4 +35,18 @@ public class LoginDto implements Serializable {
 		this.newPassword = newPassword;
 	}
 
+	public String getCurrentPassword() {
+		return currentPassword;
+	}
+
+	public void setCurrentPassword(String currentPassword) {
+		this.currentPassword = currentPassword;
+	}
+
+	@Override
+	public String toString() {
+		return "LoginDto [username=" + username + ", currentPassword=" + currentPassword + ", newPassword="
+				+ newPassword + "]";
+	}
+
 }
