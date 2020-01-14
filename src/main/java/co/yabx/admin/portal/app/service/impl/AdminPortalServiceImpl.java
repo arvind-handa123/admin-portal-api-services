@@ -136,7 +136,7 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 			authInfoRepository.updatePassword(username, loginDto.getPassword(), loginDto.getNewPassword());
 			return DsrDtoHelper.getLoginDTO(username, "SUCCESS", "200", null);
 		}
-		return DsrDtoHelper.getLoginDTO(username, "DSR Not Found", "404", null);
+		return DsrDtoHelper.getLoginDTO(username, "currentPassword/newPassword is null or empty", "404", null);
 
 	}
 
