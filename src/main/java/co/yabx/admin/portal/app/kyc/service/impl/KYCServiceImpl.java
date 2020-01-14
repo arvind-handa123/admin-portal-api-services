@@ -233,7 +233,7 @@ public class KYCServiceImpl implements KYCService {
 				disclaimerDocumentsDTO.setDisclaimerDocRecieved(false);
 			}
 		} else {
-			productDocumentsDTO.setFileName(IGPA_FIXED_AND_FLOATING_1.getDocuments(user));
+			productDocumentsDTO.setFileName(documents.getFileName());
 			disclaimerDocumentsDTO.setDisclaimerDocRecieved(false);
 		}
 	}
