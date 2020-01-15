@@ -9,7 +9,10 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.List;
 import com.itextpdf.text.ListItem;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.CMYKColor;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
 
 public class PDFGenerator implements Serializable {
 	private static Font black_bold_underlined = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12, Font.UNDERLINE,
@@ -92,12 +95,49 @@ public class PDFGenerator implements Serializable {
 		return paragraph;
 	}
 
+	public static Paragraph getCenteredBoldParagraph(String content, boolean isSpacingAfter, boolean isSpacingBefore) {
+		Paragraph paragraph = new Paragraph(content, black_bold);
+		paragraph.setAlignment(Element.ALIGN_CENTER);
+		paragraph.setIndentationLeft(40);
+		paragraph.setIndentationRight(40);
+		if (isSpacingBefore)
+			paragraph.setSpacingBefore(25);
+		if (isSpacingAfter)
+			paragraph.setSpacingAfter(25);
+		return paragraph;
+	}
+
+	public static Paragraph getCenteredParagraph(String content, boolean isSpacingAfter, boolean isSpacingBefore) {
+		Paragraph paragraph = new Paragraph(content, regular);
+		paragraph.setAlignment(Element.ALIGN_CENTER);
+		paragraph.setIndentationLeft(40);
+		paragraph.setIndentationRight(40);
+		if (isSpacingBefore)
+			paragraph.setSpacingBefore(25);
+		if (isSpacingAfter)
+			paragraph.setSpacingAfter(25);
+		return paragraph;
+	}
+
 	public static Paragraph getLeftAlignedBoldParagraph(String content, boolean isSpacingAfter,
 			boolean isSpacingBefore) {
 		Paragraph paragraph = new Paragraph(content, black_bold);
 		paragraph.setIndentationLeft(40);
 		paragraph.setIndentationRight(40);
 		paragraph.setAlignment(Element.ALIGN_LEFT);
+		paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
+		if (isSpacingBefore)
+			paragraph.setSpacingBefore(25);
+		if (isSpacingAfter)
+			paragraph.setSpacingAfter(25);
+		return paragraph;
+	}
+
+	public static Paragraph getRightAlignedBoldParagraph(String content, boolean isSpacingAfter,
+			boolean isSpacingBefore) {
+		Paragraph paragraph = new Paragraph(content, black_bold);
+		paragraph.setIndentationLeft(300);
+		paragraph.setAlignment(Element.ALIGN_RIGHT);
 		paragraph.setAlignment(Element.ALIGN_JUSTIFIED);
 		if (isSpacingBefore)
 			paragraph.setSpacingBefore(25);
@@ -136,4 +176,14 @@ public class PDFGenerator implements Serializable {
 		return paragraph;
 	}
 
+	public static PdfPTable getTable(boolean isNew, PdfPTable table, String... header) {
+		if (isNew) {
+			table = new PdfPTable(header.length);
+		}
+		for (int i = 0; i < header.length; i++) {
+			table.addCell(new PdfPCell(new Phrase(header[i])));
+		}
+		return table;
+
+	}
 }
