@@ -26,6 +26,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
+import com.fasterxml.jackson.databind.JsonNode;
+
 import co.yabx.admin.portal.app.dto.dtoHelper.PagesDTOHeper;
 import co.yabx.admin.portal.app.enums.KycStatus;
 import co.yabx.admin.portal.app.enums.PageType;
@@ -62,6 +65,7 @@ import co.yabx.admin.portal.app.kyc.service.AndroidPushNotificationsService;
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.KYCService;
 import co.yabx.admin.portal.app.kyc.service.UserService;
+import co.yabx.admin.portal.app.util.JsonUtilService;
 
 @Service
 public class KYCServiceImpl implements KYCService {
@@ -125,7 +129,7 @@ public class KYCServiceImpl implements KYCService {
 					HttpGet request = new HttpGet(appConfigService.getProperty("KYC_END_POINT",
 							"http://kyc.yabx.co:8080/v1/retailers/profiles"));
 					List<NameValuePair> params = new ArrayList<NameValuePair>(3);
-					NameValuePair nv1 = new BasicNameValuePair("status", kycStatus.toString());
+					NameValuePair nv1 = new BasicNameValuePair("status", kycStatus.name());
 					NameValuePair nv2 = new BasicNameValuePair("secret_key",
 							appConfigService.getProperty("RETAILER_PROFILE_KYC_API_SECRET_KEY", "magic@yabx"));
 					params.add(nv1);
@@ -138,10 +142,13 @@ public class KYCServiceImpl implements KYCService {
 					response = httpclient.execute(request);
 					LOGGER.info("Response for kycStatus={} is ={}", kycStatus, response);
 					if (response.getStatusLine().getStatusCode() == 200) {
-						List<PagesDTO> entity = (List<PagesDTO>) response.getEntity();
-						LOGGER.info("Response for kycStatus={} is ={}", kycStatus, entity);
+						HttpEntity entity = response.getEntity();
+						String responseString = EntityUtils.toString(entity, "UTF-8");
+						LOGGER.info("Response for kycStatus={} in string is ={}", kycStatus, responseString);
+						JsonNode jsonNode = JsonUtilService.deserializeEntity(responseString, JsonNode.class);
+						LOGGER.info("Response for kycStatus={} in jsonNode is ={}", kycStatus, jsonNode);
 						// String responseString = EntityUtils.toString(entity, "UTF-8");
-						appPagesDTOList.addAll(entity);
+						// appPagesDTOList.addAll((List<PagesDTO>) responseString);
 					}
 
 				} else {
