@@ -209,7 +209,7 @@ public class FieldsDtoHelper implements Serializable {
 				}
 				dynamicFields.setOptions(options);
 			}
-			FieldsDTO fieldsDTO = getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers);
+			FieldsDTO fieldsDTO = getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId());
 			List<SubFieldsDTO> subFieldsDTOs = getSubFileds(dynamicFields, null, filledVsUnfilled, fieldRemarksList);
 			/*
 			 * if (subFieldsDTOs != null)
@@ -260,7 +260,7 @@ public class FieldsDtoHelper implements Serializable {
 						&& f.getDocumentType().equals(DocumentType.SIGNATURE.toString())).findFirst();
 				setSavedAttachment(dynamicFields, attachmentDetails, filledVsUnfilled);
 			}
-			FieldsDTO fieldsDTO = getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers);
+			FieldsDTO fieldsDTO = getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId());
 			List<SubFieldsDTO> subFieldsDTOs = getSubFileds(dynamicFields, attachmentDetails, filledVsUnfilled,
 					fieldRemarksList);
 			if (subFieldsDTOs != null)
@@ -320,7 +320,7 @@ public class FieldsDtoHelper implements Serializable {
 			}
 		}
 		increamentFilledFields(dynamicFields, filledVsUnfilled);
-		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers));
+		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId()));
 		return true;
 	}
 
@@ -403,7 +403,7 @@ public class FieldsDtoHelper implements Serializable {
 				}
 			}
 			increamentFilledFields(dynamicFields, filledVsUnfilled);
-			appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers));
+			appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId()));
 			return true;
 		}
 		return false;
@@ -455,7 +455,7 @@ public class FieldsDtoHelper implements Serializable {
 			}
 		}
 		increamentFilledFields(dynamicFields, filledVsUnfilled);
-		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers));
+		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId()));
 		return true;
 
 	}
@@ -486,7 +486,7 @@ public class FieldsDtoHelper implements Serializable {
 			}
 		}
 		increamentFilledFields(dynamicFields, filledVsUnfilled);
-		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers));
+		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId()));
 		return true;
 
 	}
@@ -539,7 +539,7 @@ public class FieldsDtoHelper implements Serializable {
 					dynamicFields.setOptions(options);
 				}
 				increamentFilledFields(dynamicFields, filledVsUnfilled);
-				appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers));
+				appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId()));
 				return true;
 			} else {
 				Set<BusinessDetails> BusinessDetailsSet = retailers.getBusinessDetails();
@@ -717,7 +717,7 @@ public class FieldsDtoHelper implements Serializable {
 											: null);
 				}
 				increamentFilledFields(dynamicFields, filledVsUnfilled);
-				appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers));
+				appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId()));
 				return true;
 			}
 		}
@@ -747,7 +747,7 @@ public class FieldsDtoHelper implements Serializable {
 			}
 		}
 		increamentFilledFields(dynamicFields, filledVsUnfilled);
-		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers));
+		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId()));
 		return true;
 
 	}
@@ -892,7 +892,7 @@ public class FieldsDtoHelper implements Serializable {
 			}
 		}
 		increamentFilledFields(dynamicFields, filledVsUnfilled);
-		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, user));
+		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, user.getId()));
 		return true;
 
 	}
@@ -900,42 +900,17 @@ public class FieldsDtoHelper implements Serializable {
 	private static boolean prepareAddress(Fields dynamicFields, Set<AddressDetails> addressDetailsSet,
 			List<FieldsDTO> appDynamicFieldsDTOSet, SubGroups subGroups, Filters filter,
 			Map<String, Integer> filledVsUnfilled, List<FieldRemarks> fieldRemarksList) {
-		User user = null;
-		if (addressDetailsSet == null || addressDetailsSet.isEmpty()) {
-			if (dynamicFields.getFieldId().equals("country")) {
-				List<String> options = new ArrayList<String>();
-				Countries[] accountTypes = Countries.values();
-				for (Countries statuses : accountTypes) {
-					options.add(statuses.toString());
-				}
-				dynamicFields.setOptions(options);
-			} else if (dynamicFields.getFieldId().equals("cityDsitrict")) {
-				List<String> options = new ArrayList<String>();
-				Cities[] accountTypes = Cities.values();
-				for (Cities statuses : accountTypes) {
-					options.add(statuses.toString());
-				}
-				dynamicFields.setOptions(options);
-			} else if (dynamicFields.getFieldId().equals("division")) {
-				List<String> options = new ArrayList<String>();
-				Divisions[] accountTypes = Divisions.values();
-				for (Divisions statuses : accountTypes) {
-					options.add(statuses.toString());
-				}
-				dynamicFields.setOptions(options);
-			}
-		} else {
-			AddressDetails addressDetails = getAddressDetails(subGroups, addressDetailsSet);
-			user = addressDetails != null ? addressDetails.getUser() : null;
-			if (addressDetails != null) {
-				if (dynamicFields.getFieldId().equals("address")) {
-					dynamicFields.setSavedData(addressDetails.getAddress());
-				} else if (dynamicFields.getFieldId().equals("upazilaThana")) {
-					dynamicFields.setSavedData(addressDetails.getUpazilaThana());
+		try {
+			Long userId = null;
+			if (addressDetailsSet == null || addressDetailsSet.isEmpty()) {
+				if (dynamicFields.getFieldId().equals("country")) {
+					List<String> options = new ArrayList<String>();
+					Countries[] accountTypes = Countries.values();
+					for (Countries statuses : accountTypes) {
+						options.add(statuses.toString());
+					}
+					dynamicFields.setOptions(options);
 				} else if (dynamicFields.getFieldId().equals("cityDsitrict")) {
-					dynamicFields.setSavedData(
-							addressDetails.getCityDsitrict() != null ? addressDetails.getCityDsitrict().toString()
-									: null);
 					List<String> options = new ArrayList<String>();
 					Cities[] accountTypes = Cities.values();
 					for (Cities statuses : accountTypes) {
@@ -943,43 +918,80 @@ public class FieldsDtoHelper implements Serializable {
 					}
 					dynamicFields.setOptions(options);
 				} else if (dynamicFields.getFieldId().equals("division")) {
-					dynamicFields.setSavedData(
-							addressDetails.getDivision() != null ? addressDetails.getDivision().toString() : null);
 					List<String> options = new ArrayList<String>();
 					Divisions[] accountTypes = Divisions.values();
 					for (Divisions statuses : accountTypes) {
 						options.add(statuses.toString());
 					}
 					dynamicFields.setOptions(options);
+				}
+			} else {
+				AddressDetails addressDetails = getAddressDetails(subGroups, addressDetailsSet);
+				try {
+					userId = addressDetails != null ? addressDetails.getUser().getId() : null;
+				} catch (Exception e) {
+					e.printStackTrace();
+					LOGGER.error("Unable to get UserId for address={}, error={}", addressDetails.getId(),
+							e.getMessage());
+				}
+				if (addressDetails != null) {
+					if (dynamicFields.getFieldId().equals("address")) {
+						dynamicFields.setSavedData(addressDetails.getAddress());
+					} else if (dynamicFields.getFieldId().equals("upazilaThana")) {
+						dynamicFields.setSavedData(addressDetails.getUpazilaThana());
+					} else if (dynamicFields.getFieldId().equals("cityDsitrict")) {
+						dynamicFields.setSavedData(
+								addressDetails.getCityDsitrict() != null ? addressDetails.getCityDsitrict().toString()
+										: null);
+						List<String> options = new ArrayList<String>();
+						Cities[] accountTypes = Cities.values();
+						for (Cities statuses : accountTypes) {
+							options.add(statuses.toString());
+						}
+						dynamicFields.setOptions(options);
+					} else if (dynamicFields.getFieldId().equals("division")) {
+						dynamicFields.setSavedData(
+								addressDetails.getDivision() != null ? addressDetails.getDivision().toString() : null);
+						List<String> options = new ArrayList<String>();
+						Divisions[] accountTypes = Divisions.values();
+						for (Divisions statuses : accountTypes) {
+							options.add(statuses.toString());
+						}
+						dynamicFields.setOptions(options);
 
-				} else if (dynamicFields.getFieldId().equals("zipCode")) {
-					dynamicFields
-							.setSavedData(addressDetails.getZipCode() != null ? addressDetails.getZipCode() : null);
-				} else if (dynamicFields.getFieldId().equals("landmark")) {
-					dynamicFields.setSavedData(addressDetails.getLandmark());
-				} else if (dynamicFields.getFieldId().equals("territory")) {
-					dynamicFields.setSavedData(addressDetails.getTerritory());
-				} else if (dynamicFields.getFieldId().equals("country")) {
-					dynamicFields.setSavedData(
-							addressDetails.getCountry() != null ? addressDetails.getCountry().toString() : null);
-					List<String> options = new ArrayList<String>();
-					Countries[] accountTypes = Countries.values();
-					for (Countries statuses : accountTypes) {
-						options.add(statuses.toString());
+					} else if (dynamicFields.getFieldId().equals("zipCode")) {
+						dynamicFields
+								.setSavedData(addressDetails.getZipCode() != null ? addressDetails.getZipCode() : null);
+					} else if (dynamicFields.getFieldId().equals("landmark")) {
+						dynamicFields.setSavedData(addressDetails.getLandmark());
+					} else if (dynamicFields.getFieldId().equals("territory")) {
+						dynamicFields.setSavedData(addressDetails.getTerritory());
+					} else if (dynamicFields.getFieldId().equals("country")) {
+						dynamicFields.setSavedData(
+								addressDetails.getCountry() != null ? addressDetails.getCountry().toString() : null);
+						List<String> options = new ArrayList<String>();
+						Countries[] accountTypes = Countries.values();
+						for (Countries statuses : accountTypes) {
+							options.add(statuses.toString());
+						}
+						dynamicFields.setOptions(options);
+					} else if (dynamicFields.getFieldId().equals("mobileNumber")) {
+						dynamicFields.setSavedData(addressDetails.getMobileNumber());
+					} else if (dynamicFields.getFieldId().equals("phoneNumber")) {
+						dynamicFields.setSavedData(addressDetails.getPhoneNumber());
+					} else if (dynamicFields.getFieldId().equals("email")) {
+						dynamicFields.setSavedData(addressDetails.getEmail());
 					}
-					dynamicFields.setOptions(options);
-				} else if (dynamicFields.getFieldId().equals("mobileNumber")) {
-					dynamicFields.setSavedData(addressDetails.getMobileNumber());
-				} else if (dynamicFields.getFieldId().equals("phoneNumber")) {
-					dynamicFields.setSavedData(addressDetails.getPhoneNumber());
-				} else if (dynamicFields.getFieldId().equals("email")) {
-					dynamicFields.setSavedData(addressDetails.getEmail());
 				}
 			}
+			increamentFilledFields(dynamicFields, filledVsUnfilled);
+			appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, userId));
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOGGER.error("Exception raised while preapring address, error={} ", e.getMessage());
+			return false;
 		}
-		increamentFilledFields(dynamicFields, filledVsUnfilled);
-		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, user));
-		return true;
 
 	}
 
@@ -1136,7 +1148,7 @@ public class FieldsDtoHelper implements Serializable {
 					dynamicFields.setOptions(options);
 				}
 			}
-			FieldsDTO fieldsDTO = getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers);
+			FieldsDTO fieldsDTO = getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId());
 			addfunctionality(fieldsDTO, dynamicFields);
 			appDynamicFieldsDTOSet.add(fieldsDTO);
 			increamentFilledFields(dynamicFields, filledVsUnfilled);
@@ -1169,10 +1181,10 @@ public class FieldsDtoHelper implements Serializable {
 	}
 
 	private static FieldsDTO getAppDynamicFieldDTO(Fields dynamicFields, List<FieldRemarks> fieldRemarksList,
-			User user) {
+			Long userId) {
 		FieldsDTO appDynamicFieldsDTO = new FieldsDTO();
 		appDynamicFieldsDTO.setRemark(getRemarks(dynamicFields, fieldRemarksList));
-		appDynamicFieldsDTO.setUserId(user != null ? user.getId() : null);
+		appDynamicFieldsDTO.setUserId(userId);
 		appDynamicFieldsDTO.setCamera(dynamicFields.isCamera());
 		appDynamicFieldsDTO.setDataType(dynamicFields.getDataType());
 		appDynamicFieldsDTO.setFieldId(dynamicFields.getFieldId());
@@ -1218,21 +1230,28 @@ public class FieldsDtoHelper implements Serializable {
 				SubFieldsDTO subFieldsDTO = new SubFieldsDTO();
 				Fields subChildField = subFields.getChild();
 				String side = subChildField.getFieldName();
-				FieldsDTO fieldsDTO = getAppDynamicFieldDTO(subChildField, fieldRemarksList,
-						attachmentDetailsOptional != null && attachmentDetailsOptional.isPresent()
-								? attachmentDetailsOptional.get().getUser()
-								: null);
-				fieldsDTO.setRemark(getSideRemarks(dynamicFields, fieldRemarksList, side));
-				if (attachmentDetailsOptional != null && attachmentDetailsOptional.isPresent()) {
-					AttachmentDetails attachmentDetails = attachmentDetailsOptional.get();
-					Set<Attachments> attachmentsSet = attachmentDetails.getAttachments();
-					if (attachmentsSet != null && !attachmentsSet.isEmpty()) {
-						setsavedAttachement(attachmentsSet, side, fieldsDTO, filledVsUnfilled);
+				try {
+					FieldsDTO fieldsDTO = getAppDynamicFieldDTO(subChildField, fieldRemarksList,
+							attachmentDetailsOptional != null && attachmentDetailsOptional.isPresent()
+									? attachmentDetailsOptional.get().getUser().getId()
+									: null);
+
+					fieldsDTO.setRemark(getSideRemarks(dynamicFields, fieldRemarksList, side));
+					if (attachmentDetailsOptional != null && attachmentDetailsOptional.isPresent()) {
+						AttachmentDetails attachmentDetails = attachmentDetailsOptional.get();
+						Set<Attachments> attachmentsSet = attachmentDetails.getAttachments();
+						if (attachmentsSet != null && !attachmentsSet.isEmpty()) {
+							setsavedAttachement(attachmentsSet, side, fieldsDTO, filledVsUnfilled);
+						}
 					}
+					subFieldsDTO.setFields(fieldsDTO);
+					subFieldsDTO.setId(subFields.getId());
+					subFieldsDTOs.add(subFieldsDTO);
+				} catch (Exception e) {
+					e.printStackTrace();
+					LOGGER.error("Exception raised while getting attachment sub field of main field={}, error={}r ",
+							dynamicFields.getFieldId(), e.getMessage());
 				}
-				subFieldsDTO.setFields(fieldsDTO);
-				subFieldsDTO.setId(subFields.getId());
-				subFieldsDTOs.add(subFieldsDTO);
 			}
 			return subFieldsDTOs;
 		}

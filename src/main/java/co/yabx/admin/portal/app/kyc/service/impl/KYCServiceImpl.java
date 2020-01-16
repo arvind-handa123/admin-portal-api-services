@@ -142,10 +142,16 @@ public class KYCServiceImpl implements KYCService {
 				if (appPages == null)
 					return null;
 				for (Pages pages : appPages) {
-					appPagesDTO.add(PagesDTOHeper.prepareAppPagesDto(pages, user, nominee, addressDetailsSet,
-							nomineeAddressDetailsSet, businessAddressDetailsSet, bankAccountDetailsSet,
-							nomineeBankAccountDetailsSet, businessBankAccountDetailsSet, PageType.RETAILERS.name(),
-							fieldRemarksList));
+					try {
+						appPagesDTO.add(PagesDTOHeper.prepareAppPagesDto(pages, user, nominee, addressDetailsSet,
+								nomineeAddressDetailsSet, businessAddressDetailsSet, bankAccountDetailsSet,
+								nomineeBankAccountDetailsSet, businessBankAccountDetailsSet, PageType.RETAILERS.name(),
+								fieldRemarksList));
+					} catch (Exception e) {
+						e.printStackTrace();
+						LOGGER.error("Exception raised while preapring page={}, error={}", pages.getPageId(),
+								e.getMessage());
+					}
 
 				}
 				appPagesDTOList.addAll(appPagesDTO);

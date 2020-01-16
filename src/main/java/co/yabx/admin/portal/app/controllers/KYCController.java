@@ -72,6 +72,7 @@ public class KYCController {
 			@RequestParam(value = "username", required = true) String username, HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse) {
 		if (authInfoService.isAuthorizedByUsername(username, httpServletRequest, httpServletResponse)) {
+			LOGGER.info("/kyc/pages request received for productId={},username={}", productId, username);
 			ResponseDTO statusDto = new ResponseDTO();
 			try {
 				List<PagesDTO> pages = adminPortalService.fetchProductDetails(productId);
