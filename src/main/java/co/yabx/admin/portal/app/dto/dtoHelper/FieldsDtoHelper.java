@@ -901,7 +901,8 @@ public class FieldsDtoHelper implements Serializable {
 			}
 		}
 		increamentFilledFields(dynamicFields, filledVsUnfilled);
-		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, user.getId()));
+		appDynamicFieldsDTOSet
+				.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, user != null ? user.getId():null));
 		return true;
 
 	}
