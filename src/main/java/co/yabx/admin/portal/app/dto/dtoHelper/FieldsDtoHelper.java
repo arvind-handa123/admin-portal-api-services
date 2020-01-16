@@ -209,7 +209,8 @@ public class FieldsDtoHelper implements Serializable {
 				}
 				dynamicFields.setOptions(options);
 			}
-			FieldsDTO fieldsDTO = getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId());
+			FieldsDTO fieldsDTO = getAppDynamicFieldDTO(dynamicFields, fieldRemarksList,
+					retailers != null ? retailers.getId() : null);
 			List<SubFieldsDTO> subFieldsDTOs = getSubFileds(dynamicFields, null, filledVsUnfilled, fieldRemarksList);
 			/*
 			 * if (subFieldsDTOs != null)
@@ -260,7 +261,8 @@ public class FieldsDtoHelper implements Serializable {
 						&& f.getDocumentType().equals(DocumentType.SIGNATURE.toString())).findFirst();
 				setSavedAttachment(dynamicFields, attachmentDetails, filledVsUnfilled);
 			}
-			FieldsDTO fieldsDTO = getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId());
+			FieldsDTO fieldsDTO = getAppDynamicFieldDTO(dynamicFields, fieldRemarksList,
+					retailers != null ? retailers.getId() : null);
 			List<SubFieldsDTO> subFieldsDTOs = getSubFileds(dynamicFields, attachmentDetails, filledVsUnfilled,
 					fieldRemarksList);
 			if (subFieldsDTOs != null)
@@ -320,7 +322,8 @@ public class FieldsDtoHelper implements Serializable {
 			}
 		}
 		increamentFilledFields(dynamicFields, filledVsUnfilled);
-		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId()));
+		appDynamicFieldsDTOSet.add(
+				getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers != null ? retailers.getId() : null));
 		return true;
 	}
 
@@ -403,7 +406,8 @@ public class FieldsDtoHelper implements Serializable {
 				}
 			}
 			increamentFilledFields(dynamicFields, filledVsUnfilled);
-			appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId()));
+			appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList,
+					retailers != null ? retailers.getId() : null));
 			return true;
 		}
 		return false;
@@ -455,7 +459,8 @@ public class FieldsDtoHelper implements Serializable {
 			}
 		}
 		increamentFilledFields(dynamicFields, filledVsUnfilled);
-		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId()));
+		appDynamicFieldsDTOSet.add(
+				getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers != null ? retailers.getId() : null));
 		return true;
 
 	}
@@ -486,7 +491,8 @@ public class FieldsDtoHelper implements Serializable {
 			}
 		}
 		increamentFilledFields(dynamicFields, filledVsUnfilled);
-		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId()));
+		appDynamicFieldsDTOSet.add(
+				getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers != null ? retailers.getId() : null));
 		return true;
 
 	}
@@ -539,7 +545,8 @@ public class FieldsDtoHelper implements Serializable {
 					dynamicFields.setOptions(options);
 				}
 				increamentFilledFields(dynamicFields, filledVsUnfilled);
-				appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId()));
+				appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList,
+						retailers != null ? retailers.getId() : null));
 				return true;
 			} else {
 				Set<BusinessDetails> BusinessDetailsSet = retailers.getBusinessDetails();
@@ -717,7 +724,8 @@ public class FieldsDtoHelper implements Serializable {
 											: null);
 				}
 				increamentFilledFields(dynamicFields, filledVsUnfilled);
-				appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId()));
+				appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList,
+						retailers != null ? retailers.getId() : null));
 				return true;
 			}
 		}
@@ -747,7 +755,8 @@ public class FieldsDtoHelper implements Serializable {
 			}
 		}
 		increamentFilledFields(dynamicFields, filledVsUnfilled);
-		appDynamicFieldsDTOSet.add(getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId()));
+		appDynamicFieldsDTOSet.add(
+				getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers != null ? retailers.getId() : null));
 		return true;
 
 	}
@@ -1080,7 +1089,7 @@ public class FieldsDtoHelper implements Serializable {
 					}
 					dynamicFields.setOptions(options);
 				} else if (dynamicFields.getFieldId().equals("userId")) {
-					dynamicFields.setSavedData(retailers.getId());
+					dynamicFields.setSavedData(retailers != null ? retailers.getId() : null);
 				} else if (dynamicFields.getFieldId().equals("msisdn")) {
 					dynamicFields.setSavedData(retailers.getMsisdn());
 				} else if (dynamicFields.getFieldId().equals("sisterConcernedOrAllied")) {
@@ -1148,7 +1157,8 @@ public class FieldsDtoHelper implements Serializable {
 					dynamicFields.setOptions(options);
 				}
 			}
-			FieldsDTO fieldsDTO = getAppDynamicFieldDTO(dynamicFields, fieldRemarksList, retailers.getId());
+			FieldsDTO fieldsDTO = getAppDynamicFieldDTO(dynamicFields, fieldRemarksList,
+					retailers != null ? retailers.getId() : null);
 			addfunctionality(fieldsDTO, dynamicFields);
 			appDynamicFieldsDTOSet.add(fieldsDTO);
 			increamentFilledFields(dynamicFields, filledVsUnfilled);
