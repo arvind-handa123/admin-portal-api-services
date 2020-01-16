@@ -136,6 +136,7 @@ public class KYCServiceImpl implements KYCService {
 					URI uri = new URIBuilder(request.getURI()).addParameters(params).build();
 					request.setURI(uri);
 					response = httpclient.execute(request);
+					LOGGER.info("Response for kycStatus={} is ={}", kycStatus, response);
 					if (response.getStatusLine().getStatusCode() == 200) {
 						List<PagesDTO> entity = (List<PagesDTO>) response.getEntity();
 						LOGGER.info("Response for kycStatus={} is ={}", kycStatus, entity);
