@@ -123,7 +123,7 @@ public class KYCServiceImpl implements KYCService {
 				if (appConfigService.getBooleanProperty("IS_TO_FETCH_FROM_KYC", true)) {
 					HttpClient httpclient = HttpClients.createDefault();
 					HttpGet request = new HttpGet(appConfigService.getProperty("KYC_END_POINT",
-							"http://kyc.yabx.co:8080/retailers/profiles"));
+							"http://kyc.yabx.co:8080/v1/retailers/profiles"));
 					List<NameValuePair> params = new ArrayList<NameValuePair>(3);
 					NameValuePair nv1 = new BasicNameValuePair("status", kycStatus.toString());
 					NameValuePair nv2 = new BasicNameValuePair("secret_key",
