@@ -98,62 +98,61 @@ public class KYCServiceImpl implements KYCService {
 
 	@Override
 	public List<PagesDTO> fetchRetailersByKycStatus(KycStatus kycStatus) {
-		List<User> usersList = userRepository.findByUserType(UserType.RETAILERS.name());
+		List<AccountStatuses> accountStatuses = accountStatusesRepository.findByKycVerified(kycStatus);
 		List<PagesDTO> appPagesDTOList = new ArrayList<PagesDTO>();
-		for (User user : usersList) {
-			List<PagesDTO> appPagesDTO = new ArrayList<PagesDTO>();
-			if (user.getMsisdn() != null && !user.getMsisdn().isEmpty()) {
-				AccountStatuses accountStatuses = accountStatusesRepository.findByMsisdn(user.getMsisdn());
+		for (AccountStatuses accountStatus : accountStatuses) {
+			User user = userRepository.findBymsisdnAndUserType(accountStatus.getMsisdn(), UserType.RETAILERS.name());
+			if (user != null) {
+				List<PagesDTO> appPagesDTO = new ArrayList<PagesDTO>();
 				List<FieldRemarks> fieldRemarksList = fieldRemarksRepository.findByUserId(user.getId());
-				if (accountStatuses != null && accountStatuses.getKycVerified() != null
-						&& accountStatuses.getKycVerified() == kycStatus) {
-					Set<AddressDetails> addressDetailsSet = user.getAddressDetails();
-					Set<BankAccountDetails> bankAccountDetailsSet = user.getBankAccountDetails();
-					Set<BusinessDetails> businessDetailsSet = user.getBusinessDetails();
-					Set<AttachmentDetails> attachmentDetailsSet = user.getAttachmentDetails();
-					Set<LiabilitiesDetails> nominees = user.getLiabilitiesDetails();
-					Set<IntroducerDetails> introducerDetails = user.getIntroducerDetails();
-					Set<WorkEducationDetails> workEducationDetailsSet = user.getWorkEducationDetails();
-					Set<MonthlyTransactionProfiles> monthlyTransactionProfilesSet = user
-							.getMonthlyTransactionProfiles();
-					LoanPurposeDetails loanPurposeDetails = user.getLoanPurposeDetails();
-					Set<BankAccountDetails> nomineeBankAccountDetailsSet = null;
-					Set<BankAccountDetails> businessBankAccountDetailsSet = new HashSet<BankAccountDetails>();
-					Set<AddressDetails> nomineeAddressDetailsSet = null;
-					Set<AddressDetails> businessAddressDetailsSet = new HashSet<AddressDetails>();
-					List<UserRelationships> userRelationships = userRelationshipsRepository
-							.findByMsisdnAndRelationship(user.getMsisdn(), Relationship.NOMINEE);
-					User nominee = userRelationships != null && !userRelationships.isEmpty()
-							? userRelationships.get(0).getRelative()
-							: null;
-					nomineeAddressDetailsSet = nominee != null ? addressDetailsRepository.findByUser(user) : null;
-					nomineeBankAccountDetailsSet = nominee != null ? accountDetailsRepository.findByUser(user) : null;
+				Set<AddressDetails> addressDetailsSet = user.getAddressDetails();
+				Set<BankAccountDetails> bankAccountDetailsSet = user.getBankAccountDetails();
+				/*
+				 * Set<BusinessDetails> businessDetailsSet = user.getBusinessDetails();
+				 * Set<AttachmentDetails> attachmentDetailsSet = user.getAttachmentDetails();
+				 * Set<LiabilitiesDetails> nominees = user.getLiabilitiesDetails();
+				 * Set<IntroducerDetails> introducerDetails = user.getIntroducerDetails();
+				 * Set<WorkEducationDetails> workEducationDetailsSet =
+				 * user.getWorkEducationDetails(); Set<MonthlyTransactionProfiles>
+				 * monthlyTransactionProfilesSet = user.getMonthlyTransactionProfiles();
+				 * LoanPurposeDetails loanPurposeDetails = user.getLoanPurposeDetails();
+				 */
+				Set<BankAccountDetails> nomineeBankAccountDetailsSet = null;
+				Set<BankAccountDetails> businessBankAccountDetailsSet = new HashSet<BankAccountDetails>();
+				Set<AddressDetails> nomineeAddressDetailsSet = null;
+				Set<AddressDetails> businessAddressDetailsSet = new HashSet<AddressDetails>();
+				List<UserRelationships> userRelationships = userRelationshipsRepository
+						.findByMsisdnAndRelationship(user.getMsisdn(), Relationship.NOMINEE);
+				User nominee = userRelationships != null && !userRelationships.isEmpty()
+						? userRelationships.get(0).getRelative()
+						: null;
+				nomineeAddressDetailsSet = nominee != null ? nominee.getAddressDetails() : null;
+				nomineeBankAccountDetailsSet = nominee != null ? accountDetailsRepository.findByUser(user) : null;
 
-					if (user.getBusinessDetails() != null) {
-						user.getBusinessDetails().forEach(f -> {
-							businessAddressDetailsSet.addAll(f.getAddressDetails());
-						});
-						user.getBusinessDetails().forEach(f -> {
-							businessBankAccountDetailsSet.addAll(f.getBankAccountDetails());
-						});
-					}
-
-					List<Pages> appPages = kycPagesRepository.findByPageType(PageType.RETAILERS);
-					if (appPages == null)
-						return null;
-					for (Pages pages : appPages) {
-						appPagesDTO.add(PagesDTOHeper.prepareAppPagesDto(pages, user, nominee, addressDetailsSet,
-								nomineeAddressDetailsSet, businessAddressDetailsSet, bankAccountDetailsSet,
-								nomineeBankAccountDetailsSet, businessBankAccountDetailsSet, PageType.RETAILERS.name(),
-								fieldRemarksList));
-
-					}
-
-					appPagesDTOList.addAll(appPagesDTO);
+				if (user.getBusinessDetails() != null) {
+					user.getBusinessDetails().forEach(f -> {
+						businessAddressDetailsSet.addAll(f.getAddressDetails());
+					});
+					user.getBusinessDetails().forEach(f -> {
+						businessBankAccountDetailsSet.addAll(f.getBankAccountDetails());
+					});
 				}
+
+				List<Pages> appPages = kycPagesRepository.findByPageType(PageType.RETAILERS);
+				if (appPages == null)
+					return null;
+				for (Pages pages : appPages) {
+					appPagesDTO.add(PagesDTOHeper.prepareAppPagesDto(pages, user, nominee, addressDetailsSet,
+							nomineeAddressDetailsSet, businessAddressDetailsSet, bankAccountDetailsSet,
+							nomineeBankAccountDetailsSet, businessBankAccountDetailsSet, PageType.RETAILERS.name(),
+							fieldRemarksList));
+
+				}
+				appPagesDTOList.addAll(appPagesDTO);
 			}
 		}
 		return appPagesDTOList;
+
 	}
 
 	@Override

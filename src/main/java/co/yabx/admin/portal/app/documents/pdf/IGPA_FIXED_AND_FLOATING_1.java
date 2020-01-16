@@ -3,6 +3,11 @@ package co.yabx.admin.portal.app.documents.pdf;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.Optional;
+import java.util.Set;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -10,10 +15,15 @@ import com.itextpdf.text.List;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import co.yabx.admin.portal.app.enums.AddressType;
 import co.yabx.admin.portal.app.enums.AttachmentType;
+import co.yabx.admin.portal.app.kyc.dto.BusinessDetailsDTO;
+import co.yabx.admin.portal.app.kyc.entities.AddressDetails;
+import co.yabx.admin.portal.app.kyc.entities.BusinessDetails;
 import co.yabx.admin.portal.app.kyc.entities.User;
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.AttachmentService;
+import co.yabx.admin.portal.app.util.DateUtil;
 import co.yabx.admin.portal.app.util.PDFGenerator;
 import co.yabx.admin.portal.app.util.SpringUtil;
 
@@ -26,7 +36,7 @@ public class IGPA_FIXED_AND_FLOATING_1 {
 		File destination = new File(path);
 		if (!destination.exists())
 			destination.mkdirs();
-		Document document = get_IGPA_FIXED_AND_FLOATING_Document(path + newFileName,
+		Document document = get_IGPA_FIXED_AND_FLOATING_Document(user, path + newFileName,
 				"Irrevocable General Power of Attorney (IGPA)- Fixed & Floating");
 		if (document != null) {
 			SpringUtil.bean(AttachmentService.class).saveAttachments(user, "IGPA_FIXED_AND_FLOATING", newFileName,
@@ -35,25 +45,36 @@ public class IGPA_FIXED_AND_FLOATING_1 {
 		return newFileName;
 	}
 
-	public static Document get_IGPA_FIXED_AND_FLOATING_Document(String path, String title) {
+	public static Document get_IGPA_FIXED_AND_FLOATING_Document(User user, String path, String title) {
 		Document document = new Document(PageSize.A4);
 		document.addTitle(title);
 		try {
+			LocalDate currentdate = LocalDate.now();
+			BusinessDetails businessDetails = getBusinessDetails(user.getBusinessDetails());
+			String businessRegisterredAddress = getRegisterredAddress(user.getBusinessDetails());
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(path));
 			document.open();
 			document.add(PDFGenerator.getCenteredUnderLinedParagraph("BEFORE A NOTARY", true, true));
 			document.add(PDFGenerator.getCenteredUnderLinedParagraph(
 					"IRREVOCABLE GENERAL POWER OF ATTORNEY FOR MOVABLE PROPERTIES", true, false));
-			document.add(PDFGenerator.getLeftAlignedParagraph(
-					"This Irrevocable General Power of Attorney is made at Dhaka on this the ___th day of the month of ______________, Two Thousand __________________ eof the Christian Era.",
-					true, false));
-			document.add(PDFGenerator.getLeftAlignedParagraph(
-					"We, __________________________________ , a proprietorship/ Private Limited/ Partnership concern having its office at __________________________________ ________________________________________ (hereinafter referred to as the “Principal”), represented by its Proprietor/Partner/ Director (s), _______________________________________________________________, who is duly authorized to execute this Irrevocable General Power of Attorney, do hereby state as follows: ",
+			document.add(PDFGenerator
+					.getLeftAlignedParagraph("This Irrevocable General Power of Attorney is made at Dhaka on this the "
+							+ currentdate.getDayOfMonth() + " th day of the month of " + currentdate.getMonth() + ", "
+							+ currentdate.getYear() + "eof the Christian Era.", true, false));
+			document.add(PDFGenerator.getLeftAlignedParagraph("We, " + businessDetails != null
+					? businessDetails.getBusinessName()
+					: "--------" + ", a proprietorship/ Private Limited/ Partnership concern having its office at "
+							+ businessRegisterredAddress
+							+ " (hereinafter referred to as the “Principal”), represented by its Proprietor/Partner/ Director (s), "
+							+ businessDetails.getDirectorOrPartnerName()
+							+ " , who is duly authorized to execute this Irrevocable General Power of Attorney, do hereby state as follows: ",
 					true, false));
 			document.add(PDFGenerator.getLeftAlignedBoldParagraph("WHEREAS:", true, false));
 
 			List unorderedList = PDFGenerator.getUnorderedList("(A)  ",
-					"By a (i) Letter of Hypothecation of Fixed & Floating Assets by way of fixed charge dated ________________, (hereinafter collectively referred to as the “Letter of Hypothecation”) the properties described in the Schedule herein below (hereinafter referred to as the “Properties”) were hypothecated as a continuing security for repayment of the loan facility (hereinafter referred to as the “Facility”) granted to the Principal by:",
+					"By a (i) Letter of Hypothecation of Fixed & Floating Assets by way of fixed charge dated "
+							+ DateUtil.getDate()
+							+ " , (hereinafter collectively referred to as the “Letter of Hypothecation”) the properties described in the Schedule herein below (hereinafter referred to as the “Properties”) were hypothecated as a continuing security for repayment of the loan facility (hereinafter referred to as the “Facility”) granted to the Principal by:",
 					false, false);
 			document.add(unorderedList);
 			document.add(PDFGenerator.getLeftAlignedSubListParagraph("BRAC BANK LIMITED", true, true, false));
@@ -224,5 +245,34 @@ public class IGPA_FIXED_AND_FLOATING_1 {
 			e.printStackTrace();
 		}
 		return document;
+	}
+
+	private static String getRegisterredAddress(Set<BusinessDetails> businessDetails) {
+		AddressDetails addressDetails = getBusinessRegisterredAddress(businessDetails);
+		if (addressDetails != null) {
+			return addressDetails.getAddress() + ", " + addressDetails.getUpazilaThana() + ", "
+					+ addressDetails.getCityDsitrict() + ", " + addressDetails.getDivision() + ", "
+					+ addressDetails.getZipCode() + ", " + addressDetails.getLandmark() + ", "
+					+ addressDetails.getCountry();
+		}
+		return "-------";
+	}
+
+	private static BusinessDetails getBusinessDetails(Set<BusinessDetails> businessDetails) {
+		Optional<BusinessDetails> optional = businessDetails.stream().findFirst();
+		return optional.isPresent() ? optional.get() : null;
+	}
+
+	private static AddressDetails getBusinessRegisterredAddress(Set<BusinessDetails> businessDetails) {
+		BusinessDetails details = getBusinessDetails(businessDetails);
+		if (details != null) {
+			Set<AddressDetails> set = details.getAddressDetails();
+			Optional<AddressDetails> addressDetailsOptional = set != null
+					? set.stream().filter(f -> AddressType.BUSINESS_REGISTERED_ADDRESS.equals(f.getAddressType()))
+							.findFirst()
+					: Optional.empty();
+			return addressDetailsOptional.isPresent() ? addressDetailsOptional.get() : null;
+		}
+		return null;
 	}
 }

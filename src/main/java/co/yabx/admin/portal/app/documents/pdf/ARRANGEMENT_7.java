@@ -13,6 +13,7 @@ import co.yabx.admin.portal.app.enums.AttachmentType;
 import co.yabx.admin.portal.app.kyc.entities.User;
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.AttachmentService;
+import co.yabx.admin.portal.app.util.DateUtil;
 import co.yabx.admin.portal.app.util.PDFGenerator;
 import co.yabx.admin.portal.app.util.SpringUtil;
 
@@ -40,7 +41,7 @@ public class ARRANGEMENT_7 {
 		try {
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(path));
 			document.open();
-			document.add(PDFGenerator.getLeftAlignedParagraph("Date: ", true, false));
+			document.add(PDFGenerator.getLeftAlignedParagraph("Date: " + DateUtil.getDate(), true, false));
 			document.add(PDFGenerator.getLeftAlignedBoldParagraph("BRAC Bank Limited", false, false));
 			document.add(PDFGenerator.getLeftAlignedParagraph("Anik Tower ", false, false));
 			document.add(PDFGenerator.getLeftAlignedParagraph("220/B Tejgaon Gulshan Link Road", false, false));
