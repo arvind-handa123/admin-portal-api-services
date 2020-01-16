@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.JsonNode;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SectionsDTO implements Serializable {
@@ -34,7 +35,7 @@ public class SectionsDTO implements Serializable {
 
 	private Integer displayOrder;
 
-	private List<PagesDTO> pagesDTOs;
+	private JsonNode pagesDTOs;
 
 	public String getSectionType() {
 		return sectionType;
@@ -149,11 +150,11 @@ public class SectionsDTO implements Serializable {
 		this.displayOrder = displayOrder;
 	}
 
-	public List<PagesDTO> getPagesDTOs() {
+	public JsonNode getPagesDTOs() {
 		return pagesDTOs;
 	}
 
-	public void setPagesDTOs(List<PagesDTO> pagesDTOs) {
+	public void setPagesDTOs(JsonNode pagesDTOs) {
 		this.pagesDTOs = pagesDTOs;
 	}
 

@@ -116,7 +116,7 @@ public class KYCServiceImpl implements KYCService {
 	}
 
 	@Override
-	public List<PagesDTO> fetchRetailersByKycStatus(KycStatus kycStatus)
+	public JsonNode fetchRetailersByKycStatus(KycStatus kycStatus)
 			throws URISyntaxException, ClientProtocolException, IOException {
 		List<AccountStatuses> accountStatuses = accountStatusesRepository.findByKycVerified(kycStatus);
 		List<PagesDTO> appPagesDTOList = new ArrayList<PagesDTO>();
@@ -144,11 +144,12 @@ public class KYCServiceImpl implements KYCService {
 					if (response.getStatusLine().getStatusCode() == 200) {
 						HttpEntity entity = response.getEntity();
 						String responseString = EntityUtils.toString(entity, "UTF-8");
-						LOGGER.info("Response for kycStatus={} in string is ={}", kycStatus, responseString);
+						// LOGGER.info("Response for kycStatus={} in string is ={}", kycStatus,
+						// responseString);
 						JsonNode jsonNode = JsonUtilService.deserializeEntity(responseString, JsonNode.class);
 						LOGGER.info("Response for kycStatus={} in jsonNode is ={}", kycStatus, jsonNode);
 						// String responseString = EntityUtils.toString(entity, "UTF-8");
-						// appPagesDTOList.addAll((List<PagesDTO>) responseString);
+						return jsonNode;
 					}
 
 				} else {
@@ -200,7 +201,7 @@ public class KYCServiceImpl implements KYCService {
 				}
 			}
 		}
-		return appPagesDTOList;
+		return null;
 
 	}
 

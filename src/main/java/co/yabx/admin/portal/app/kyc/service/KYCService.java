@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.apache.http.client.ClientProtocolException;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import co.yabx.admin.portal.app.enums.KycStatus;
 import co.yabx.admin.portal.app.kyc.dto.PagesDTO;
 import co.yabx.admin.portal.app.kyc.dto.UserDisclaimerDocumentsDTO;
@@ -21,7 +23,7 @@ public interface KYCService {
 
 	List<PagesDTO> findAllRetailers();
 
-	List<PagesDTO> fetchRetailersByKycStatus(KycStatus kycStatus)
+	JsonNode fetchRetailersByKycStatus(KycStatus kycStatus)
 			throws URISyntaxException, ClientProtocolException, IOException;
 
 	AccountStatuses updateKycStatus(String msisdn, String username, KycStatus approved);
