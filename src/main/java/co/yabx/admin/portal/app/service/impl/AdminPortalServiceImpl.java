@@ -1,5 +1,7 @@
 package co.yabx.admin.portal.app.service.impl;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import org.apache.http.client.ClientProtocolException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +58,7 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminPortalServiceImpl.class);
 
 	@Override
-	public List<PagesDTO> fetchProductDetails(Long productId) {
+	public List<PagesDTO> fetchProductDetails(Long productId) throws ClientProtocolException, URISyntaxException, IOException {
 		Optional<ProductConfigurations> productConfigurations = productConfigurationRepository.findById(productId);
 		List<PagesDTO> appPagesDTOList = new ArrayList<PagesDTO>();
 		if (productConfigurations.isPresent()) {

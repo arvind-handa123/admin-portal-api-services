@@ -1,10 +1,13 @@
 package co.yabx.admin.portal.app.controllers;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.client.ClientProtocolException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +60,7 @@ public class KYCController {
 	@RequestMapping(value = "/kyc/status", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> getRetailersProfile(@RequestParam KycStatus kycStatus,
-			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
 		LOGGER.info("/kyc/status request received for status={}", kycStatus);
 		if (kycStatus == null) {
 			return new ResponseEntity<>(kycService.findAllRetailers(), HttpStatus.OK);
@@ -70,7 +73,7 @@ public class KYCController {
 	@RequestMapping(value = "/kyc/pages", method = RequestMethod.GET)
 	public ResponseEntity<?> pages(@RequestParam("productId") Long productId,
 			@RequestParam(value = "username", required = true) String username, HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse) {
+			HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
 		if (authInfoService.isAuthorizedByUsername(username, httpServletRequest, httpServletResponse)) {
 			LOGGER.info("/kyc/pages request received for productId={},username={}", productId, username);
 			ResponseDTO statusDto = new ResponseDTO();

@@ -2,6 +2,7 @@ package co.yabx.admin.portal.app.kyc.service.impl;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.Set;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -110,7 +112,8 @@ public class KYCServiceImpl implements KYCService {
 	}
 
 	@Override
-	public List<PagesDTO> fetchRetailersByKycStatus(KycStatus kycStatus) {
+	public List<PagesDTO> fetchRetailersByKycStatus(KycStatus kycStatus)
+			throws URISyntaxException, ClientProtocolException, IOException {
 		List<AccountStatuses> accountStatuses = accountStatusesRepository.findByKycVerified(kycStatus);
 		List<PagesDTO> appPagesDTOList = new ArrayList<PagesDTO>();
 		for (AccountStatuses accountStatus : accountStatuses) {
@@ -129,20 +132,17 @@ public class KYCServiceImpl implements KYCService {
 					params.add(nv2);
 					// Execute and get the response.
 					HttpResponse response = null;
-					try {
-						URI uri = new URIBuilder(request.getURI()).addParameters(params).build();
-						request.setURI(uri);
-						response = httpclient.execute(request);
-						if (response.getStatusLine().getStatusCode() == 200) {
-							List<PagesDTO> entity = (List<PagesDTO>) response.getEntity();
-							LOGGER.info("Response for kycStatus={} is ={}", kycStatus, entity);
-							// String responseString = EntityUtils.toString(entity, "UTF-8");
-							appPagesDTOList.addAll(entity);
-						}
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+
+					URI uri = new URIBuilder(request.getURI()).addParameters(params).build();
+					request.setURI(uri);
+					response = httpclient.execute(request);
+					if (response.getStatusLine().getStatusCode() == 200) {
+						List<PagesDTO> entity = (List<PagesDTO>) response.getEntity();
+						LOGGER.info("Response for kycStatus={} is ={}", kycStatus, entity);
+						// String responseString = EntityUtils.toString(entity, "UTF-8");
+						appPagesDTOList.addAll(entity);
 					}
+
 				} else {
 					List<FieldRemarks> fieldRemarksList = fieldRemarksRepository.findByUserId(user.getId());
 					Set<AddressDetails> addressDetailsSet = user.getAddressDetails();

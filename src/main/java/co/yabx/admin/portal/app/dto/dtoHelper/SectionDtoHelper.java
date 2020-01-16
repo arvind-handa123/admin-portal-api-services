@@ -1,12 +1,16 @@
 package co.yabx.admin.portal.app.dto.dtoHelper;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.http.client.ClientProtocolException;
 
 import co.yabx.admin.portal.app.enums.KycStatus;
 import co.yabx.admin.portal.app.kyc.dto.GroupsDTO;
@@ -59,7 +63,7 @@ public class SectionDtoHelper implements Serializable {
 	}
 
 	public static List<SectionsDTO> getSections(
-			Set<co.yabx.admin.portal.app.admin.entities.Sections> appPagesSectionsSet, boolean isKyc) {
+			Set<co.yabx.admin.portal.app.admin.entities.Sections> appPagesSectionsSet, boolean isKyc) throws ClientProtocolException, URISyntaxException, IOException {
 
 		List<SectionsDTO> appPagesSectionDTOSet = new ArrayList<SectionsDTO>();
 		for (co.yabx.admin.portal.app.admin.entities.Sections appPagesSections : appPagesSectionsSet) {

@@ -1,6 +1,8 @@
 package co.yabx.admin.portal.app.dto.dtoHelper;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.URISyntaxException;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.http.client.ClientProtocolException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +69,7 @@ public class PagesDTOHeper implements Serializable {
 		return appPagesDTO;
 	}
 
-	public static PagesDTO prepareKycPagesDto(co.yabx.admin.portal.app.admin.entities.Pages pages) {
+	public static PagesDTO prepareKycPagesDto(co.yabx.admin.portal.app.admin.entities.Pages pages) throws ClientProtocolException, URISyntaxException, IOException {
 		PagesDTO appPagesDTO = new PagesDTO();
 		Set<co.yabx.admin.portal.app.admin.entities.Sections> appPagesSectionsSet = pages.getSections();
 		if (appPagesSectionsSet != null && !appPagesSectionsSet.isEmpty()) {
@@ -91,7 +94,7 @@ public class PagesDTOHeper implements Serializable {
 		return actionDTO;
 	}
 
-	public static PagesDTO prepareAirtelPagesDto(co.yabx.admin.portal.app.admin.entities.Pages pages) {
+	public static PagesDTO prepareAirtelPagesDto(co.yabx.admin.portal.app.admin.entities.Pages pages) throws ClientProtocolException, URISyntaxException, IOException {
 		PagesDTO appPagesDTO = new PagesDTO();
 		Set<co.yabx.admin.portal.app.admin.entities.Sections> appPagesSectionsSet = pages.getSections();
 		if (appPagesSectionsSet != null && !appPagesSectionsSet.isEmpty()) {

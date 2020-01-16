@@ -1,6 +1,10 @@
 package co.yabx.admin.portal.app.kyc.service;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
+
+import org.apache.http.client.ClientProtocolException;
 
 import co.yabx.admin.portal.app.enums.KycStatus;
 import co.yabx.admin.portal.app.kyc.dto.PagesDTO;
@@ -17,7 +21,8 @@ public interface KYCService {
 
 	List<PagesDTO> findAllRetailers();
 
-	List<PagesDTO> fetchRetailersByKycStatus(KycStatus kycStatus);
+	List<PagesDTO> fetchRetailersByKycStatus(KycStatus kycStatus)
+			throws URISyntaxException, ClientProtocolException, IOException;
 
 	AccountStatuses updateKycStatus(String msisdn, String username, KycStatus approved);
 
