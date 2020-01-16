@@ -1,11 +1,22 @@
 package co.yabx.admin.portal.app.kyc.service.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,58 +115,75 @@ public class KYCServiceImpl implements KYCService {
 			User user = userRepository.findBymsisdnAndUserType(accountStatus.getMsisdn(), UserType.RETAILERS.name());
 			if (user != null) {
 				List<PagesDTO> appPagesDTO = new ArrayList<PagesDTO>();
-				List<FieldRemarks> fieldRemarksList = fieldRemarksRepository.findByUserId(user.getId());
-				Set<AddressDetails> addressDetailsSet = user.getAddressDetails();
-				Set<BankAccountDetails> bankAccountDetailsSet = user.getBankAccountDetails();
-				/*
-				 * Set<BusinessDetails> businessDetailsSet = user.getBusinessDetails();
-				 * Set<AttachmentDetails> attachmentDetailsSet = user.getAttachmentDetails();
-				 * Set<LiabilitiesDetails> nominees = user.getLiabilitiesDetails();
-				 * Set<IntroducerDetails> introducerDetails = user.getIntroducerDetails();
-				 * Set<WorkEducationDetails> workEducationDetailsSet =
-				 * user.getWorkEducationDetails(); Set<MonthlyTransactionProfiles>
-				 * monthlyTransactionProfilesSet = user.getMonthlyTransactionProfiles();
-				 * LoanPurposeDetails loanPurposeDetails = user.getLoanPurposeDetails();
-				 */
-				Set<BankAccountDetails> nomineeBankAccountDetailsSet = null;
-				Set<BankAccountDetails> businessBankAccountDetailsSet = new HashSet<BankAccountDetails>();
-				Set<AddressDetails> nomineeAddressDetailsSet = null;
-				Set<AddressDetails> businessAddressDetailsSet = new HashSet<AddressDetails>();
-				List<UserRelationships> userRelationships = userRelationshipsRepository
-						.findByMsisdnAndRelationship(user.getMsisdn(), Relationship.NOMINEE);
-				User nominee = userRelationships != null && !userRelationships.isEmpty()
-						? userRelationships.get(0).getRelative()
-						: null;
-				nomineeAddressDetailsSet = nominee != null ? nominee.getAddressDetails() : null;
-				nomineeBankAccountDetailsSet = nominee != null ? accountDetailsRepository.findByUser(user) : null;
-
-				if (user.getBusinessDetails() != null) {
-					user.getBusinessDetails().forEach(f -> {
-						businessAddressDetailsSet.addAll(f.getAddressDetails());
-					});
-					user.getBusinessDetails().forEach(f -> {
-						businessBankAccountDetailsSet.addAll(f.getBankAccountDetails());
-					});
-				}
-
-				List<Pages> appPages = kycPagesRepository.findByPageType(PageType.RETAILERS);
-				if (appPages == null)
-					return null;
-				for (Pages pages : appPages) {
+				if (appConfigService.getBooleanProperty("IS_TO_FETCH_FROM_KYC", true)) {
+					HttpClient httpclient = HttpClients.createDefault();
+					HttpGet httpGet = new HttpGet(appConfigService.getProperty("KYC_END_POINT",
+							"https://kyc.yabx.co:8080/retailers/profiles"));
+					List<NameValuePair> params = new ArrayList<NameValuePair>(3);
+					params.add(new BasicNameValuePair("status", kycStatus.toString()));
+					params.add(new BasicNameValuePair("secret_key",
+							appConfigService.getProperty("RETAILER_PROFILE_KYC_API_SECRET_KEY", "magic@yabx")));
+					// Execute and get the response.
+					HttpResponse response = null;
 					try {
+						response = httpclient.execute(httpGet);
+						if (response.getStatusLine().getStatusCode() == 200) {
+							List<PagesDTO> entity = (List<PagesDTO>) response.getEntity();
+							LOGGER.info("Response for kycStatus={} is ={}", kycStatus, entity);
+							// String responseString = EntityUtils.toString(entity, "UTF-8");
+							appPagesDTOList.addAll(entity);
+						}
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} else {
+					List<FieldRemarks> fieldRemarksList = fieldRemarksRepository.findByUserId(user.getId());
+					Set<AddressDetails> addressDetailsSet = user.getAddressDetails();
+					Set<BankAccountDetails> bankAccountDetailsSet = user.getBankAccountDetails();
+					/*
+					 * Set<BusinessDetails> businessDetailsSet = user.getBusinessDetails();
+					 * Set<AttachmentDetails> attachmentDetailsSet = user.getAttachmentDetails();
+					 * Set<LiabilitiesDetails> nominees = user.getLiabilitiesDetails();
+					 * Set<IntroducerDetails> introducerDetails = user.getIntroducerDetails();
+					 * Set<WorkEducationDetails> workEducationDetailsSet =
+					 * user.getWorkEducationDetails(); Set<MonthlyTransactionProfiles>
+					 * monthlyTransactionProfilesSet = user.getMonthlyTransactionProfiles();
+					 * LoanPurposeDetails loanPurposeDetails = user.getLoanPurposeDetails();
+					 */
+					Set<BankAccountDetails> nomineeBankAccountDetailsSet = null;
+					Set<BankAccountDetails> businessBankAccountDetailsSet = new HashSet<BankAccountDetails>();
+					Set<AddressDetails> nomineeAddressDetailsSet = null;
+					Set<AddressDetails> businessAddressDetailsSet = new HashSet<AddressDetails>();
+					List<UserRelationships> userRelationships = userRelationshipsRepository
+							.findByMsisdnAndRelationship(user.getMsisdn(), Relationship.NOMINEE);
+					User nominee = userRelationships != null && !userRelationships.isEmpty()
+							? userRelationships.get(0).getRelative()
+							: null;
+					nomineeAddressDetailsSet = nominee != null ? nominee.getAddressDetails() : null;
+					nomineeBankAccountDetailsSet = nominee != null ? accountDetailsRepository.findByUser(user) : null;
+
+					if (user.getBusinessDetails() != null) {
+						user.getBusinessDetails().forEach(f -> {
+							businessAddressDetailsSet.addAll(f.getAddressDetails());
+						});
+						user.getBusinessDetails().forEach(f -> {
+							businessBankAccountDetailsSet.addAll(f.getBankAccountDetails());
+						});
+					}
+
+					List<Pages> appPages = kycPagesRepository.findByPageType(PageType.RETAILERS);
+					if (appPages == null)
+						return null;
+					for (Pages pages : appPages) {
 						appPagesDTO.add(PagesDTOHeper.prepareAppPagesDto(pages, user, nominee, addressDetailsSet,
 								nomineeAddressDetailsSet, businessAddressDetailsSet, bankAccountDetailsSet,
 								nomineeBankAccountDetailsSet, businessBankAccountDetailsSet, PageType.RETAILERS.name(),
 								fieldRemarksList));
-					} catch (Exception e) {
-						e.printStackTrace();
-						LOGGER.error("Exception raised while preapring page={}, error={}", pages.getPageId(),
-								e.getMessage());
-						throw e;
-					}
 
+					}
+					appPagesDTOList.addAll(appPagesDTO);
 				}
-				appPagesDTOList.addAll(appPagesDTO);
 			}
 		}
 		return appPagesDTOList;
