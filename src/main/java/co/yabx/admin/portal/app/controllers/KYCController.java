@@ -74,21 +74,21 @@ public class KYCController {
 		if (authInfoService.isAuthorizedByUsername(username, httpServletRequest, httpServletResponse)) {
 			LOGGER.info("/kyc/pages request received for productId={},username={}", productId, username);
 			ResponseDTO statusDto = new ResponseDTO();
-			try {
-				List<PagesDTO> pages = adminPortalService.fetchProductDetails(productId);
-				if (pages != null && !pages.isEmpty()) {
-					statusDto.setRetailerInfo(pages);
-					statusDto.setStatusCode("200");
-					statusDto.setMessage("SUCCESS");
-					return new ResponseEntity<>(statusDto, HttpStatus.OK);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				LOGGER.error("Exception raised while redaing pages for product={},error={}", productId, e.getMessage());
-				statusDto.setStatusCode("501");
-				statusDto.setMessage(e.getMessage());
+
+			List<PagesDTO> pages = adminPortalService.fetchProductDetails(productId);
+			if (pages != null && !pages.isEmpty()) {
+				statusDto.setRetailerInfo(pages);
+				statusDto.setStatusCode("200");
+				statusDto.setMessage("SUCCESS");
 				return new ResponseEntity<>(statusDto, HttpStatus.OK);
 			}
+			/*
+			 * } catch (Exception e) { e.printStackTrace();
+			 * LOGGER.error("Exception raised while readaing pages for product={},error={}",
+			 * productId, e.getMessage()); statusDto.setStatusCode("501");
+			 * statusDto.setMessage(e.getMessage()); return new ResponseEntity<>(statusDto,
+			 * HttpStatus.OK); }
+			 */
 			return new ResponseEntity<>(statusDto, HttpStatus.OK);
 		}
 		return new ResponseEntity<>("Invalid authentication", HttpStatus.UNAUTHORIZED);
