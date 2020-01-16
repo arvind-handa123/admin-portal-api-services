@@ -151,6 +151,7 @@ public class KYCServiceImpl implements KYCService {
 						e.printStackTrace();
 						LOGGER.error("Exception raised while preapring page={}, error={}", pages.getPageId(),
 								e.getMessage());
+						throw e;
 					}
 
 				}
