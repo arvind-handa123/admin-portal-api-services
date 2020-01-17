@@ -147,7 +147,8 @@ public class KYCServiceImpl implements KYCService {
 						// LOGGER.info("Response for kycStatus={} in string is ={}", kycStatus,
 						// responseString);
 						JsonNode jsonNode = JsonUtilService.deserializeEntity(responseString, JsonNode.class);
-						LOGGER.info("Response for kycStatus={} in jsonNode is ={}", kycStatus, jsonNode);
+						// LOGGER.info("Response for kycStatus={} in jsonNode is ={}", kycStatus,
+						// jsonNode);
 						// String responseString = EntityUtils.toString(entity, "UTF-8");
 						return jsonNode;
 					}
