@@ -6,8 +6,11 @@ import java.io.FileOutputStream;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.List;
 import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -42,6 +45,40 @@ public class SIGNATURE_CARD_18 {
 		try {
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(path));
 			document.open();
+
+			try {
+				/*
+				 * Image img =
+				 * Image.getInstance(SpringUtil.bean(AppConfigService.class).getProperty("",
+				 * "C:\\Users\\asad.ali\\Documents\\admin-portal\\brac_bank.png"));
+				 */
+				Image img = Image.getInstance("C:\\Users\\asad.ali\\Documents\\admin-portal\\brac_bank.png");
+				img.setAlignment(Element.ALIGN_LEFT);
+				img.setIndentationLeft(40);
+				document.add(img);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			document.add(PDFGenerator.getLeftAlignedParagraph("BRANCH:      ", false, false));
+			document.add(
+					PDFGenerator.getRightAlignedBoldParagraph("                        SIGNATURE CARD ", false, false));
+			document.add(PDFGenerator.getLeftAlignedParagraph(
+					"Account Title:------------------------------------------------------------------------------------      ",
+					false, false));
+			document.add(PDFGenerator.getLeftAlignedParagraph("(In BLOCK Letters)", false, false));
+			document.add(PDFGenerator.getLeftAlignedParagraph("Date:      ", false, false));
+			document.add(PDFGenerator.getLeftAlignedBoldParagraph("Account No:      ", true, false));
+			document.add(PDFGenerator.getTable(true, null, " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ",
+					" ", " ", " ", " "));
+			document.add(PDFGenerator.getLeftAlignedBoldParagraph("CIF No:      ", true, false));
+			document.add(PDFGenerator.getTable(true, null, " ", " ", " ", " ", " ", " ", " ", " "));
+			document.add(PDFGenerator.getLeftAlignedParagraph(" ", false, false));
+			document.add(PDFGenerator.getTable(true, null, "Name", "Signature"));
+			document.add(PDFGenerator.getTable(true, null, " ", " "));
+			document.add(PDFGenerator.getTable(true, null, " ", " "));
+			document.add(PDFGenerator.getTable(true, null, "Signing Instruction;",
+					"Authorised Signature/Verified & Approved"));
+			document.add(PDFGenerator.getTable(true, null, 50.0f, " ", " "));
 
 			document.close();
 			writer.close();

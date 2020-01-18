@@ -186,4 +186,18 @@ public class PDFGenerator implements Serializable {
 		return table;
 
 	}
+
+	public static PdfPTable getTable(boolean isNew, PdfPTable table, Float paddingSize, String... header) {
+		if (isNew) {
+			table = new PdfPTable(header.length);
+		}
+		for (int i = 0; i < header.length; i++) {
+			PdfPCell pdfPCell = new PdfPCell(new Phrase(header[i]));
+			if (paddingSize != null)
+				pdfPCell.setPadding(paddingSize);
+			table.addCell(pdfPCell);
+		}
+		return table;
+
+	}
 }
