@@ -7,6 +7,7 @@ import java.util.Collections;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -137,8 +138,8 @@ public class RMController {
 			@RequestParam(value = "page_no", required = false) Integer pageNo,
 			@RequestParam(value = "page_size", required = false) Integer pageSize,
 			HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
-		LOGGER.info("/rm/kyc/profiles/v request received for username={}, pageNo={},pageSize={}", username, pageNo,
-				pageSize);
+		LOGGER.info("/rm/kyc/profiles/under-review request received for username={}, pageNo={},pageSize={}", username,
+				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
 			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.UNDER_REVIEW, pageNo, pageSize);
 			return new ResponseEntity<>(jsonNode != null && jsonNode.size() != 0 ? jsonNode : Collections.EMPTY_LIST,
@@ -263,8 +264,9 @@ public class RMController {
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
 			AccountStatuses accountStatuses = kycService.updateKycStatus(msisdn, username, KycStatus.LOC_GENERATED);
 			if (accountStatuses != null && KycStatus.LOC_GENERATED.equals(accountStatuses.getKycVerified())) {
-				return new ResponseEntity<>(storageService.getDisclaimerDocuments(
-						appConfigService.getProperty("GENERATE_LOC_FILE_NAME", "05_General_Loan_Agreement.pdf")),
+				return new ResponseEntity<>(
+						storageService.getDisclaimerDocuments(userService.getUser(msisdn).getId(), appConfigService
+								.getProperty("GENERATE_LOC_FILE_NAME", "05_General_Loan_Agreement.pdf")),
 						HttpStatus.OK);
 			} else {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -312,28 +314,32 @@ public class RMController {
 			LOGGER.info("/retailer/image request recieved for retailer={}, dsr={}, filename={}", retailerId, username,
 					filename);
 			if (filename != null && !filename.isEmpty()) {
-				if (filename != null && !filename.isEmpty()) {
 					/*
 					 * if documents has been signed and uploaded under retailer, then pick from
 					 * retailer directory
 					 */
+					String extension = FilenameUtils.getExtension(filename);
+					if("pdf".equalsIgnoreCase(extension)) {
+						return new ResponseEntity<>(storageService.getDisclaimerDocuments(retailerId, filename),
+								HttpStatus.OK);
+					}
+					else {
 					byte[] doc = storageService.getImage(filename, retailerId, true);
 					if (doc == null || doc.length == 0)
 						/*
 						 * if documents has not been signed and uploaded under retailer, then pick from
 						 * disclaimer document directory
 						 */
-						return new ResponseEntity<>(storageService.getDisclaimerDocuments(filename), HttpStatus.OK);
+						return new ResponseEntity<>(storageService.getDisclaimerDocuments(retailerId, filename),
+								HttpStatus.OK);
 					else
 						return new ResponseEntity<>(doc, HttpStatus.OK);
 
-				} else {
-					return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-				}
+				} 
+					return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
 			}
-		}
-		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+		
 
 	}
 

@@ -91,10 +91,10 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	@Override
-	public byte[] getDisclaimerDocuments(String filename) {
+	public byte[] getDisclaimerDocuments(Long retailerId, String filename) {
 		try {
-			String uri = appConfigService.getProperty("DISCLAIMER_DOCUMENT_STORAGE_BASE_PATH",
-					"/var/lib/jenkins/workspace/admin-portal/disclaimer_documents") + "/" + filename;
+			String uri = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/var/lib/kyc/") + retailerId + "/"
+					+ "disclaimer/pdf/" + filename;
 			Path path = Paths.get(uri);
 			return Files.readAllBytes(path);
 		} catch (Exception e) {
