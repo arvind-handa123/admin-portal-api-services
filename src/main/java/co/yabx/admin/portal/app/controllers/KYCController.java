@@ -60,12 +60,13 @@ public class KYCController {
 	@RequestMapping(value = "/kyc/status", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> getRetailersProfile(@RequestParam KycStatus kycStatus,
-			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
+			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+			throws ClientProtocolException, URISyntaxException, IOException {
 		LOGGER.info("/kyc/status request received for status={}", kycStatus);
 		if (kycStatus == null) {
 			return new ResponseEntity<>(kycService.findAllRetailers(), HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(kycStatus), HttpStatus.OK);
+			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(kycStatus, 0, 50), HttpStatus.OK);
 		}
 
 	}
