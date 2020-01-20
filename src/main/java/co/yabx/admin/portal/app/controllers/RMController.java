@@ -62,7 +62,8 @@ public class RMController {
 			@RequestParam(value = "page_no", required = false) Integer pageNo,
 			@RequestParam(value = "page_size", required = false) Integer pageSize,
 			HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
-		LOGGER.info("/rm/kyc/profiles/approved request received for ,username={}", username);
+		LOGGER.info("/rm/kyc/profiles/approved request received for username={}, pageNo={},pageSize={}", username,
+				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
 			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(KycStatus.APPROVED, pageNo, pageSize),
 					HttpStatus.OK);
@@ -78,7 +79,8 @@ public class RMController {
 			@RequestParam(value = "page_no", required = false) Integer pageNo,
 			@RequestParam(value = "page_size", required = false) Integer pageSize,
 			HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
-		LOGGER.info("/rm/kyc/status/rejected request received for ,username={}", username);
+		LOGGER.info("/rm/kyc/status/rejected request received for username={}, pageNo={},pageSize={}", username, pageNo,
+				pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
 			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(KycStatus.REJECTED, pageNo, pageSize),
 					HttpStatus.OK);
@@ -94,7 +96,8 @@ public class RMController {
 			@RequestParam(value = "page_no", required = false) Integer pageNo,
 			@RequestParam(value = "page_size", required = false) Integer pageSize,
 			HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
-		LOGGER.info("/rm/kyc/profiles/submitted request received for ,username={}", username);
+		LOGGER.info("/rm/kyc/profiles/submitted request received for username={}, pageNo={},pageSize={}", username,
+				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
 			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(KycStatus.SUBMITTED, pageNo, pageSize),
 					HttpStatus.OK);
@@ -110,7 +113,8 @@ public class RMController {
 			@RequestParam(value = "page_no", required = false) Integer pageNo,
 			@RequestParam(value = "page_size", required = false) Integer pageSize,
 			HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
-		LOGGER.info("/rm/kyc/profiles/re-submitted request received for ,username={}", username);
+		LOGGER.info("/rm/kyc/profiles/re-submitted request received for username={}, pageNo={},pageSize={}", username,
+				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
 			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(KycStatus.RE_SUBMITTED, pageNo, pageSize),
 					HttpStatus.OK);
@@ -126,7 +130,8 @@ public class RMController {
 			@RequestParam(value = "page_no", required = false) Integer pageNo,
 			@RequestParam(value = "page_size", required = false) Integer pageSize,
 			HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
-		LOGGER.info("/rm/kyc/profiles/v request received for ,username={}", username);
+		LOGGER.info("/rm/kyc/profiles/v request received for username={}, pageNo={},pageSize={}", username, pageNo,
+				pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
 			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(KycStatus.UNDER_REVIEW, pageNo, pageSize),
 					HttpStatus.OK);
@@ -136,13 +141,14 @@ public class RMController {
 
 	}
 
-	@RequestMapping(value = "/rm/kyc/profiles/loc/issued", method = RequestMethod.GET)
+	@RequestMapping(value = "/rm/kyc/profiles/loc-issued", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> locIssuedProfiles(@RequestParam String username, HttpServletRequest httpServletRequest,
 			@RequestParam(value = "page_no", required = false) Integer pageNo,
 			@RequestParam(value = "page_size", required = false) Integer pageSize,
 			HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
-		LOGGER.info("/rm/kyc/profiles/loc/issued request received for ,username={}", username);
+		LOGGER.info("/rm/kyc/profiles/loc-issued request received for username={}, pageNo={},pageSize={}", username,
+				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
 			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(KycStatus.LOC_ISSUED, pageNo, pageSize),
 					HttpStatus.OK);
@@ -152,13 +158,14 @@ public class RMController {
 
 	}
 
-	@RequestMapping(value = "/rm/kyc/profiles/loc/generated", method = RequestMethod.GET)
+	@RequestMapping(value = "/rm/kyc/profiles/loc-generated", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> locGeneratedProfiles(@RequestParam String username, HttpServletRequest httpServletRequest,
 			@RequestParam(value = "page_no", required = false) Integer pageNo,
 			@RequestParam(value = "page_size", required = false) Integer pageSize,
 			HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
-		LOGGER.info("/rm/kyc/profiles/loc/generated request received for ,username={}", username);
+		LOGGER.info("/rm/kyc/profiles/loc-generated request received for username={}, pageNo={},pageSize={}", username,
+				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
 			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(KycStatus.LOC_GENERATED, pageNo, pageSize),
 					HttpStatus.OK);
