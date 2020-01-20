@@ -63,7 +63,8 @@ public class SectionDtoHelper implements Serializable {
 	}
 
 	public static List<SectionsDTO> getSections(
-			Set<co.yabx.admin.portal.app.admin.entities.Sections> appPagesSectionsSet, boolean isKyc) throws ClientProtocolException, URISyntaxException, IOException {
+			Set<co.yabx.admin.portal.app.admin.entities.Sections> appPagesSectionsSet, boolean isKyc)
+			throws ClientProtocolException, URISyntaxException, IOException {
 
 		List<SectionsDTO> appPagesSectionDTOSet = new ArrayList<SectionsDTO>();
 		for (co.yabx.admin.portal.app.admin.entities.Sections appPagesSections : appPagesSectionsSet) {
@@ -71,8 +72,8 @@ public class SectionDtoHelper implements Serializable {
 			if (isKyc) {
 				KycStatus kycStatus = getKycStatus(appPagesSections.getSectionTitle());
 				if (kycStatus != null) {
-					appPagesSectionsDTO
-							.setPagesDTOs(SpringUtil.bean(KYCService.class).fetchRetailersByKycStatus(kycStatus));
+					appPagesSectionsDTO.setPagesDTOs(
+							SpringUtil.bean(KYCService.class).fetchRetailersByKycStatus(kycStatus, 0, 50));
 				}
 			} else {
 				appPagesSectionsDTO.setGroups(GroupDtoHelper.getGroups(appPagesSections.getGroups()));
