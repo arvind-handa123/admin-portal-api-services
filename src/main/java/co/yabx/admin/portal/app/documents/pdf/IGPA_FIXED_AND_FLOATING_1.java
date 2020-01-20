@@ -51,6 +51,7 @@ public class IGPA_FIXED_AND_FLOATING_1 {
 			String businessRegisterredAddress = getRegisterredAddress(user.getBusinessDetails());
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(path));
 			String businessName = businessDetails != null ? businessDetails.getBusinessName() : "--------";
+			String partnerName = businessDetails != null ? businessDetails.getDirectorOrPartnerName() : "--------";
 			document.open();
 			document.add(PDFGenerator.getCenteredUnderLinedParagraph("BEFORE A NOTARY", true, true));
 			document.add(PDFGenerator.getCenteredUnderLinedParagraph(
@@ -63,10 +64,8 @@ public class IGPA_FIXED_AND_FLOATING_1 {
 					+ ", a proprietorship/ Private Limited/ Partnership concern having its office at "
 					+ businessRegisterredAddress
 					+ " (hereinafter referred to as the “Principal”), represented by its Proprietor/Partner/ Director (s), "
-					+ businessDetails != null
-							? businessDetails.getDirectorOrPartnerName()
-							: "--------"
-									+ " , who is duly authorized to execute this Irrevocable General Power of Attorney, do hereby state as follows: ",
+					+ partnerName
+					+ " , who is duly authorized to execute this Irrevocable General Power of Attorney, do hereby state as follows: ",
 					true, false));
 			document.add(PDFGenerator.getLeftAlignedBoldParagraph("WHEREAS:", true, false));
 
