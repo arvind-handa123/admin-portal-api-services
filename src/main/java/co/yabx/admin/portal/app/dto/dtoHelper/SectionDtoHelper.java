@@ -70,12 +70,12 @@ public class SectionDtoHelper implements Serializable {
 		for (co.yabx.admin.portal.app.admin.entities.Sections appPagesSections : appPagesSectionsSet) {
 			SectionsDTO appPagesSectionsDTO = new SectionsDTO();
 			if (isKyc) {
-				KycStatus kycStatus = getKycStatus(appPagesSections.getSectionTitle());
-				if (kycStatus != null) {
-					appPagesSectionsDTO.setPagesDTOs(
-							SpringUtil.bean(KYCService.class).fetchRetailersByKycStatus(kycStatus, 0, 50));
-				}
-			} else {
+				/*
+				 * KycStatus kycStatus = getKycStatus(appPagesSections.getSectionTitle()); if
+				 * (kycStatus != null) { appPagesSectionsDTO.setPagesDTOs(
+				 * SpringUtil.bean(KYCService.class).fetchRetailersByKycStatus(kycStatus, 0,
+				 * 50)); }
+				 */} else {
 				appPagesSectionsDTO.setGroups(GroupDtoHelper.getGroups(appPagesSections.getGroups()));
 			}
 			appPagesSectionsDTO.setEnable(appPagesSections.isEnable());
