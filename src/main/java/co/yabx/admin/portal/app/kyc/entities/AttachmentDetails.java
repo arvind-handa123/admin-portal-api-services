@@ -52,7 +52,7 @@ public class AttachmentDetails implements Serializable {
 	@Column(name = "document_number")
 	private String documentNumber;
 
-	@Column(name = "document_type", length = 100, columnDefinition = "varchar(32) ")
+	@Column(name = "document_type", length = 100, columnDefinition = "varchar(100) ")
 	private String documentType;
 
 	@Column(name = "attachment_type", length = 100, columnDefinition = "varchar(32) ")

@@ -51,7 +51,8 @@ public class SIGNATURE_CARD_18 {
 				 * Image.getInstance(SpringUtil.bean(AppConfigService.class).getProperty("",
 				 * "C:\\Users\\asad.ali\\Documents\\admin-portal\\brac_bank.png"));
 				 */
-				Image img = Image.getInstance("C:\\Users\\asad.ali\\Documents\\admin-portal\\brac_bank.png");
+				Image img = Image.getInstance(
+						SpringUtil.bean(AppConfigService.class).getProperty("BANK_ICONS_PATH", "/var/lib/kyc/icons"));
 				img.setAlignment(Element.ALIGN_LEFT);
 				img.setIndentationLeft(40);
 				document.add(img);

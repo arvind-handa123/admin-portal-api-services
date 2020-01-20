@@ -59,7 +59,7 @@ public class IGPA_FIXED_AND_FLOATING_1 {
 			document.add(PDFGenerator
 					.getLeftAlignedParagraph("This Irrevocable General Power of Attorney is made at Dhaka on this the "
 							+ currentdate.getDayOfMonth() + " th day of the month of " + currentdate.getMonth() + ", "
-							+ currentdate.getYear() + "eof the Christian Era.", true, false));
+							+ currentdate.getYear() + " eof the Christian Era.", true, false));
 			document.add(PDFGenerator.getLeftAlignedParagraph("We, " + businessName
 					+ ", a proprietorship/ Private Limited/ Partnership concern having its office at "
 					+ businessRegisterredAddress
