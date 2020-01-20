@@ -240,8 +240,8 @@ public class KYCServiceImpl implements KYCService {
 			accountStatuses = accountStatusesRepository.save(accountStatuses);
 			if (appConfigService.getBooleanProperty("FCM_NOTIFICATION_ENABLED", false)) {
 				androidPushNotificationsService.notifyDSR(msisdn, username, status);
-				generateDisclaimerDocs(msisdn);
 			}
+			generateDisclaimerDocs(msisdn);
 			return accountStatuses;
 		}
 		return null;
