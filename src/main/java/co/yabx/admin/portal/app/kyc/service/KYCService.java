@@ -23,7 +23,7 @@ public interface KYCService {
 
 	List<PagesDTO> findAllRetailers();
 
-	JsonNode fetchRetailersByKycStatus(KycStatus kycStatus)
+	JsonNode fetchRetailersByKycStatus(KycStatus kycStatus, Integer pageNo, Integer pageSize)
 			throws URISyntaxException, ClientProtocolException, IOException;
 
 	AccountStatuses updateKycStatus(String msisdn, String username, KycStatus approved);

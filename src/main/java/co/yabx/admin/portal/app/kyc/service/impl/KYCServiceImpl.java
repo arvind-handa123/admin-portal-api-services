@@ -116,7 +116,7 @@ public class KYCServiceImpl implements KYCService {
 	}
 
 	@Override
-	public JsonNode fetchRetailersByKycStatus(KycStatus kycStatus)
+	public JsonNode fetchRetailersByKycStatus(KycStatus kycStatus, Integer pageNo, Integer pageSize)
 			throws URISyntaxException, ClientProtocolException, IOException {
 		List<AccountStatuses> accountStatuses = accountStatusesRepository.findByKycVerified(kycStatus);
 		List<PagesDTO> appPagesDTOList = new ArrayList<PagesDTO>();
@@ -132,8 +132,12 @@ public class KYCServiceImpl implements KYCService {
 					NameValuePair nv1 = new BasicNameValuePair("status", kycStatus.name());
 					NameValuePair nv2 = new BasicNameValuePair("secret_key",
 							appConfigService.getProperty("RETAILER_PROFILE_KYC_API_SECRET_KEY", "magic@yabx"));
+					NameValuePair nv3 = new BasicNameValuePair("page_no", String.valueOf(pageNo));
+					NameValuePair nv4 = new BasicNameValuePair("page_size", String.valueOf(pageSize));
 					params.add(nv1);
 					params.add(nv2);
+					params.add(nv3);
+					params.add(nv4);
 					// Execute and get the response.
 					HttpResponse response = null;
 
