@@ -27,10 +27,9 @@ public class LETTER_OF_DEBIT_AUTHORITY_9 {
 		File destination = new File(path);
 		if (!destination.exists())
 			destination.mkdirs();
-		Document document = get_PERFORMANCE_SECURITY_FORMAT_Document(path + newFileName,
-				"LETTER_OF_DEBIT_AUTHORITY");
+		Document document = get_PERFORMANCE_SECURITY_FORMAT_Document(path + newFileName, "LETTER_OF_DEBIT_AUTHORITY");
 		if (document != null) {
-			SpringUtil.bean(AttachmentService.class).saveAttachments(user, "LETTER_OF_DEBIT_AUTHORITY_9", newFileName,
+			SpringUtil.bean(AttachmentService.class).saveAttachments(user, "LETTER_OF_DEBIT_AUTHORITY", newFileName,
 					AttachmentType.DisclaimerDocument);
 		}
 		return newFileName;
