@@ -252,46 +252,46 @@ public class KYCServiceImpl implements KYCService {
 		User user = userRepository.findBymsisdnAndUserType(msisdn, UserType.RETAILERS.toString());
 		List<ProductDocuments> productDocumentLists = productDocumentsRepository.findByProductName(ProductName.KYC);
 		for (ProductDocuments productDocuments : productDocumentLists) {
-			if ("IGPA_FIXED_AND_FLOATING".equalsIgnoreCase(productDocuments.getFileName())) {
+			if ("IGPA_FIXED_AND_FLOATING".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				IGPA_FIXED_AND_FLOATING_1.getDocuments(user);
-			} else if ("PERFORMANCE_SECURITY_FORMAT".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("PERFORMANCE_SECURITY_FORMAT".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				PERFORMANCE_SECURITY_FORMAT_2.getDocuments(user);
-			} else if ("PG_MEMO_ENGINEERS".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("PG_MEMO_ENGINEERS".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				PG_MEMO_ENGINEERS_3.getDocuments(user);
-			} else if ("DP_NOTE".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("DP_NOTE".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				DP_NOTE_4.getDocuments(user);
-			} else if ("LETTER_OF_CONTINUITY_AND_REVIVAL".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("LETTER_OF_CONTINUITY_AND_REVIVAL".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				LETTER_OF_CONTINUITY_AND_REVIVAL_5.getDocuments(user);
-			} else if ("DISBURSEMENT".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("DISBURSEMENT".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				DISBURSEMENT_6.getDocuments(user);
-			} else if ("ARRANGEMENT".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("ARRANGEMENT".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				ARRANGEMENT_7.getDocuments(user);
-			} else if ("GENERAL_LOAN_AGREEMENT".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("GENERAL_LOAN_AGREEMENT".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				GENERAL_LOAN_AGREEMENT_8.getDocuments(user);
-			} else if ("LETTER_OF_DEBIT_AUTHORITY".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("LETTER_OF_DEBIT_AUTHORITY".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				LETTER_OF_DEBIT_AUTHORITY_9.getDocuments(user);
-			} else if ("DECLARATION_FORM".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("DECLARATION_FORM".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				DECLARATION_FORM_10.getDocuments(user);
-			} else if ("PERSONAL_GUARANTEE_INDIVIDUAL".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("PERSONAL_GUARANTEE_INDIVIDUAL".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				PERSONAL_GUARANTEE_INDIVIDUAL_11.getDocuments(user);
-			} else if ("PERSONAL_GUARANTEE_JOINT".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("PERSONAL_GUARANTEE_JOINT".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				PERSONAL_GUARANTEE_JOINT_12.getDocuments(user);
 			} else if ("LETTER_OF_LIEN_AND_SET_OFF_DEPOSIT_ACCOUNT_OR_MARGIN"
-					.equalsIgnoreCase(productDocuments.getFileName())) {
+					.equalsIgnoreCase(productDocuments.getDocumentType())) {
 				LETTER_OF_LIEN_AND_SET_OFF_DEPOSIT_ACCOUNT_OR_MARGIN_13.getDocuments(user);
-			} else if ("EFT_AUTHORIZATION_FORM".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("EFT_AUTHORIZATION_FORM".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				EFT_AUTHORIZATION_FORM_14.getDocuments(user);
-			} else if ("COUNTER_GUARANTEE".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("COUNTER_GUARANTEE".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				COUNTER_GUARANTEE_15.getDocuments(user);
-			} else if ("SBS_FORMS".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("SBS_FORMS".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				SBS_FORMS_16.getDocuments(user);
-			} else if ("FATCA_FORM_INDIVIDUAL_AND_PROPRIETOR".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("FATCA_FORM_INDIVIDUAL_AND_PROPRIETOR".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				FATCA_FORM_INDIVIDUAL_AND_PROPRIETOR_17.getDocuments(user);
-			} else if ("SIGNATURE_CARD".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("SIGNATURE_CARD".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				SIGNATURE_CARD_18.getDocuments(user);
-			} else if ("SME_BUSINESS_SEGMENTATION_FORM_REVISED".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("SME_BUSINESS_SEGMENTATION_FORM_REVISED".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				SME_BUSINESS_SEGMENTATION_FORM_REVISED_19.getDocuments(user);
-			} else if ("GENERAL_INSTRUCTION".equalsIgnoreCase(productDocuments.getFileName())) {
+			} else if ("GENERAL_INSTRUCTION".equalsIgnoreCase(productDocuments.getDocumentType())) {
 				GENERAL_INSTRUCTION_20.getDocuments(user);
 			}
 		}
