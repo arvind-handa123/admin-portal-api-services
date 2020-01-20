@@ -314,32 +314,28 @@ public class RMController {
 			LOGGER.info("/retailer/image request recieved for retailer={}, dsr={}, filename={}", retailerId, username,
 					filename);
 			if (filename != null && !filename.isEmpty()) {
+				String extension = FilenameUtils.getExtension(filename);
+				if ("pdf".equalsIgnoreCase(extension)) {
 					/*
-					 * if documents has been signed and uploaded under retailer, then pick from
-					 * retailer directory
+					 * if documents extension is pdf, then pick from retailer disclaimer pdf
+					 * directory
 					 */
-					String extension = FilenameUtils.getExtension(filename);
-					if("pdf".equalsIgnoreCase(extension)) {
-						return new ResponseEntity<>(storageService.getDisclaimerDocuments(retailerId, filename),
-								HttpStatus.OK);
-					}
-					else {
+					return new ResponseEntity<>(storageService.getDisclaimerDocuments(retailerId, filename),
+							HttpStatus.OK);
+				} else {
 					byte[] doc = storageService.getImage(filename, retailerId, true);
 					if (doc == null || doc.length == 0)
 						/*
-						 * if documents has not been signed and uploaded under retailer, then pick from
-						 * disclaimer document directory
+						 * otherwise pick from disclaimer document directory
 						 */
 						return new ResponseEntity<>(storageService.getDisclaimerDocuments(retailerId, filename),
 								HttpStatus.OK);
 					else
 						return new ResponseEntity<>(doc, HttpStatus.OK);
-
-				} 
-					return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-
+				}
 			}
-		
+		}
+		return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
 	}
 
