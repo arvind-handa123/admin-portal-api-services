@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import co.yabx.admin.portal.app.enums.AttachmentType;
@@ -40,7 +41,8 @@ public class PG_MEMO_ENGINEERS_3 {
 		try {
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(path));
 			document.open();
-
+			document.newPage();
+			writer.setPageEmpty(false);
 			document.close();
 			writer.close();
 		} catch (DocumentException e) {

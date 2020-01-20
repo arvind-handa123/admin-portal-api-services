@@ -42,7 +42,8 @@ public class FATCA_FORM_INDIVIDUAL_AND_PROPRIETOR_17 {
 		try {
 			PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(path));
 			document.open();
-
+			writer.setPageEmpty(false);
+			document.close();
 			document.close();
 			writer.close();
 		} catch (DocumentException e) {
