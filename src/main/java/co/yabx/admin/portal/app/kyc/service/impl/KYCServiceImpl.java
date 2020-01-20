@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -232,6 +234,7 @@ public class KYCServiceImpl implements KYCService {
 	}
 
 	@Override
+	@Transactional
 	public AccountStatuses updateKycStatus(String msisdn, String username, KycStatus status) {
 		AccountStatuses accountStatuses = accountStatusesRepository.findByMsisdn(msisdn);
 		if (accountStatuses != null) {
