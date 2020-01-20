@@ -29,7 +29,7 @@ public class DISBURSEMENT_6 {
 				"Irrevocable General Power of Attorney (IGPA)- Fixed & Floating");
 		if (document != null) {
 			SpringUtil.bean(AttachmentService.class).saveAttachments(user, "IGPA_FIXED_AND_FLOATING", newFileName,
-					AttachmentType.valueOf("Disclaimer Document"));
+					AttachmentType.DisclaimerDocument);
 		}
 		return newFileName;
 	}
