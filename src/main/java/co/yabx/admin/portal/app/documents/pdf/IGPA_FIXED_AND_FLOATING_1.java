@@ -3,9 +3,7 @@ package co.yabx.admin.portal.app.documents.pdf;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 
@@ -17,7 +15,6 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import co.yabx.admin.portal.app.enums.AddressType;
 import co.yabx.admin.portal.app.enums.AttachmentType;
-import co.yabx.admin.portal.app.kyc.dto.BusinessDetailsDTO;
 import co.yabx.admin.portal.app.kyc.entities.AddressDetails;
 import co.yabx.admin.portal.app.kyc.entities.BusinessDetails;
 import co.yabx.admin.portal.app.kyc.entities.User;
@@ -32,7 +29,7 @@ public class IGPA_FIXED_AND_FLOATING_1 {
 	public static String getDocuments(User user) {
 		String newFileName = System.currentTimeMillis() + "." + "pdf";
 		String path = SpringUtil.bean(AppConfigService.class).getProperty("DOCUMENT_STORAGE_BASE_PATH", "/var/lib/kyc/")
-				+ user.getId() + "/" + "disclaimer/";
+				+ user.getId() + "/" + "disclaimer/pdf/";
 		File destination = new File(path);
 		if (!destination.exists())
 			destination.mkdirs();

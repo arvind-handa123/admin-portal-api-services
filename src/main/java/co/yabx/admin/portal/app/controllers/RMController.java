@@ -2,6 +2,7 @@ package co.yabx.admin.portal.app.controllers;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Collections;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import co.yabx.admin.portal.app.enums.KycStatus;
 import co.yabx.admin.portal.app.kyc.entities.AccountStatuses;
@@ -65,7 +68,8 @@ public class RMController {
 		LOGGER.info("/rm/kyc/profiles/approved request received for username={}, pageNo={},pageSize={}", username,
 				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(KycStatus.APPROVED, pageNo, pageSize),
+			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.APPROVED, pageNo, pageSize);
+			return new ResponseEntity<>(jsonNode != null && jsonNode.size() != 0 ? jsonNode : Collections.EMPTY_LIST,
 					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -82,7 +86,8 @@ public class RMController {
 		LOGGER.info("/rm/kyc/status/rejected request received for username={}, pageNo={},pageSize={}", username, pageNo,
 				pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(KycStatus.REJECTED, pageNo, pageSize),
+			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.REJECTED, pageNo, pageSize);
+			return new ResponseEntity<>(jsonNode != null && jsonNode.size() != 0 ? jsonNode : Collections.EMPTY_LIST,
 					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -99,7 +104,8 @@ public class RMController {
 		LOGGER.info("/rm/kyc/profiles/submitted request received for username={}, pageNo={},pageSize={}", username,
 				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(KycStatus.SUBMITTED, pageNo, pageSize),
+			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.SUBMITTED, pageNo, pageSize);
+			return new ResponseEntity<>(jsonNode != null && jsonNode.size() != 0 ? jsonNode : Collections.EMPTY_LIST,
 					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -116,7 +122,8 @@ public class RMController {
 		LOGGER.info("/rm/kyc/profiles/re-submitted request received for username={}, pageNo={},pageSize={}", username,
 				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(KycStatus.RE_SUBMITTED, pageNo, pageSize),
+			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.RE_SUBMITTED, pageNo, pageSize);
+			return new ResponseEntity<>(jsonNode != null && jsonNode.size() != 0 ? jsonNode : Collections.EMPTY_LIST,
 					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -133,7 +140,8 @@ public class RMController {
 		LOGGER.info("/rm/kyc/profiles/v request received for username={}, pageNo={},pageSize={}", username, pageNo,
 				pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(KycStatus.UNDER_REVIEW, pageNo, pageSize),
+			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.UNDER_REVIEW, pageNo, pageSize);
+			return new ResponseEntity<>(jsonNode != null && jsonNode.size() != 0 ? jsonNode : Collections.EMPTY_LIST,
 					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -150,7 +158,8 @@ public class RMController {
 		LOGGER.info("/rm/kyc/profiles/loc-issued request received for username={}, pageNo={},pageSize={}", username,
 				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(KycStatus.LOC_ISSUED, pageNo, pageSize),
+			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.LOC_ISSUED, pageNo, pageSize);
+			return new ResponseEntity<>(jsonNode != null && jsonNode.size() != 0 ? jsonNode : Collections.EMPTY_LIST,
 					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -167,7 +176,8 @@ public class RMController {
 		LOGGER.info("/rm/kyc/profiles/loc-generated request received for username={}, pageNo={},pageSize={}", username,
 				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(KycStatus.LOC_GENERATED, pageNo, pageSize),
+			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.LOC_GENERATED, pageNo, pageSize);
+			return new ResponseEntity<>(jsonNode != null && jsonNode.size() != 0 ? jsonNode : Collections.EMPTY_LIST,
 					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

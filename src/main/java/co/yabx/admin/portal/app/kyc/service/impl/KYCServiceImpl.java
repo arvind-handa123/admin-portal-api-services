@@ -24,11 +24,32 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import co.yabx.admin.portal.app.documents.pdf.ARRANGEMENT_7;
+import co.yabx.admin.portal.app.documents.pdf.COUNTER_GUARANTEE_15;
+import co.yabx.admin.portal.app.documents.pdf.DECLARATION_FORM_10;
+import co.yabx.admin.portal.app.documents.pdf.DISBURSEMENT_6;
+import co.yabx.admin.portal.app.documents.pdf.DP_NOTE_4;
+import co.yabx.admin.portal.app.documents.pdf.EFT_AUTHORIZATION_FORM_14;
+import co.yabx.admin.portal.app.documents.pdf.FATCA_FORM_INDIVIDUAL_AND_PROPRIETOR_17;
+import co.yabx.admin.portal.app.documents.pdf.GENERAL_INSTRUCTION_20;
+import co.yabx.admin.portal.app.documents.pdf.GENERAL_LOAN_AGREEMENT_8;
+import co.yabx.admin.portal.app.documents.pdf.IGPA_FIXED_AND_FLOATING_1;
+import co.yabx.admin.portal.app.documents.pdf.LETTER_OF_CONTINUITY_AND_REVIVAL_5;
+import co.yabx.admin.portal.app.documents.pdf.LETTER_OF_DEBIT_AUTHORITY_9;
+import co.yabx.admin.portal.app.documents.pdf.LETTER_OF_LIEN_AND_SET_OFF_DEPOSIT_ACCOUNT_OR_MARGIN_13;
+import co.yabx.admin.portal.app.documents.pdf.PERFORMANCE_SECURITY_FORMAT_2;
+import co.yabx.admin.portal.app.documents.pdf.PERSONAL_GUARANTEE_INDIVIDUAL_11;
+import co.yabx.admin.portal.app.documents.pdf.PERSONAL_GUARANTEE_JOINT_12;
+import co.yabx.admin.portal.app.documents.pdf.PG_MEMO_ENGINEERS_3;
+import co.yabx.admin.portal.app.documents.pdf.SBS_FORMS_16;
+import co.yabx.admin.portal.app.documents.pdf.SIGNATURE_CARD_18;
+import co.yabx.admin.portal.app.documents.pdf.SME_BUSINESS_SEGMENTATION_FORM_REVISED_19;
 import co.yabx.admin.portal.app.dto.dtoHelper.PagesDTOHeper;
 import co.yabx.admin.portal.app.enums.KycStatus;
 import co.yabx.admin.portal.app.enums.PageType;
@@ -217,11 +238,64 @@ public class KYCServiceImpl implements KYCService {
 			accountStatuses.setKycVerified(status);
 			accountStatuses.setUpdatedBy(username);
 			accountStatuses = accountStatusesRepository.save(accountStatuses);
-			if (appConfigService.getBooleanProperty("FCM_NOTIFICATION_ENABLED", false))
+			if (appConfigService.getBooleanProperty("FCM_NOTIFICATION_ENABLED", false)) {
 				androidPushNotificationsService.notifyDSR(msisdn, username, status);
+				generateDisclaimerDocs(msisdn);
+			}
 			return accountStatuses;
 		}
 		return null;
+	}
+
+	@Async
+	private void generateDisclaimerDocs(String msisdn) {
+		User user = userRepository.findBymsisdnAndUserType(msisdn, UserType.RETAILERS.toString());
+		List<ProductDocuments> productDocumentLists = productDocumentsRepository.findByProductName(ProductName.KYC);
+		for (ProductDocuments productDocuments : productDocumentLists) {
+			if ("IGPA_FIXED_AND_FLOATING".equalsIgnoreCase(productDocuments.getFileName())) {
+				IGPA_FIXED_AND_FLOATING_1.getDocuments(user);
+			} else if ("PERFORMANCE_SECURITY_FORMAT".equalsIgnoreCase(productDocuments.getFileName())) {
+				PERFORMANCE_SECURITY_FORMAT_2.getDocuments(user);
+			} else if ("PG_MEMO_ENGINEERS".equalsIgnoreCase(productDocuments.getFileName())) {
+				PG_MEMO_ENGINEERS_3.getDocuments(user);
+			} else if ("DP_NOTE".equalsIgnoreCase(productDocuments.getFileName())) {
+				DP_NOTE_4.getDocuments(user);
+			} else if ("LETTER_OF_CONTINUITY_AND_REVIVAL".equalsIgnoreCase(productDocuments.getFileName())) {
+				LETTER_OF_CONTINUITY_AND_REVIVAL_5.getDocuments(user);
+			} else if ("DISBURSEMENT".equalsIgnoreCase(productDocuments.getFileName())) {
+				DISBURSEMENT_6.getDocuments(user);
+			} else if ("ARRANGEMENT".equalsIgnoreCase(productDocuments.getFileName())) {
+				ARRANGEMENT_7.getDocuments(user);
+			} else if ("GENERAL_LOAN_AGREEMENT".equalsIgnoreCase(productDocuments.getFileName())) {
+				GENERAL_LOAN_AGREEMENT_8.getDocuments(user);
+			} else if ("LETTER_OF_DEBIT_AUTHORITY".equalsIgnoreCase(productDocuments.getFileName())) {
+				LETTER_OF_DEBIT_AUTHORITY_9.getDocuments(user);
+			} else if ("DECLARATION_FORM".equalsIgnoreCase(productDocuments.getFileName())) {
+				DECLARATION_FORM_10.getDocuments(user);
+			} else if ("PERSONAL_GUARANTEE_INDIVIDUAL".equalsIgnoreCase(productDocuments.getFileName())) {
+				PERSONAL_GUARANTEE_INDIVIDUAL_11.getDocuments(user);
+			} else if ("PERSONAL_GUARANTEE_JOINT".equalsIgnoreCase(productDocuments.getFileName())) {
+				PERSONAL_GUARANTEE_JOINT_12.getDocuments(user);
+			} else if ("LETTER_OF_LIEN_AND_SET_OFF_DEPOSIT_ACCOUNT_OR_MARGIN"
+					.equalsIgnoreCase(productDocuments.getFileName())) {
+				LETTER_OF_LIEN_AND_SET_OFF_DEPOSIT_ACCOUNT_OR_MARGIN_13.getDocuments(user);
+			} else if ("EFT_AUTHORIZATION_FORM".equalsIgnoreCase(productDocuments.getFileName())) {
+				EFT_AUTHORIZATION_FORM_14.getDocuments(user);
+			} else if ("COUNTER_GUARANTEE".equalsIgnoreCase(productDocuments.getFileName())) {
+				COUNTER_GUARANTEE_15.getDocuments(user);
+			} else if ("SBS_FORMS".equalsIgnoreCase(productDocuments.getFileName())) {
+				SBS_FORMS_16.getDocuments(user);
+			} else if ("FATCA_FORM_INDIVIDUAL_AND_PROPRIETOR".equalsIgnoreCase(productDocuments.getFileName())) {
+				FATCA_FORM_INDIVIDUAL_AND_PROPRIETOR_17.getDocuments(user);
+			} else if ("SIGNATURE_CARD".equalsIgnoreCase(productDocuments.getFileName())) {
+				SIGNATURE_CARD_18.getDocuments(user);
+			} else if ("SME_BUSINESS_SEGMENTATION_FORM_REVISED".equalsIgnoreCase(productDocuments.getFileName())) {
+				SME_BUSINESS_SEGMENTATION_FORM_REVISED_19.getDocuments(user);
+			} else if ("GENERAL_INSTRUCTION".equalsIgnoreCase(productDocuments.getFileName())) {
+				GENERAL_INSTRUCTION_20.getDocuments(user);
+			}
+		}
+
 	}
 
 	@Override

@@ -22,7 +22,7 @@ public class GENERAL_LOAN_AGREEMENT_8 {
 	public static String getDocuments(User user) {
 		String newFileName = System.currentTimeMillis() + "." + "pdf";
 		String path = SpringUtil.bean(AppConfigService.class).getProperty("DOCUMENT_STORAGE_BASE_PATH", "/var/lib/kyc/")
-				+ user.getId() + "/" + "disclaimer/";
+				+ user.getId() + "/" + "disclaimer/pdf/";
 		File destination = new File(path);
 		if (!destination.exists())
 			destination.mkdirs();
