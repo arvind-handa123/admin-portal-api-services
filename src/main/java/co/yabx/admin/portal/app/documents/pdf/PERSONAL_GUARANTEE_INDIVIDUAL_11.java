@@ -28,9 +28,9 @@ public class PERSONAL_GUARANTEE_INDIVIDUAL_11 {
 		if (!destination.exists())
 			destination.mkdirs();
 		Document document = get_PERFORMANCE_SECURITY_FORMAT_Document(path + newFileName,
-				"Irrevocable General Power of Attorney (IGPA)- Fixed & Floating");
+				"PERSONAL_GUARANTEE_INDIVIDUAL_11");
 		if (document != null) {
-			SpringUtil.bean(AttachmentService.class).saveAttachments(user, "IGPA_FIXED_AND_FLOATING", newFileName,
+			SpringUtil.bean(AttachmentService.class).saveAttachments(user, "PERSONAL_GUARANTEE_INDIVIDUAL", newFileName,
 					AttachmentType.DisclaimerDocument);
 		}
 		return newFileName;

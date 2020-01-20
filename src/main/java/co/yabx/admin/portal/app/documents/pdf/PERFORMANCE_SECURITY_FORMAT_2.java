@@ -26,9 +26,9 @@ public class PERFORMANCE_SECURITY_FORMAT_2 {
 		if (!destination.exists())
 			destination.mkdirs();
 		Document document = get_PERFORMANCE_SECURITY_FORMAT_Document(path + newFileName,
-				"Irrevocable General Power of Attorney (IGPA)- Fixed & Floating");
+				"PERFORMANCE_SECURITY_FORMAT_2");
 		if (document != null) {
-			SpringUtil.bean(AttachmentService.class).saveAttachments(user, "IGPA_FIXED_AND_FLOATING", newFileName,
+			SpringUtil.bean(AttachmentService.class).saveAttachments(user, "PERFORMANCE_SECURITY_FORMAT", newFileName,
 					AttachmentType.DisclaimerDocument);
 		}
 		return newFileName;

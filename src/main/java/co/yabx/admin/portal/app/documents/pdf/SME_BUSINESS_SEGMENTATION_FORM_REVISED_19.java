@@ -28,10 +28,10 @@ public class SME_BUSINESS_SEGMENTATION_FORM_REVISED_19 {
 		if (!destination.exists())
 			destination.mkdirs();
 		Document document = get_PERFORMANCE_SECURITY_FORMAT_Document(path + newFileName,
-				"Irrevocable General Power of Attorney (IGPA)- Fixed & Floating");
+				"SME_BUSINESS_SEGMENTATION_FORM_REVISED_19");
 		if (document != null) {
-			SpringUtil.bean(AttachmentService.class).saveAttachments(user, "IGPA_FIXED_AND_FLOATING", newFileName,
-					AttachmentType.DisclaimerDocument);
+			SpringUtil.bean(AttachmentService.class).saveAttachments(user, "SME_BUSINESS_SEGMENTATION_FORM_REVISED",
+					newFileName, AttachmentType.DisclaimerDocument);
 		}
 		return newFileName;
 	}

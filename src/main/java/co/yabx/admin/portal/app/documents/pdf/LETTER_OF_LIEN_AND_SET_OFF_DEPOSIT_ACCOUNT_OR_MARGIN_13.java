@@ -28,9 +28,9 @@ public class LETTER_OF_LIEN_AND_SET_OFF_DEPOSIT_ACCOUNT_OR_MARGIN_13 {
 		if (!destination.exists())
 			destination.mkdirs();
 		Document document = get_PERFORMANCE_SECURITY_FORMAT_Document(path + newFileName,
-				"Irrevocable General Power of Attorney (IGPA)- Fixed & Floating");
+				"LETTER_OF_LIEN_AND_SET_OFF_DEPOSIT_ACCOUNT_OR_MARGIN_13");
 		if (document != null) {
-			SpringUtil.bean(AttachmentService.class).saveAttachments(user, "IGPA_FIXED_AND_FLOATING", newFileName,
+			SpringUtil.bean(AttachmentService.class).saveAttachments(user, "LETTER_OF_LIEN_AND_SET_OFF_DEPOSIT_ACCOUNT_OR_MARGIN", newFileName,
 					AttachmentType.DisclaimerDocument);
 		}
 		return newFileName;

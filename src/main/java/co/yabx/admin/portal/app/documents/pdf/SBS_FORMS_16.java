@@ -27,10 +27,9 @@ public class SBS_FORMS_16 {
 		File destination = new File(path);
 		if (!destination.exists())
 			destination.mkdirs();
-		Document document = get_PERFORMANCE_SECURITY_FORMAT_Document(path + newFileName,
-				"Irrevocable General Power of Attorney (IGPA)- Fixed & Floating");
+		Document document = get_PERFORMANCE_SECURITY_FORMAT_Document(path + newFileName, "SBS_FORMS_16");
 		if (document != null) {
-			SpringUtil.bean(AttachmentService.class).saveAttachments(user, "IGPA_FIXED_AND_FLOATING", newFileName,
+			SpringUtil.bean(AttachmentService.class).saveAttachments(user, "SBS_FORMS", newFileName,
 					AttachmentType.DisclaimerDocument);
 		}
 		return newFileName;

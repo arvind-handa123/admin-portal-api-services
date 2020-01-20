@@ -30,10 +30,9 @@ public class SIGNATURE_CARD_18 {
 		File destination = new File(path);
 		if (!destination.exists())
 			destination.mkdirs();
-		Document document = get_PERFORMANCE_SECURITY_FORMAT_Document(path + newFileName,
-				"Irrevocable General Power of Attorney (IGPA)- Fixed & Floating");
+		Document document = get_PERFORMANCE_SECURITY_FORMAT_Document(path + newFileName, "SIGNATURE_CARD_18");
 		if (document != null) {
-			SpringUtil.bean(AttachmentService.class).saveAttachments(user, "IGPA_FIXED_AND_FLOATING", newFileName,
+			SpringUtil.bean(AttachmentService.class).saveAttachments(user, "SIGNATURE_CARD", newFileName,
 					AttachmentType.DisclaimerDocument);
 		}
 		return newFileName;
