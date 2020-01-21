@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import co.yabx.admin.portal.app.enums.KycStatus;
@@ -38,7 +37,6 @@ import co.yabx.admin.portal.app.kyc.service.UserService;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/v1")
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class RMController {
 
 	@Autowired
@@ -218,7 +216,8 @@ public class RMController {
 		LOGGER.info("/rm/kyc/reject request received for msisdn={},username={}", msisdn, username);
 		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.REJECTED), HttpStatus.OK);
+			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.REJECTED).getEntity(),
+					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
@@ -233,7 +232,7 @@ public class RMController {
 		LOGGER.info("/rm/kyc/review/initiate request received for msisdn={},username={}", msisdn, username);
 		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.UNDER_REVIEW),
+			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.UNDER_REVIEW).getEntity(),
 					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -249,7 +248,8 @@ public class RMController {
 		LOGGER.info("/rm/kyc/submit/re-send request received for msisdn={},username={}", msisdn, username);
 		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.RE_UPDATE), HttpStatus.OK);
+			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.RE_UPDATE).getEntity(),
+					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
@@ -282,7 +282,8 @@ public class RMController {
 		LOGGER.info("/rm/kyc/loc/issue request received for msisdn={},username={}", msisdn, username);
 		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.LOC_ISSUED), HttpStatus.OK);
+			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.LOC_ISSUED).getEntity(),
+					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
