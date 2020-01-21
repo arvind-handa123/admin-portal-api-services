@@ -58,7 +58,8 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AdminPortalServiceImpl.class);
 
 	@Override
-	public List<PagesDTO> fetchProductDetails(Long productId) throws ClientProtocolException, URISyntaxException, IOException {
+	public List<PagesDTO> fetchProductDetails(Long productId)
+			throws ClientProtocolException, URISyntaxException, IOException {
 		Optional<ProductConfigurations> productConfigurations = productConfigurationRepository.findById(productId);
 		List<PagesDTO> appPagesDTOList = new ArrayList<PagesDTO>();
 		if (productConfigurations.isPresent()) {
@@ -103,7 +104,7 @@ public class AdminPortalServiceImpl implements AdminPortalService {
 			if (yabxToken != null) {
 				authInfo = authInfoService.persistYabxTokenAndSecretKey(authInfo, uuid, username, null);
 				if (authInfo.getYabxToken() != null && redisRepository != null) {
-					if (appConfigService.getBooleanProperty("IS_CACHING_ENABLED", false))
+					if (appConfigService.getBooleanProperty("IS_CACHING_ENABLED", true))
 						redisRepository.update("YABX_KYC_ACCESS_TOKEN", uuid, authInfo);
 				}
 				jsonResponse.put("YABX_KYC_ACCESS_TOKEN", yabxToken);
