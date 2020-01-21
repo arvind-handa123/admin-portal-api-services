@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -33,7 +32,7 @@ public interface KYCService {
 
 	UserDisclaimerDocumentsDTO getDisclaimerDocuments(User user);
 
-	HttpResponse updateStatus(String msisdn, String username, KycStatus kycStatus)
+	JsonNode updateStatus(String msisdn, String username, KycStatus kycStatus)
 			throws URISyntaxException, ClientProtocolException, IOException;
 
 }

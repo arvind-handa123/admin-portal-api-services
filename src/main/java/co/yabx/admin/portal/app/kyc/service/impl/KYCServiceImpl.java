@@ -251,7 +251,7 @@ public class KYCServiceImpl implements KYCService {
 	}
 
 	@Override
-	public HttpResponse updateStatus(String msisdn, String username, KycStatus kycStatus)
+	public JsonNode updateStatus(String msisdn, String username, KycStatus kycStatus)
 			throws URISyntaxException, ClientProtocolException, IOException {
 
 		HttpClient httpclient = HttpClients.createDefault();
@@ -273,7 +273,19 @@ public class KYCServiceImpl implements KYCService {
 		request.setURI(uri);
 		response = httpclient.execute(request);
 		LOGGER.info("Response for updating kycStatus={} is ={}", kycStatus, response);
-		return response;
+		if (response.getStatusLine().getStatusCode() == 200) {
+			HttpEntity entity = response.getEntity();
+			String responseString = EntityUtils.toString(entity, "UTF-8");
+			// LOGGER.info("Response for kycStatus={} in string is ={}", kycStatus,
+			// responseString);
+			JsonNode jsonNode = JsonUtilService.deserializeEntity(responseString, JsonNode.class);
+			// LOGGER.info("Response for kycStatus={} in jsonNode is ={}", kycStatus,
+			// jsonNode);
+			// String responseString = EntityUtils.toString(entity, "UTF-8");
+			return jsonNode;
+		}
+
+		return null;
 
 	}
 

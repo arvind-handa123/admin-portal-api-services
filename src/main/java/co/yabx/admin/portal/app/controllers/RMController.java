@@ -216,8 +216,7 @@ public class RMController {
 		LOGGER.info("/rm/kyc/reject request received for msisdn={},username={}", msisdn, username);
 		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.REJECTED).getEntity(),
-					HttpStatus.OK);
+			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.REJECTED), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
@@ -232,7 +231,7 @@ public class RMController {
 		LOGGER.info("/rm/kyc/review/initiate request received for msisdn={},username={}", msisdn, username);
 		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.UNDER_REVIEW).getEntity(),
+			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.UNDER_REVIEW),
 					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -248,8 +247,7 @@ public class RMController {
 		LOGGER.info("/rm/kyc/submit/re-send request received for msisdn={},username={}", msisdn, username);
 		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.RE_UPDATE).getEntity(),
-					HttpStatus.OK);
+			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.RE_UPDATE), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
@@ -282,8 +280,7 @@ public class RMController {
 		LOGGER.info("/rm/kyc/loc/issue request received for msisdn={},username={}", msisdn, username);
 		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.LOC_ISSUED).getEntity(),
-					HttpStatus.OK);
+			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.LOC_ISSUED), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
