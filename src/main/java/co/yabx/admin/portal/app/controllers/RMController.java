@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import co.yabx.admin.portal.app.enums.KycStatus;
-import co.yabx.admin.portal.app.kyc.entities.AccountStatuses;
 import co.yabx.admin.portal.app.kyc.entities.AttachmentDetails;
 import co.yabx.admin.portal.app.kyc.entities.User;
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
@@ -189,16 +188,15 @@ public class RMController {
 	@RequestMapping(value = "/rm/kyc/approve", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> approve(@RequestParam String msisdn, @RequestParam String username,
-			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+			throws ClientProtocolException, URISyntaxException, IOException {
 		LOGGER.info("/rm/kyc/approve request received for msisdn={},username={}", msisdn, username);
 		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.updateKycStatus(msisdn, username, KycStatus.APPROVED),
-					HttpStatus.OK);
+			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.APPROVED), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
-
 	}
 
 	private boolean isAuthorised(String username, HttpServletRequest httpServletRequest,
@@ -213,12 +211,12 @@ public class RMController {
 	@RequestMapping(value = "/rm/kyc/reject", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> reject(@RequestParam String msisdn, @RequestParam String username,
-			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+			throws ClientProtocolException, URISyntaxException, IOException {
 		LOGGER.info("/rm/kyc/reject request received for msisdn={},username={}", msisdn, username);
 		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.updateKycStatus(msisdn, username, KycStatus.REJECTED),
-					HttpStatus.OK);
+			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.REJECTED), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
@@ -228,11 +226,12 @@ public class RMController {
 	@RequestMapping(value = "/rm/kyc/review/initiate", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> iniateReview(@RequestParam String msisdn, @RequestParam String username,
-			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+			throws ClientProtocolException, URISyntaxException, IOException {
 		LOGGER.info("/rm/kyc/review/initiate request received for msisdn={},username={}", msisdn, username);
 		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.updateKycStatus(msisdn, username, KycStatus.UNDER_REVIEW),
+			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.UNDER_REVIEW),
 					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -243,12 +242,12 @@ public class RMController {
 	@RequestMapping(value = "/rm/kyc/submit/re-send", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> reSend(@RequestParam String msisdn, @RequestParam String username,
-			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+			throws ClientProtocolException, URISyntaxException, IOException {
 		LOGGER.info("/rm/kyc/submit/re-send request received for msisdn={},username={}", msisdn, username);
 		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.updateKycStatus(msisdn, username, KycStatus.RE_UPDATE),
-					HttpStatus.OK);
+			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.RE_UPDATE), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
@@ -258,19 +257,16 @@ public class RMController {
 	@RequestMapping(value = "/rm/kyc/loc/generate", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> generateLOC(@RequestParam String msisdn, @RequestParam String username,
-			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+			throws ClientProtocolException, URISyntaxException, IOException {
 		LOGGER.info("/rm/kyc/loc/generate request received for msisdn={},username={}", msisdn, username);
 		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			AccountStatuses accountStatuses = kycService.updateKycStatus(msisdn, username, KycStatus.LOC_GENERATED);
-			if (accountStatuses != null && KycStatus.LOC_GENERATED.equals(accountStatuses.getKycVerified())) {
-				return new ResponseEntity<>(
-						storageService.getDisclaimerDocuments(userService.getUser(msisdn).getId(), appConfigService
-								.getProperty("GENERATE_LOC_FILE_NAME", "05_General_Loan_Agreement.pdf")),
-						HttpStatus.OK);
-			} else {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
+			kycService.updateStatus(msisdn, username, KycStatus.LOC_GENERATED);
+			return new ResponseEntity<>(
+					storageService.getDisclaimerDocuments(userService.getUser(msisdn).getId(),
+							appConfigService.getProperty("GENERATE_LOC_FILE_NAME", "05_General_Loan_Agreement.pdf")),
+					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
@@ -279,12 +275,12 @@ public class RMController {
 	@RequestMapping(value = "/rm/kyc/loc/issue", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseEntity<?> issueLoc(@RequestParam String msisdn, @RequestParam String username,
-			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+			HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)
+			throws ClientProtocolException, URISyntaxException, IOException {
 		LOGGER.info("/rm/kyc/loc/issue request received for msisdn={},username={}", msisdn, username);
 		if (neitherNullNorEmpty(msisdn) && neitherNullNorEmpty(username)
 				&& isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			return new ResponseEntity<>(kycService.updateKycStatus(msisdn, username, KycStatus.LOC_ISSUED),
-					HttpStatus.OK);
+			return new ResponseEntity<>(kycService.updateStatus(msisdn, username, KycStatus.LOC_ISSUED), HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}

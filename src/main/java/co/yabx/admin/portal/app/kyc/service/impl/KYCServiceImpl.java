@@ -250,6 +250,33 @@ public class KYCServiceImpl implements KYCService {
 		return null;
 	}
 
+	@Override
+	public HttpResponse updateStatus(String msisdn, String username, KycStatus kycStatus)
+			throws URISyntaxException, ClientProtocolException, IOException {
+
+		HttpClient httpclient = HttpClients.createDefault();
+		HttpGet request = new HttpGet(appConfigService.getProperty("KYC_UPDATE_STATUS_END_POINT",
+				"http://kyc.yabx.co:8080/v1/update/kyc/status"));
+		List<NameValuePair> params = new ArrayList<NameValuePair>(3);
+		NameValuePair nv1 = new BasicNameValuePair("status", kycStatus.name());
+		NameValuePair nv2 = new BasicNameValuePair("secret_key",
+				appConfigService.getProperty("RETAILER_PROFILE_KYC_API_SECRET_KEY", "magic@yabx"));
+		NameValuePair nv3 = new BasicNameValuePair("username", username);
+		NameValuePair nv4 = new BasicNameValuePair("msisdn", msisdn);
+		params.add(nv1);
+		params.add(nv2);
+		params.add(nv3);
+		params.add(nv4);
+		// Execute and get the response.
+		HttpResponse response = null;
+		URI uri = new URIBuilder(request.getURI()).addParameters(params).build();
+		request.setURI(uri);
+		response = httpclient.execute(request);
+		LOGGER.info("Response for updating kycStatus={} is ={}", kycStatus, response);
+		return response;
+
+	}
+
 	@Async
 	private void generateDisclaimerDocs(String msisdn) {
 		User user = userRepository.findBymsisdnAndUserType(msisdn, UserType.RETAILERS.toString());
