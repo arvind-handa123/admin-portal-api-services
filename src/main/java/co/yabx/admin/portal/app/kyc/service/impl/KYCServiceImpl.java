@@ -255,7 +255,7 @@ public class KYCServiceImpl implements KYCService {
 			throws URISyntaxException, ClientProtocolException, IOException {
 
 		HttpClient httpclient = HttpClients.createDefault();
-		HttpGet request = new HttpGet(appConfigService.getProperty("KYC_UPDATE_STATUS_END_POINT",
+		HttpPost request = new HttpPost(appConfigService.getProperty("KYC_UPDATE_STATUS_END_POINT",
 				"http://kyc.yabx.co:8080/v1/update/kyc/status"));
 		List<NameValuePair> params = new ArrayList<NameValuePair>(3);
 		NameValuePair nv1 = new BasicNameValuePair("status", kycStatus.name());
