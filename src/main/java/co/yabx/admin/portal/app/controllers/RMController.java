@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import co.yabx.admin.portal.app.enums.KycStatus;
@@ -37,6 +38,7 @@ import co.yabx.admin.portal.app.kyc.service.UserService;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/v1")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class RMController {
 
 	@Autowired
