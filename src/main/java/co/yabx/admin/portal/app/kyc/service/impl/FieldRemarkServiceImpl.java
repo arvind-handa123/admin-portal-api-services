@@ -606,7 +606,7 @@ public class FieldRemarkServiceImpl implements FieldRemarkService {
 				FacilityType facilityType = neitherBlankNorNull(remarksDTO.getFieldValue())
 						? FacilityType.findByValue(remarksDTO.getFieldValue())
 						: null;
-				businessDetails.setFacilityType(facilityType.getName());
+				businessDetails.setFacilityType(facilityType != null ? facilityType.getName() : null);
 			} catch (Exception e) {
 				LOGGER.error("Exception while evaluating facilityType ={}, error={}", remarksDTO.getFieldValue(),
 						e.getMessage());
