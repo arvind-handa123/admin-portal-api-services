@@ -21,7 +21,7 @@ public enum FacilityType {
 	}
 
 	public static FacilityType findById(int id) {
-		FacilityType[] facilityTypes = values();
+		FacilityType[] facilityTypes = FacilityType.values();
 		for (FacilityType facilityType : facilityTypes) {
 			if (facilityType.getId() == id) {
 				return facilityType;
@@ -31,7 +31,7 @@ public enum FacilityType {
 	}
 
 	public static FacilityType findByValue(String value) {
-		FacilityType[] facilityTypes = values();
+		FacilityType[] facilityTypes = FacilityType.values();
 		for (FacilityType facilityType : facilityTypes) {
 			if (facilityType.getName().equalsIgnoreCase(value)) {
 				return facilityType;
