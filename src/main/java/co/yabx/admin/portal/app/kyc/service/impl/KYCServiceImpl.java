@@ -141,93 +141,40 @@ public class KYCServiceImpl implements KYCService {
 	@Override
 	public JsonNode fetchRetailersByKycStatus(KycStatus kycStatus, Integer pageNo, Integer pageSize)
 			throws URISyntaxException, ClientProtocolException, IOException {
-		List<AccountStatuses> accountStatuses = accountStatusesRepository.findByKycVerified(kycStatus);
-		List<PagesDTO> appPagesDTOList = new ArrayList<PagesDTO>();
-		for (AccountStatuses accountStatus : accountStatuses) {
-			User user = userRepository.findBymsisdnAndUserType(accountStatus.getMsisdn(), UserType.RETAILERS.name());
-			if (user != null) {
-				List<PagesDTO> appPagesDTO = new ArrayList<PagesDTO>();
-				if (appConfigService.getBooleanProperty("IS_TO_FETCH_FROM_KYC", true)) {
-					HttpClient httpclient = HttpClients.createDefault();
-					HttpGet request = new HttpGet(appConfigService.getProperty("KYC_END_POINT",
-							"http://kyc.yabx.co:8080/v1/retailers/profiles"));
-					List<NameValuePair> params = new ArrayList<NameValuePair>(3);
-					NameValuePair nv1 = new BasicNameValuePair("status", kycStatus.name());
-					NameValuePair nv2 = new BasicNameValuePair("secret_key",
-							appConfigService.getProperty("RETAILER_PROFILE_KYC_API_SECRET_KEY", "magic@yabx"));
-					NameValuePair nv3 = new BasicNameValuePair("page_no", String.valueOf(pageNo));
-					NameValuePair nv4 = new BasicNameValuePair("page_size", String.valueOf(pageSize));
-					params.add(nv1);
-					params.add(nv2);
-					params.add(nv3);
-					params.add(nv4);
-					// Execute and get the response.
-					HttpResponse response = null;
 
-					URI uri = new URIBuilder(request.getURI()).addParameters(params).build();
-					request.setURI(uri);
-					response = httpclient.execute(request);
-					LOGGER.info("Response for kycStatus={} is ={}", kycStatus, response);
-					if (response.getStatusLine().getStatusCode() == 200) {
-						HttpEntity entity = response.getEntity();
-						String responseString = EntityUtils.toString(entity, "UTF-8");
-						// LOGGER.info("Response for kycStatus={} in string is ={}", kycStatus,
-						// responseString);
-						JsonNode jsonNode = JsonUtilService.deserializeEntity(responseString, JsonNode.class);
-						// LOGGER.info("Response for kycStatus={} in jsonNode is ={}", kycStatus,
-						// jsonNode);
-						// String responseString = EntityUtils.toString(entity, "UTF-8");
-						return jsonNode;
-					}
+		if (appConfigService.getBooleanProperty("IS_TO_FETCH_FROM_KYC", true)) {
+			HttpClient httpclient = HttpClients.createDefault();
+			HttpGet request = new HttpGet(
+					appConfigService.getProperty("KYC_END_POINT", "http://kyc.yabx.co:8080/v1/retailers/profiles"));
+			List<NameValuePair> params = new ArrayList<NameValuePair>(3);
+			NameValuePair nv1 = new BasicNameValuePair("status", kycStatus.name());
+			NameValuePair nv2 = new BasicNameValuePair("secret_key",
+					appConfigService.getProperty("RETAILER_PROFILE_KYC_API_SECRET_KEY", "magic@yabx"));
+			NameValuePair nv3 = new BasicNameValuePair("page_no", String.valueOf(pageNo));
+			NameValuePair nv4 = new BasicNameValuePair("page_size", String.valueOf(pageSize));
+			params.add(nv1);
+			params.add(nv2);
+			params.add(nv3);
+			params.add(nv4);
+			// Execute and get the response.
+			HttpResponse response = null;
 
-				} else {
-					List<FieldRemarks> fieldRemarksList = fieldRemarksRepository.findByUserId(user.getId());
-					Set<AddressDetails> addressDetailsSet = user.getAddressDetails();
-					Set<BankAccountDetails> bankAccountDetailsSet = user.getBankAccountDetails();
-					/*
-					 * Set<BusinessDetails> businessDetailsSet = user.getBusinessDetails();
-					 * Set<AttachmentDetails> attachmentDetailsSet = user.getAttachmentDetails();
-					 * Set<LiabilitiesDetails> nominees = user.getLiabilitiesDetails();
-					 * Set<IntroducerDetails> introducerDetails = user.getIntroducerDetails();
-					 * Set<WorkEducationDetails> workEducationDetailsSet =
-					 * user.getWorkEducationDetails(); Set<MonthlyTransactionProfiles>
-					 * monthlyTransactionProfilesSet = user.getMonthlyTransactionProfiles();
-					 * LoanPurposeDetails loanPurposeDetails = user.getLoanPurposeDetails();
-					 */
-					Set<BankAccountDetails> nomineeBankAccountDetailsSet = null;
-					Set<BankAccountDetails> businessBankAccountDetailsSet = new HashSet<BankAccountDetails>();
-					Set<AddressDetails> nomineeAddressDetailsSet = null;
-					Set<AddressDetails> businessAddressDetailsSet = new HashSet<AddressDetails>();
-					List<UserRelationships> userRelationships = userRelationshipsRepository
-							.findByMsisdnAndRelationship(user.getMsisdn(), Relationship.NOMINEE);
-					User nominee = userRelationships != null && !userRelationships.isEmpty()
-							? userRelationships.get(0).getRelative()
-							: null;
-					nomineeAddressDetailsSet = nominee != null ? nominee.getAddressDetails() : null;
-					nomineeBankAccountDetailsSet = nominee != null ? accountDetailsRepository.findByUser(user) : null;
-
-					if (user.getBusinessDetails() != null) {
-						user.getBusinessDetails().forEach(f -> {
-							businessAddressDetailsSet.addAll(f.getAddressDetails());
-						});
-						user.getBusinessDetails().forEach(f -> {
-							businessBankAccountDetailsSet.addAll(f.getBankAccountDetails());
-						});
-					}
-
-					List<Pages> appPages = kycPagesRepository.findByPageType(PageType.RETAILERS);
-					if (appPages == null)
-						return null;
-					for (Pages pages : appPages) {
-						appPagesDTO.add(PagesDTOHeper.prepareAppPagesDto(pages, user, nominee, addressDetailsSet,
-								nomineeAddressDetailsSet, businessAddressDetailsSet, bankAccountDetailsSet,
-								nomineeBankAccountDetailsSet, businessBankAccountDetailsSet, PageType.RETAILERS.name(),
-								fieldRemarksList));
-
-					}
-					appPagesDTOList.addAll(appPagesDTO);
-				}
+			URI uri = new URIBuilder(request.getURI()).addParameters(params).build();
+			request.setURI(uri);
+			response = httpclient.execute(request);
+			LOGGER.info("Response for kycStatus={} is ={}", kycStatus, response);
+			if (response.getStatusLine().getStatusCode() == 200) {
+				HttpEntity entity = response.getEntity();
+				String responseString = EntityUtils.toString(entity, "UTF-8");
+				// LOGGER.info("Response for kycStatus={} in string is ={}", kycStatus,
+				// responseString);
+				JsonNode jsonNode = JsonUtilService.deserializeEntity(responseString, JsonNode.class);
+				// LOGGER.info("Response for kycStatus={} in jsonNode is ={}", kycStatus,
+				// jsonNode);
+				// String responseString = EntityUtils.toString(entity, "UTF-8");
+				return jsonNode;
 			}
+
 		}
 		return null;
 
