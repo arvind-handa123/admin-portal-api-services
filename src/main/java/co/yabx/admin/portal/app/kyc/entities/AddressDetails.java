@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -83,10 +84,12 @@ public class AddressDetails implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
 	User user;
 
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity = BusinessDetails.class)
+	@ManyToOne
+	@JoinColumn(name = "business_details_id")
 	BusinessDetails businessDetails;
 
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity = CustomerInformations.class)
+	@ManyToOne
+	@JoinColumn(name = "customer_informations_id")
 	CustomerInformations customerInformations;
 
 	public User getUser() {

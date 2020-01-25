@@ -12,13 +12,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 import co.yabx.admin.portal.app.enums.LicenseType;
-
 
 @Entity
 @Table(name = "license_details", indexes = { @Index(name = "license_type", columnList = "license_type"),
@@ -54,7 +54,8 @@ public class LicenseDetails implements Serializable {
 	@Column(name = "update_by")
 	private String updatedBy;
 
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity = BusinessDetails.class)
+	@ManyToOne
+	@JoinColumn(name = "business_details_id")
 	BusinessDetails businessDetails;
 
 	public Long getId() {

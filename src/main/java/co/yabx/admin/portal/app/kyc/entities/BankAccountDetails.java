@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -22,7 +23,6 @@ import co.yabx.admin.portal.app.enums.BankAccountType;
 import co.yabx.admin.portal.app.enums.Currency;
 import co.yabx.admin.portal.app.enums.ModeOfOperation;
 import co.yabx.admin.portal.app.enums.TypeOfConcern;
-
 
 @Entity
 @Table(name = "bank_account_details", indexes = { @Index(name = "bank_name", columnList = "bank_name"),
@@ -73,10 +73,12 @@ public class BankAccountDetails implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER, targetEntity = User.class)
 	User user;
 
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity = BusinessDetails.class)
+	@ManyToOne
+	@JoinColumn(name = "business_details_id")
 	BusinessDetails businessDetails;
 
-	@ManyToOne(fetch = FetchType.EAGER, targetEntity = CustomerInformations.class)
+	@ManyToOne
+	@JoinColumn(name = "customer_informations_id")
 	CustomerInformations customerInformations;
 
 	@Column(name = "created_at")
