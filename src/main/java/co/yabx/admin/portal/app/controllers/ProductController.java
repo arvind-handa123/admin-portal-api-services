@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.yabx.admin.portal.app.admin.entities.ProductConfigurations;
 import co.yabx.admin.portal.app.kyc.dto.PagesDTO;
 import co.yabx.admin.portal.app.kyc.dto.ResponseDTO;
+import co.yabx.admin.portal.app.kyc.service.AdminService;
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.AuthInfoService;
 import co.yabx.admin.portal.app.kyc.service.FieldRemarkService;
@@ -28,12 +30,12 @@ import co.yabx.admin.portal.app.service.AdminPortalService;
 import co.yabx.admin.portal.app.service.AdminStorageService;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/v1")
 public class ProductController {
 
 	@Autowired
-	private KYCService kycService;
+	private AdminService adminService;
 
 	@Autowired
 	private AppConfigService appConfigService;
@@ -122,4 +124,23 @@ public class ProductController {
 		return new ResponseEntity<>("Invalid authentication", HttpStatus.UNAUTHORIZED);
 
 	}
+
+	@RequestMapping(value = "/register/rm", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> registerRM(@RequestParam(value = "username", required = true) String username,
+			@RequestParam(value = "name", required = true) String name,
+			@RequestParam(value = "email", required = true) String email,
+			@RequestParam(value = "msisdn", required = true) String msisdn,
+			@RequestParam(value = "password", required = true) String password,
+			@RequestParam(value = "secret_key", required = true) String secret_key) {
+		if (secret_key.equals(appConfigService.getProperty("CREATE_RM_API_PASSWORD", "magic@yabx"))) {
+
+			return new ResponseEntity<>(adminService.registerRM(username, msisdn, email, name, password),
+					HttpStatus.OK);
+
+		}
+		return new ResponseEntity<>("Invalid secret key", HttpStatus.UNAUTHORIZED);
+
+	}
+
 }

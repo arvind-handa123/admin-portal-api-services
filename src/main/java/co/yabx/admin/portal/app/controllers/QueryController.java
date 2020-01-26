@@ -22,7 +22,7 @@ import co.yabx.admin.portal.app.service.AdminPortalService;
 import co.yabx.admin.portal.app.service.AdminStorageService;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/v1")
 public class QueryController {
 
