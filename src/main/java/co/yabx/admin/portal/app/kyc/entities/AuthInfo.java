@@ -24,7 +24,8 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 @Entity
 @Table(name = "auth_infos", indexes = { @Index(name = "msisdn", columnList = "msisdn"),
-		@Index(name = "yabx_token", columnList = "yabx_token"), @Index(name = "user_name", columnList = "user_name") })
+		@Index(name = "email", columnList = "email"), @Index(name = "yabx_token", columnList = "yabx_token"),
+		@Index(name = "user_name", columnList = "user_name") })
 public class AuthInfo implements Serializable, UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -48,6 +49,9 @@ public class AuthInfo implements Serializable, UserDetails {
 
 	@Column(unique = true)
 	private String msisdn;
+
+	@Column(unique = true)
+	private String email;
 
 	@Column(name = "user_name", unique = true)
 	private String username;
@@ -217,4 +221,11 @@ public class AuthInfo implements Serializable, UserDetails {
 		this.accountNonLocked = accountNonLocked;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 }

@@ -79,4 +79,22 @@ public class AdminController {
 
 	}
 
+	@RequestMapping(value = "/register/rm", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseEntity<?> registerRM(@RequestParam(value = "username", required = true) String username,
+			@RequestParam(value = "name", required = true) String name,
+			@RequestParam(value = "email", required = true) String email,
+			@RequestParam(value = "msisdn", required = true) String msisdn,
+			@RequestParam(value = "password", required = true) String password,
+			@RequestParam(value = "secret_key", required = true) String secret_key) {
+		if (secret_key.equals(appConfigService.getProperty("CREATE_RM_API_PASSWORD", "magic@yabx"))) {
+
+			return new ResponseEntity<>(adminService.registerRM(username, msisdn, email, name, password),
+					HttpStatus.OK);
+
+		}
+		return new ResponseEntity<>("Invalid secret key", HttpStatus.UNAUTHORIZED);
+
+	}
+
 }

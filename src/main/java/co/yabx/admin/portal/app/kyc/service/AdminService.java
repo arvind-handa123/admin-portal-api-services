@@ -13,4 +13,6 @@ public interface AdminService {
 
 	void resetYabxToken(AuthInfo authInfo);
 
+	Map<String, String> registerRM(String username, String msisdn, String email, String name, String password);
+
 }

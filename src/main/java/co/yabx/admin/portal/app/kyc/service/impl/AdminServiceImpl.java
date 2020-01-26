@@ -131,4 +131,23 @@ public class AdminServiceImpl implements AdminService {
 		}
 	}
 
+	@Override
+	public Map<String, String> registerRM(String username, String msisdn, String email, String name, String password) {
+		AuthInfo authInfo = authInfoRepository.findByMsisdnOrUsernameOrEmail(msisdn, username, email);
+		Map<String, String> jsonResponse = new HashMap<String, String>();
+		if (authInfo == null) {
+			authInfo = new AuthInfo();
+			authInfo.setUsername(username);
+			authInfo.setEmail(email);
+			authInfo.setPassword(password);
+			authInfo.setMsisdn(msisdn);
+			authInfo = authInfoRepository.save(authInfo);
+			jsonResponse.put("STATUS", "SUCCESS");
+			return jsonResponse;
+		}
+		jsonResponse.put("STATUS", "USER ALREADY EXIST");
+		return jsonResponse;
+
+	}
+
 }

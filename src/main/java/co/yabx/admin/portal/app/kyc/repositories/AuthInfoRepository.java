@@ -33,4 +33,7 @@ public interface AuthInfoRepository extends JpaRepository<AuthInfo, Long> {
 	@Query(value = "update AuthInfo a set a.password=?3 , a.yabxToken=null where a.username = ?1 and a.password = ?2 ")
 	void updatePassword(String username, String currentPassword, String newPassword);
 
+	@Query(value = "SELECT u FROM AuthInfo u where u.msisdn=?1 OR u.username = ?2 OR u.email = ?3 ")
+	AuthInfo findByMsisdnOrUsernameOrEmail(String msisdn, String username, String email);
+
 }
