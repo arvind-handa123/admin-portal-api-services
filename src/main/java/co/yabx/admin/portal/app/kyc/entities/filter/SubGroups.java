@@ -22,8 +22,6 @@ import co.yabx.admin.portal.app.enums.FunctionalityType;
 import co.yabx.admin.portal.app.kyc.entities.Fields;
 import co.yabx.admin.portal.app.kyc.entities.SectionGroupRelationship;
 
-
-
 /**
  * 
  * @author Asad.ali
@@ -42,7 +40,8 @@ public abstract class SubGroups implements Serializable {
 	@Column(name = "group_type", insertable = false, updatable = false)
 	private String groupType;
 
-	@ManyToOne(targetEntity = SectionGroupRelationship.class, fetch = FetchType.EAGER)
+	@ManyToOne
+	@JoinColumn(name = "section_group_relationship_id")
 	protected SectionGroupRelationship sectionGroupRelationship;
 
 	@JoinColumn(name = "fields")
