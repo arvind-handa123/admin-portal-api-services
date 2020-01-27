@@ -24,8 +24,6 @@ import co.yabx.admin.portal.app.kyc.service.AdminService;
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
 import co.yabx.admin.portal.app.kyc.service.AuthInfoService;
 import co.yabx.admin.portal.app.kyc.service.FieldRemarkService;
-import co.yabx.admin.portal.app.kyc.service.KYCService;
-import co.yabx.admin.portal.app.kyc.service.StorageService;
 import co.yabx.admin.portal.app.service.AdminPortalService;
 import co.yabx.admin.portal.app.service.AdminStorageService;
 
@@ -42,9 +40,6 @@ public class ProductController {
 
 	@Autowired
 	private AdminPortalService adminPortalService;
-
-	@Autowired
-	private FieldRemarkService fieldRemarkService;
 
 	@Autowired
 	private AdminStorageService adminStorageService;

@@ -47,6 +47,8 @@ public class ProductConfigurations implements Serializable {
 
 	private String icon;
 
+	private String locale;
+
 	public Date getCreatedAt() {
 		return createdAt;
 	}
@@ -135,6 +137,14 @@ public class ProductConfigurations implements Serializable {
 		return "ProductConfigurations [id=" + id + ", productName=" + productName + ", title=" + title + ", region="
 				+ region + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + ", active=" + active + ", icon="
 				+ icon + "]";
+	}
+
+	public String getLocale() {
+		return locale;
+	}
+
+	public void setLocale(String locale) {
+		this.locale = locale;
 	}
 
 }
