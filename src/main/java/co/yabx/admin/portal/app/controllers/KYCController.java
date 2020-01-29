@@ -66,7 +66,7 @@ public class KYCController {
 		if (kycStatus == null) {
 			return new ResponseEntity<>(kycService.findAllRetailers(), HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(kycStatus, 0, 50), HttpStatus.OK);
+			return new ResponseEntity<>(kycService.fetchRetailersByKycStatus(kycStatus, 0, 50, null), HttpStatus.OK);
 		}
 
 	}

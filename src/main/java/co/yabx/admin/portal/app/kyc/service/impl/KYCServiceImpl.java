@@ -139,7 +139,7 @@ public class KYCServiceImpl implements KYCService {
 	}
 
 	@Override
-	public JsonNode fetchRetailersByKycStatus(KycStatus kycStatus, Integer pageNo, Integer pageSize)
+	public JsonNode fetchRetailersByKycStatus(KycStatus kycStatus, Integer pageNo, Integer pageSize, String locale)
 			throws URISyntaxException, ClientProtocolException, IOException {
 
 		if (appConfigService.getBooleanProperty("IS_TO_FETCH_FROM_KYC", true)) {
@@ -152,10 +152,13 @@ public class KYCServiceImpl implements KYCService {
 					appConfigService.getProperty("RETAILER_PROFILE_KYC_API_SECRET_KEY", "magic@yabx"));
 			NameValuePair nv3 = new BasicNameValuePair("page_no", String.valueOf(pageNo));
 			NameValuePair nv4 = new BasicNameValuePair("page_size", String.valueOf(pageSize));
+			NameValuePair nv5 = new BasicNameValuePair("locale", locale);
+
 			params.add(nv1);
 			params.add(nv2);
 			params.add(nv3);
 			params.add(nv4);
+			params.add(nv5);
 			// Execute and get the response.
 			HttpResponse response = null;
 

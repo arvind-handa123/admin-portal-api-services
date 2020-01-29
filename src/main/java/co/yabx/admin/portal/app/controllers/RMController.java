@@ -61,14 +61,15 @@ public class RMController {
 
 	@RequestMapping(value = "/rm/kyc/profiles/approved", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<?> approvedProfiles(@RequestParam String username, HttpServletRequest httpServletRequest,
+	public ResponseEntity<?> approvedProfiles(@RequestParam String username,
+			@RequestParam(value = "locale", required = false) String locale, HttpServletRequest httpServletRequest,
 			@RequestParam(value = "page_no", required = false) Integer pageNo,
 			@RequestParam(value = "page_size", required = false) Integer pageSize,
 			HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
 		LOGGER.info("/rm/kyc/profiles/approved request received for username={}, pageNo={},pageSize={}", username,
 				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.APPROVED, pageNo, pageSize);
+			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.APPROVED, pageNo, pageSize, locale);
 			return new ResponseEntity<>(jsonNode != null && jsonNode.size() != 0 ? jsonNode : Collections.EMPTY_LIST,
 					HttpStatus.OK);
 		} else {
@@ -79,14 +80,15 @@ public class RMController {
 
 	@RequestMapping(value = "/rm/kyc/profiles/rejected", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<?> rejectedProfiles(@RequestParam String username, HttpServletRequest httpServletRequest,
+	public ResponseEntity<?> rejectedProfiles(@RequestParam String username,
+			@RequestParam(value = "locale", required = false) String locale, HttpServletRequest httpServletRequest,
 			@RequestParam(value = "page_no", required = false) Integer pageNo,
 			@RequestParam(value = "page_size", required = false) Integer pageSize,
 			HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
 		LOGGER.info("/rm/kyc/status/rejected request received for username={}, pageNo={},pageSize={}", username, pageNo,
 				pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.REJECTED, pageNo, pageSize);
+			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.REJECTED, pageNo, pageSize, locale);
 			return new ResponseEntity<>(jsonNode != null && jsonNode.size() != 0 ? jsonNode : Collections.EMPTY_LIST,
 					HttpStatus.OK);
 		} else {
@@ -97,14 +99,15 @@ public class RMController {
 
 	@RequestMapping(value = "/rm/kyc/profiles/submitted", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<?> submittedProfiles(@RequestParam String username, HttpServletRequest httpServletRequest,
+	public ResponseEntity<?> submittedProfiles(@RequestParam String username,
+			@RequestParam(value = "locale", required = false) String locale, HttpServletRequest httpServletRequest,
 			@RequestParam(value = "page_no", required = false) Integer pageNo,
 			@RequestParam(value = "page_size", required = false) Integer pageSize,
 			HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
 		LOGGER.info("/rm/kyc/profiles/submitted request received for username={}, pageNo={},pageSize={}", username,
 				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.SUBMITTED, pageNo, pageSize);
+			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.SUBMITTED, pageNo, pageSize, locale);
 			return new ResponseEntity<>(jsonNode != null && jsonNode.size() != 0 ? jsonNode : Collections.EMPTY_LIST,
 					HttpStatus.OK);
 		} else {
@@ -115,14 +118,15 @@ public class RMController {
 
 	@RequestMapping(value = "/rm/kyc/profiles/re-submitted", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<?> reSubmittedProfiles(@RequestParam String username, HttpServletRequest httpServletRequest,
+	public ResponseEntity<?> reSubmittedProfiles(@RequestParam String username,
+			@RequestParam(value = "locale", required = false) String locale, HttpServletRequest httpServletRequest,
 			@RequestParam(value = "page_no", required = false) Integer pageNo,
 			@RequestParam(value = "page_size", required = false) Integer pageSize,
 			HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
 		LOGGER.info("/rm/kyc/profiles/re-submitted request received for username={}, pageNo={},pageSize={}", username,
 				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.RE_SUBMITTED, pageNo, pageSize);
+			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.RE_SUBMITTED, pageNo, pageSize, locale);
 			return new ResponseEntity<>(jsonNode != null && jsonNode.size() != 0 ? jsonNode : Collections.EMPTY_LIST,
 					HttpStatus.OK);
 		} else {
@@ -133,14 +137,15 @@ public class RMController {
 
 	@RequestMapping(value = "/rm/kyc/profiles/under-review", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<?> underReviewProfiles(@RequestParam String username, HttpServletRequest httpServletRequest,
+	public ResponseEntity<?> underReviewProfiles(@RequestParam String username,
+			@RequestParam(value = "locale", required = false) String locale, HttpServletRequest httpServletRequest,
 			@RequestParam(value = "page_no", required = false) Integer pageNo,
 			@RequestParam(value = "page_size", required = false) Integer pageSize,
 			HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
 		LOGGER.info("/rm/kyc/profiles/under-review request received for username={}, pageNo={},pageSize={}", username,
 				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.UNDER_REVIEW, pageNo, pageSize);
+			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.UNDER_REVIEW, pageNo, pageSize, locale);
 			return new ResponseEntity<>(jsonNode != null && jsonNode.size() != 0 ? jsonNode : Collections.EMPTY_LIST,
 					HttpStatus.OK);
 		} else {
@@ -151,14 +156,15 @@ public class RMController {
 
 	@RequestMapping(value = "/rm/kyc/profiles/loc-issued", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<?> locIssuedProfiles(@RequestParam String username, HttpServletRequest httpServletRequest,
+	public ResponseEntity<?> locIssuedProfiles(@RequestParam String username,
+			@RequestParam(value = "locale", required = false) String locale, HttpServletRequest httpServletRequest,
 			@RequestParam(value = "page_no", required = false) Integer pageNo,
 			@RequestParam(value = "page_size", required = false) Integer pageSize,
 			HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
 		LOGGER.info("/rm/kyc/profiles/loc-issued request received for username={}, pageNo={},pageSize={}", username,
 				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.LOC_ISSUED, pageNo, pageSize);
+			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.LOC_ISSUED, pageNo, pageSize, locale);
 			return new ResponseEntity<>(jsonNode != null && jsonNode.size() != 0 ? jsonNode : Collections.EMPTY_LIST,
 					HttpStatus.OK);
 		} else {
@@ -169,14 +175,15 @@ public class RMController {
 
 	@RequestMapping(value = "/rm/kyc/profiles/loc-generated", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<?> locGeneratedProfiles(@RequestParam String username, HttpServletRequest httpServletRequest,
+	public ResponseEntity<?> locGeneratedProfiles(@RequestParam String username,
+			@RequestParam(value = "locale", required = false) String locale, HttpServletRequest httpServletRequest,
 			@RequestParam(value = "page_no", required = false) Integer pageNo,
 			@RequestParam(value = "page_size", required = false) Integer pageSize,
 			HttpServletResponse httpServletResponse) throws ClientProtocolException, URISyntaxException, IOException {
 		LOGGER.info("/rm/kyc/profiles/loc-generated request received for username={}, pageNo={},pageSize={}", username,
 				pageNo, pageSize);
 		if (neitherNullNorEmpty(username) && isAuthorised(username, httpServletRequest, httpServletResponse)) {
-			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.LOC_GENERATED, pageNo, pageSize);
+			JsonNode jsonNode = kycService.fetchRetailersByKycStatus(KycStatus.LOC_GENERATED, pageNo, pageSize, locale);
 			return new ResponseEntity<>(jsonNode != null && jsonNode.size() != 0 ? jsonNode : Collections.EMPTY_LIST,
 					HttpStatus.OK);
 		} else {
