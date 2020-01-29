@@ -108,10 +108,8 @@ public class StorageServiceImpl implements StorageService {
 		} catch (Exception e) {
 			LOGGER.error("exception raised while fetching image={},error={}", filename, e.getMessage());
 			if (retryCounter == 0) {
-				String extension = FilenameUtils.getExtension(filename);
-				String documentType = filename.replaceAll("." + extension, "");
-				kycService.createPDFDocuments(userService.getRetailerById(retailerId), documentType);
-				return getDisclaimerDocuments(retailerId, filename, retryCounter++);
+				kycService.generateDisclaimerDocs(retailerId);
+				return getDisclaimerDocuments(retailerId, filename, retryCounter + 1);
 			}
 			return null;
 		}

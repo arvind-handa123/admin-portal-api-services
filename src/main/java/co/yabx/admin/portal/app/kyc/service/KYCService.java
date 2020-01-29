@@ -37,4 +37,6 @@ public interface KYCService {
 
 	void createPDFDocuments(User user, String documentType);
 
+	void generateDisclaimerDocs(Long retailerId);
+
 }

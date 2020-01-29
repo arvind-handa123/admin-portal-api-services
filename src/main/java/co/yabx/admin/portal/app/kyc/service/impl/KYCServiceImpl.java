@@ -246,6 +246,16 @@ public class KYCServiceImpl implements KYCService {
 	}
 
 	@Override
+	public void generateDisclaimerDocs(Long retailerId) {
+		User user = userService.getRetailerById(retailerId);
+		List<ProductDocuments> productDocumentLists = productDocumentsRepository.findByProductName(ProductName.KYC);
+		for (ProductDocuments productDocuments : productDocumentLists) {
+			createPDFDocuments(user, productDocuments.getDocumentType());
+		}
+
+	}
+
+	@Override
 	public void createPDFDocuments(User user, String documentType) {
 		if ("IGPA_FIXED_AND_FLOATING".equalsIgnoreCase(documentType)) {
 			IGPA_FIXED_AND_FLOATING_1.getDocuments(user);
