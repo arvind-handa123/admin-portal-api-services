@@ -272,7 +272,7 @@ public class RMController {
 			kycService.updateStatus(msisdn, username, KycStatus.LOC_GENERATED);
 			return new ResponseEntity<>(
 					storageService.getDisclaimerDocuments(userService.getUser(msisdn).getId(),
-							appConfigService.getProperty("GENERATE_LOC_FILE_NAME", "05_General_Loan_Agreement.pdf")),
+							appConfigService.getProperty("GENERATE_LOC_FILE_NAME", "05_General_Loan_Agreement.pdf"), 1),
 					HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -323,7 +323,7 @@ public class RMController {
 					 * if documents extension is pdf, then pick from retailer disclaimer pdf
 					 * directory
 					 */
-					return new ResponseEntity<>(storageService.getDisclaimerDocuments(retailerId, filename),
+					return new ResponseEntity<>(storageService.getDisclaimerDocuments(retailerId, filename, 0),
 							HttpStatus.OK);
 				} else {
 					byte[] doc = storageService.getImage(filename, retailerId, true);
@@ -331,7 +331,7 @@ public class RMController {
 						/*
 						 * otherwise pick from disclaimer document directory
 						 */
-						return new ResponseEntity<>(storageService.getDisclaimerDocuments(retailerId, filename),
+						return new ResponseEntity<>(storageService.getDisclaimerDocuments(retailerId, filename, 0),
 								HttpStatus.OK);
 					else
 						return new ResponseEntity<>(doc, HttpStatus.OK);

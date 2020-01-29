@@ -35,4 +35,6 @@ public interface KYCService {
 	JsonNode updateStatus(String msisdn, String username, KycStatus kycStatus)
 			throws URISyntaxException, ClientProtocolException, IOException;
 
+	void createPDFDocuments(User user, String documentType);
+
 }

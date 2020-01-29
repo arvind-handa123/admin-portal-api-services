@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import co.yabx.admin.portal.app.kyc.service.AppConfigService;
+import co.yabx.admin.portal.app.kyc.service.KYCService;
 import co.yabx.admin.portal.app.kyc.service.StorageService;
+import co.yabx.admin.portal.app.kyc.service.UserService;
 
 /**
  * 
@@ -30,6 +32,12 @@ public class StorageServiceImpl implements StorageService {
 
 	@Autowired
 	private AppConfigService appConfigService;
+
+	@Autowired
+	private KYCService kycService;
+
+	@Autowired
+	private UserService userService;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(StorageServiceImpl.class);
 
@@ -91,7 +99,7 @@ public class StorageServiceImpl implements StorageService {
 	}
 
 	@Override
-	public byte[] getDisclaimerDocuments(Long retailerId, String filename) {
+	public byte[] getDisclaimerDocuments(Long retailerId, String filename, int retryCounter) {
 		try {
 			String uri = appConfigService.getProperty("DOCUMENT_STORAGE_BASE_PATH", "/var/lib/kyc/") + retailerId + "/"
 					+ "disclaimer/pdf/" + filename;
@@ -99,6 +107,12 @@ public class StorageServiceImpl implements StorageService {
 			return Files.readAllBytes(path);
 		} catch (Exception e) {
 			LOGGER.error("exception raised while fetching image={},error={}", filename, e.getMessage());
+			if (retryCounter == 0) {
+				String extension = FilenameUtils.getExtension(filename);
+				String documentType = filename.replaceAll("." + extension, "");
+				kycService.createPDFDocuments(userService.getRetailerById(retailerId), documentType);
+				return getDisclaimerDocuments(retailerId, filename, retryCounter++);
+			}
 			return null;
 		}
 	}
