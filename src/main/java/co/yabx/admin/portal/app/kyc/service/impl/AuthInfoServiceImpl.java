@@ -119,4 +119,15 @@ public class AuthInfoServiceImpl implements AuthInfoService {
 		}
 	}
 
+	@Override
+	public Optional findByUsername(String userName) {
+		Optional<AuthInfo> authInfo = authInfoRepository.findByUsername(userName);
+		if (authInfo != null && authInfo.isPresent()) {
+			// User user = userRepository.findByAuthInfo(authInfo);
+			return Optional.of(authInfo);
+		}
+
+		return Optional.empty();
+
+	}
 }

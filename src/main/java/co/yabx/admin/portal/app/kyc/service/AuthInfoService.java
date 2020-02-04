@@ -25,4 +25,6 @@ public interface AuthInfoService {
 
 	void resetYabxToken(String username);
 
+	Optional findByUsername(String userName);
+
 }
