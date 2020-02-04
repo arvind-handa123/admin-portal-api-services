@@ -93,7 +93,7 @@ public class RetailersDtoHelper implements Serializable {
 		userDto.setResidentialStatus(ResidentStatus.Resident);
 		userDto.setPassportNumber("PB8765M");
 		userDto.setPassportExpiryDate("09/26/2023");
-		userDto.setNationality(Nationality.Bengali);
+		userDto.setNationality(Nationality.Bangladeshi);
 		userDto.setNationalIdNumber("ABCP897L0976");
 
 		// Bank account details

@@ -2,7 +2,7 @@ package co.yabx.admin.portal.app.enums;
 
 public enum Nationality {
 	Afghan, Albanian, Algerian, Andorran, Angolan, Antiguan, Argentine, Armenian, Australian, Austrian, Azerbaijani,
-	Bahamian, Bahraini, Bengali, Barbadian, Belarusian, Belgian, Belizean, Beninese, Bhutanese, Bolivian, Bosnian,
+	Bahamian, Bahraini, Bangladeshi, Barbadian, Belarusian, Belgian, Belizean, Beninese, Bhutanese, Bolivian, Bosnian,
 	Chadian, Chilean, Chinese, Colombian, Comoran, Congolese, Ivorian, Croatian, Cuban, Cypriot, Czech, Danish,
 	Djiboutian, Dominican, Ecuadorian, Egyptian, Salvadoran, Eritrean, Estonian, Ethiopian, Fijian, Finnish, French,
 	Gabonese, Gambian, Georgian, German, Ghanaian, Gibraltar, Greek, Grenadian, Guatemalan, Guinean, Guyanese, Haitian,
