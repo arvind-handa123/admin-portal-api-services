@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -35,6 +37,38 @@ public class GroupsDTO implements Serializable, Comparable<GroupsDTO> {
 	private Boolean mandatoryFieldReceived;
 
 	private String filename;
+
+	private String link;
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
+	public boolean isHasSuperset() {
+		return hasSuperset;
+	}
+
+	public void setHasSuperset(boolean hasSuperset) {
+		this.hasSuperset = hasSuperset;
+	}
+
+	public Boolean getEnable() {
+		return enable;
+	}
+
+	public Boolean getVisible() {
+		return visible;
+	}
+
+	public Boolean getMandatoryFieldReceived() {
+		return mandatoryFieldReceived;
+	}
+
+	private boolean hasSuperset;
 
 	public Date getCreatedAt() {
 		return createdAt;

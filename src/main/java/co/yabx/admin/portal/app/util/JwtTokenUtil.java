@@ -8,6 +8,8 @@ import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import co.yabx.admin.portal.app.service.AppConfigService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -68,5 +70,19 @@ public class JwtTokenUtil implements Serializable {
 	public Boolean validateToken(String token, UserDetails userDetails) {
 		final String username = getUsernameFromToken(token);
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+	}
+
+	public static String prepareToken(String link) {
+
+		Map<String, Object> claims = new HashMap<>();
+		claims.put("username", "admin");
+		claims.put("redirect_url", link);
+
+		return Jwts.builder().setClaims(claims)
+				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+				.signWith(SignatureAlgorithm.HS256,
+						SpringUtil.bean(AppConfigService.class).getProperty("JWT_SECRET_KEY").getBytes())
+				.compact();
+
 	}
 }

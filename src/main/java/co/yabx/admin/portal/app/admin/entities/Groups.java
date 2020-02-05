@@ -60,6 +60,28 @@ public class Groups implements Serializable {
 	@Column(name = "file_name")
 	private String filename;
 
+	@Column(name = "link")
+	private String link;
+
+	@Column(name = "hasSuperset")
+	private boolean superset;
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
+	public boolean isSuperset() {
+		return superset;
+	}
+
+	public void setSuperset(boolean hasSuperset) {
+		this.superset = hasSuperset;
+	}
+
 	public Integer getDisplayOrder() {
 		return displayOrder;
 	}

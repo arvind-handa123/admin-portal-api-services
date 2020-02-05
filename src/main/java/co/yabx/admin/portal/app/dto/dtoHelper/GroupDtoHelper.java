@@ -189,6 +189,8 @@ public class GroupDtoHelper implements Serializable {
 			groupsDTO.setDisplayOrder(groups.getDisplayOrder());
 			groupsDTO.setEnable(groups.isEnable());
 			groupsDTO.setFilename(groups.getFilename());
+			groupsDTO.setLink(groups.getLink());
+			groupsDTO.setHasSuperset(groups.isSuperset());
 			groupsDTOs.add(groupsDTO);
 		}
 		return groupsDTOs.stream().sorted(Comparator.comparing(GroupsDTO::getDisplayOrder))

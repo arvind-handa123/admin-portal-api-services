@@ -75,7 +75,8 @@ public class SectionDtoHelper implements Serializable {
 				 * (kycStatus != null) { appPagesSectionsDTO.setPagesDTOs(
 				 * SpringUtil.bean(KYCService.class).fetchRetailersByKycStatus(kycStatus, 0,
 				 * 50)); }
-				 */} else {
+				 */
+			} else {
 				appPagesSectionsDTO.setGroups(GroupDtoHelper.getGroups(appPagesSections.getGroups()));
 			}
 			appPagesSectionsDTO.setEnable(appPagesSections.isEnable());
